@@ -1,4 +1,6 @@
-package com.game_classes;
+package com.game_classes.interfaces;
+
+import com.game_classes.models.Game;
 
 public interface GameService {
   Game createNewGame();
@@ -12,4 +14,6 @@ public interface GameService {
   String getRandomWord();
 
   String getUsersLetters(String gameId);
+
+  void addOponentId(String id, Game userGame);
 }

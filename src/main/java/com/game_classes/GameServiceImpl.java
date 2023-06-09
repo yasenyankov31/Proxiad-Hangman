@@ -6,6 +6,9 @@ import java.util.Scanner;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import com.game_classes.interfaces.GameRepository;
+import com.game_classes.interfaces.GameService;
+import com.game_classes.models.Game;
 
 @Component
 public class GameServiceImpl implements GameService {
@@ -32,9 +35,10 @@ public class GameServiceImpl implements GameService {
           if (index == randInt) {
             while (data.length() < 3) {
               data = reader.nextLine();
+              index++;
             }
 
-            return data;
+            return data + " " + index;
           }
 
           index++;
@@ -50,7 +54,8 @@ public class GameServiceImpl implements GameService {
   public Game createNewGame() {
     String gameId = UUID.randomUUID().toString();
 
-    String word = getRandomWord();
+    var wordAndNum = getRandomWord().split(" ");
+    String word = wordAndNum[0];
     StringBuilder guessedWord = new StringBuilder();
     char first = word.charAt(0);
     char last = word.charAt(word.length() - 1);
@@ -64,7 +69,7 @@ public class GameServiceImpl implements GameService {
     }
     guessedWord.append(last);
 
-    Game game = new Game(gameId, word, guessedWord.toString(), 7);
+    Game game = new Game(gameId, word, guessedWord.toString(), 7, Integer.parseInt(wordAndNum[1]));
     gameRepository.save(game);
     return game;
   }
@@ -126,7 +131,9 @@ public class GameServiceImpl implements GameService {
 
     Game game = gameRepository.findById(gameId);
     if (game != null) {
-      String word = getRandomWord();
+      var wordAndNum = getRandomWord().split(" ");
+      String word = wordAndNum[0];
+
       StringBuilder guessedWord = new StringBuilder();
       char first = word.charAt(0);
       char last = word.charAt(word.length() - 1);
@@ -144,8 +151,15 @@ public class GameServiceImpl implements GameService {
       game.setLettersUsed("");
       game.setGuessedWord(guessedWord.toString());
       game.setAttemptsLeft(7);
+      game.setWordNum(Integer.parseInt(wordAndNum[1]));
       gameRepository.save(game);
     }
     return game;
+  }
+
+  @Override
+  public void addOponentId(String id, Game userGame) {
+    userGame.setOpponentId(id);
+    gameRepository.save(userGame);
   }
 }

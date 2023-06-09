@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import com.game_classes.models.Game;
 
 class HangmanServiceTest {
 
@@ -19,12 +20,12 @@ class HangmanServiceTest {
 
   @InjectMocks private GameServiceImpl gameServiceImpl;
 
-  Game game;
+  private Game game;
 
   @BeforeEach
   void setUp() {
     MockitoAnnotations.openMocks(this);
-    game = new Game("sampleId", "example", "*******", 7);
+    game = new Game("sampleId", "example", "*******", 7, 2);
   }
 
   @Test

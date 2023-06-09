@@ -3,6 +3,8 @@ package com.game_classes;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.springframework.stereotype.Component;
+import com.game_classes.interfaces.GameRepository;
+import com.game_classes.models.Game;
 
 @Component
 public class InMemoryGameRepository implements GameRepository {
