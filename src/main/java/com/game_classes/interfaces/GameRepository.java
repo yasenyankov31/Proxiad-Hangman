@@ -6,4 +6,8 @@ public interface GameRepository {
   void save(Game game);
 
   Game findById(String gameId);
+
+  void addToQueue(String id);
+
+  String getFromQueue();
 }

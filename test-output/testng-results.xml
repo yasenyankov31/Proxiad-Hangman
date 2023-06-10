@@ -2,24 +2,24 @@
 <testng-results ignored="0" total="2" passed="2" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2023-06-09T23:34:01 EEST" name="Default suite" finished-at="2023-06-09T23:34:33 EEST" duration-ms="32727">
+  <suite started-at="2023-06-10T19:10:41 EEST" name="Default suite" finished-at="2023-06-10T19:11:06 EEST" duration-ms="25879">
     <groups>
     </groups>
-    <test started-at="2023-06-09T23:34:01 EEST" name="Default test" finished-at="2023-06-09T23:34:33 EEST" duration-ms="32727">
+    <test started-at="2023-06-10T19:10:41 EEST" name="Default test" finished-at="2023-06-10T19:11:06 EEST" duration-ms="25879">
       <class name="com.game_classes.HangmanUiTest">
-        <test-method is-config="true" signature="openBrowser()[pri:0, instance:com.game_classes.HangmanUiTest@4afcd809]" started-at="2023-06-09T23:34:01 EEST" name="openBrowser" finished-at="2023-06-09T23:34:04 EEST" duration-ms="3594" status="PASS">
+        <test-method is-config="true" signature="openBrowser()[pri:0, instance:com.game_classes.HangmanUiTest@4afcd809]" started-at="2023-06-10T19:10:41 EEST" name="openBrowser" finished-at="2023-06-10T19:10:44 EEST" duration-ms="3002" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- openBrowser -->
-        <test-method signature="looseGameTest()[pri:0, instance:com.game_classes.HangmanUiTest@4afcd809]" started-at="2023-06-09T23:34:04 EEST" name="looseGameTest" finished-at="2023-06-09T23:34:16 EEST" duration-ms="11543" status="PASS">
+        <test-method signature="looseGameTest()[pri:0, instance:com.game_classes.HangmanUiTest@4afcd809]" started-at="2023-06-10T19:10:44 EEST" name="looseGameTest" finished-at="2023-06-10T19:10:55 EEST" duration-ms="11580" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- looseGameTest -->
-        <test-method signature="winGameTest()[pri:0, instance:com.game_classes.HangmanUiTest@4afcd809]" started-at="2023-06-09T23:34:16 EEST" name="winGameTest" finished-at="2023-06-09T23:34:33 EEST" duration-ms="17444" status="PASS">
+        <test-method signature="winGameTest()[pri:0, instance:com.game_classes.HangmanUiTest@4afcd809]" started-at="2023-06-10T19:10:55 EEST" name="winGameTest" finished-at="2023-06-10T19:11:06 EEST" duration-ms="11160" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- winGameTest -->
-        <test-method is-config="true" signature="closeBrowser()[pri:0, instance:com.game_classes.HangmanUiTest@4afcd809]" started-at="2023-06-09T23:34:33 EEST" name="closeBrowser" finished-at="2023-06-09T23:34:33 EEST" duration-ms="104" status="PASS">
+        <test-method is-config="true" signature="closeBrowser()[pri:0, instance:com.game_classes.HangmanUiTest@4afcd809]" started-at="2023-06-10T19:11:06 EEST" name="closeBrowser" finished-at="2023-06-10T19:11:06 EEST" duration-ms="105" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- closeBrowser -->

@@ -26,17 +26,7 @@
 						  <c:when test="${empty opponentId}">
 						   	<button onclick="newGameButton()">Try again</button>
 						  </c:when>
-						  <c:otherwise>
-							  <form action="/Hangman/" method="get">
-							    <button>Back to index</button>
-							  </form>
-						  </c:otherwise>
 						</c:choose>
-					<c:if test="${empty not opponentId}">
-						  <form action="/Hangman/" method="get">
-						    <button>Back to index</button>
-						  </form>
-					</c:if>
 			      
 		      
 					
@@ -46,12 +36,12 @@
 			      		<button onclick="resetButton()">Reset word</button>
 						<button onclick="newGameButton()">New game</button>
 						<button onclick="copyGameId()">Copy game id</button>
-						  <form action="/Hangman/" method="get">
-						    <button>Back to index</button>
-						  </form>
 					</c:if>
 		      </c:otherwise>
 		    </c:choose>
+	  		  <form action="/Hangman/" method="get">
+			    <button>Back to index</button>
+			  </form>
 			<div id="keyboard-div">
 				<div class="keyboard">
 				    <button id="A" onclick="handleButtonClick(event)">A</button>
@@ -137,7 +127,8 @@
 	}
 
 	function getOpponentInfo(){
-	  fetch('http://localhost:8080/Hangman/getOpponentInfo?opponentId=${opponentId}')
+	  const url = location.protocol + '//' + location.host+'/Hangman/getOpponentInfo?opponentId=${opponentId}';
+	  fetch(url)
 	    .then(function(response) {
 	      if (response.ok) {
 	        return response.text();

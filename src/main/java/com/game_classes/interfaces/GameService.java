@@ -16,4 +16,8 @@ public interface GameService {
   String getUsersLetters(String gameId);
 
   void addOponentId(String id, Game userGame);
+
+  void addToQueue(Game game);
+
+  String getFromQueue();
 }

@@ -162,4 +162,14 @@ public class GameServiceImpl implements GameService {
     userGame.setOpponentId(id);
     gameRepository.save(userGame);
   }
+
+  @Override
+  public void addToQueue(Game game) {
+    gameRepository.addToQueue(game.getId());
+  }
+
+  @Override
+  public String getFromQueue() {
+    return gameRepository.getFromQueue();
+  }
 }
