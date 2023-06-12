@@ -29,7 +29,7 @@ public class HangmanUiTest {
     String wordToTest = null;
 
     // Find the input element by its locator
-    WebElement inputElement = driver.findElement(By.tagName("input"));
+    WebElement inputElement = driver.findElement(By.id("word_num"));
 
     // Get the value attribute of the input element
     int wordNum = Integer.parseInt(inputElement.getAttribute("value"));
@@ -69,7 +69,7 @@ public class HangmanUiTest {
     String wordToTest = null;
 
     // Find the input element by its locator
-    WebElement inputElement = driver.findElement(By.tagName("input"));
+    WebElement inputElement = driver.findElement(By.id("word_num"));
 
     // Get the value attribute of the input element
     int wordNum = Integer.parseInt(inputElement.getAttribute("value"));

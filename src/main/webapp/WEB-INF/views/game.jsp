@@ -13,7 +13,7 @@
 <body>
 
  <div class="container">
- 	<input type="hidden" value="${wordNum}">
+ 	<input id="word_num" type="hidden" value="${wordNum}">
  		 <div class="grid-container">
 	  	<div class="keyboard-container item">
  	     <div id="progress">
@@ -138,7 +138,7 @@
 	    })
 	    .then(function(data) {
 	    	document.getElementById("opponent-text").innerText=data;
-	    	if(data.includes("Game won")){
+	    	if(data.includes("Game won")||data.includes("Game over")){
 	    		for (var i = 0; i < keyboardElements.length; i++) {
 	    			  var button = keyboardElements[i];
 					if(!button.disabled){

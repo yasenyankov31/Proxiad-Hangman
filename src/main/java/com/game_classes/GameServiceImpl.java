@@ -33,7 +33,7 @@ public class GameServiceImpl implements GameService {
         while (reader.hasNextLine()) {
           String data = reader.nextLine();
           if (index == randInt) {
-            while (data.length() < 3) {
+            while (data.length() < 5) {
               data = reader.nextLine();
               index++;
             }
