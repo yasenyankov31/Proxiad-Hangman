@@ -11,7 +11,7 @@
 	<div style="display: flex; justify-content: center;">
 	  <button onclick="copyGameId()">Copy game id</button>
 	</div>
-	  <form class="text" action="/Hangman/" method="get">
+	  <form class="text" action="/" method="get">
 	    <button>Back to index</button>
 	  </form>
 	
@@ -22,7 +22,7 @@
 
 	function checkIfGameStarted(){
 	  const nameAndPort=location.protocol + '//' + location.host
-	  const url = nameAndPort+'/Hangman/checkIfGameStarted?gameId=${gameId}';
+	  const url = nameAndPort+'/checkIfGameStarted?gameId=${gameId}';
 	  fetch(url)
 	    .then(function(response) {
 	      if (response.ok) {
@@ -37,7 +37,7 @@
 	    	  console.log("wait")
 	      }
 	      else{
-	    	  window.location.href = nameAndPort+'/Hangman/startMasterGame?gameId=${gameId}';
+	    	  window.location.href = nameAndPort+'/startMasterGame?gameId=${gameId}';
 	      }
 	    })
 	    .catch(function(error) {

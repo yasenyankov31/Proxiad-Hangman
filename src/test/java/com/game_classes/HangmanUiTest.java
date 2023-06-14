@@ -17,7 +17,7 @@ public class HangmanUiTest {
   WebElement element;
 
   @BeforeTest
-  static void openBrowser() {
+  void openBrowser() {
     System.setProperty("webdriver.http.factory", "jdk-http-client");
     WebDriverManager.chromedriver().setup();
     driver = new ChromeDriver();
@@ -25,7 +25,7 @@ public class HangmanUiTest {
 
   @Test
   void winGameTest() throws FileNotFoundException, InterruptedException {
-    driver.get("http://localhost:8080/Hangman/new");
+    driver.get("http://localhost:8080/new");
     String wordToTest = null;
 
     // Find the input element by its locator
@@ -65,7 +65,7 @@ public class HangmanUiTest {
 
   @Test
   void looseGameTest() throws InterruptedException, FileNotFoundException {
-    driver.get("http://localhost:8080/Hangman/new");
+    driver.get("http://localhost:8080/new");
     String wordToTest = null;
 
     // Find the input element by its locator
@@ -103,7 +103,7 @@ public class HangmanUiTest {
   }
 
   @AfterTest
-  public static void closeBrowser() {
+  public void closeBrowser() {
     driver.close();
   }
 

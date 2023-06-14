@@ -5,8 +5,9 @@
     <classes>
       <class name="com.game_classes.HangmanUiTest">
         <methods>
-          <include name="looseGameTest"/>
+          <include name="winGameTest"/>
           <include name="openBrowser"/>
+          <include name="closeBrowser"/>
         </methods>
       </class> <!-- com.game_classes.HangmanUiTest -->
     </classes>

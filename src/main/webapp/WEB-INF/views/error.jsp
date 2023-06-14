@@ -10,7 +10,7 @@
 	<div class="error-message-container">
 	  <span class="error-message">${errorMessage}</span>
 	</div>
-  <form action="/Hangman/" method="get">
+  <form action="/" method="get">
     <button>Back to index</button>
   </form>
 </body>

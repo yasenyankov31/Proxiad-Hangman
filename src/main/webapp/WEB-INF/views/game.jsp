@@ -39,7 +39,7 @@
 					</c:if>
 		      </c:otherwise>
 		    </c:choose>
-	  		  <form action="/Hangman/" method="get">
+	  		  <form action="/" method="get">
 			    <button>Back to index</button>
 			  </form>
 			<div id="keyboard-div">
@@ -127,7 +127,7 @@
 	}
 
 	function getOpponentInfo(){
-	  const url = location.protocol + '//' + location.host+'/Hangman/getOpponentInfo?opponentId=${opponentId}';
+	  const url = location.protocol + '//' + location.host+'/getOpponentInfo?opponentId=${opponentId}';
 	  fetch(url)
 	    .then(function(response) {
 	      if (response.ok) {
@@ -157,13 +157,13 @@
   
   function handleButtonClick(event) {
 	  var letter = event.target.innerHTML.toLowerCase();
-	  window.location.href = "/Hangman/guess?gameId=${gameId}&letter="+letter;
+	  window.location.href = "/guess?gameId=${gameId}&letter="+letter;
 	}
   function resetButton() {
-	  window.location.href = "/Hangman/reset?gameId=${gameId}&letter=0";
+	  window.location.href = "/reset?gameId=${gameId}&letter=0";
 	}
   function newGameButton() {
-	  window.location.href = "/Hangman/new";
+	  window.location.href = "/new";
 	}
   function copyGameId() {
 	  navigator.clipboard.writeText("${gameId}");
