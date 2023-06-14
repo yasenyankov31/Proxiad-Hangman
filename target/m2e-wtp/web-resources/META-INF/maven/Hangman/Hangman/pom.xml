@@ -18,6 +18,11 @@
 	      <scope>test</scope>
 	   </dependency>
 	   <dependency>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-api</artifactId>
+		    <scope>test</scope>
+		</dependency>
+	   <dependency>
 	      <groupId>org.mockito</groupId>
 	      <artifactId>mockito-core</artifactId>
 	      <scope>test</scope>
@@ -85,5 +90,6 @@
 			 <artifactId>spring-boot-maven-plugin</artifactId>
 		 </plugin>
       </plugins>
+      <finalName>spring-boot-docker</finalName>
    </build>
 </project>

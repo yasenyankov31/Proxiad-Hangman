@@ -1,0 +1,9 @@
+com\game_classes\GameServiceImpl.class
+com\game_classes\models\Game.class
+com\yasen\GlobalExceptionHandler.class
+com\game_classes\InMemoryGameRepository.class
+com\game_classes\interfaces\GameRepository.class
+com\game_classes\models\SubmitForm.class
+com\game_classes\interfaces\GameService.class
+com\yasen\HangmanController.class
+com\SpringStart.class

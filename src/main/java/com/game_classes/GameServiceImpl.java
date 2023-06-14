@@ -22,9 +22,8 @@ public class GameServiceImpl implements GameService {
 
   @Override
   public String getRandomWord() {
-    String path = "C:/Users/y.yankov/eclipse-workspace/Hangman/src/main/java/wordlist.txt";
     try {
-      File file = new File(path);
+      File file = new File("wordlist.txt");
 
       int randInt = random.nextInt(10000);
       int index = 0;
@@ -44,8 +43,9 @@ public class GameServiceImpl implements GameService {
           index++;
         }
       }
-    } catch (Exception e) {
-      return "Error" + e.getMessage();
+    } catch (Exception ex) {
+      System.out.println(ex.getMessage());
+      return "Error " + ex.getLocalizedMessage();
     }
     return null;
   }

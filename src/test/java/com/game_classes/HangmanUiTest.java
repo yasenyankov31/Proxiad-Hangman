@@ -33,9 +33,7 @@ public class HangmanUiTest {
 
     // Get the value attribute of the input element
     int wordNum = Integer.parseInt(inputElement.getAttribute("value"));
-
-    String path = "C:/Users/y.yankov/eclipse-workspace/Hangman/src/main/java/wordlist.txt";
-    File file = new File(path);
+    File file = new File("wordlist.txt");
     int index = 0;
 
     try (Scanner reader = new Scanner(file)) {
@@ -74,8 +72,7 @@ public class HangmanUiTest {
     // Get the value attribute of the input element
     int wordNum = Integer.parseInt(inputElement.getAttribute("value"));
 
-    String path = "C:/Users/y.yankov/eclipse-workspace/Hangman/src/main/java/wordlist.txt";
-    File file = new File(path);
+    File file = new File("wordlist.txt");
     int index = 0;
 
     try (Scanner reader = new Scanner(file)) {
