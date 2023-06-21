@@ -5,12 +5,12 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import com.game_classes.interfaces.GameRepository;
 import com.game_classes.interfaces.GameService;
 import com.game_classes.models.Game;
 
-@Component
+@Service
 public class GameServiceImpl implements GameService {
 
   @Autowired private GameRepository gameRepository;

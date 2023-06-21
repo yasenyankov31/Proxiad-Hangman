@@ -62,7 +62,7 @@ class HangmanControllerTest {
   void guessLetterTest() throws Exception {
     SubmitForm submitForm = new SubmitForm();
     submitForm.setGameId(game.getId());
-    submitForm.setLetter('A');
+    submitForm.setLetter("A");
 
     // Mocked binding result
     BindingResult mockBindingResult = mock(BindingResult.class);
@@ -100,7 +100,7 @@ class HangmanControllerTest {
   void resetGameTest() throws Exception {
     SubmitForm submitForm = new SubmitForm();
     submitForm.setGameId(game.getId());
-    submitForm.setLetter('0');
+    submitForm.setLetter("0");
 
     // Mocked binding result
     BindingResult mockBindingResult = mock(BindingResult.class);
@@ -140,7 +140,7 @@ class HangmanControllerTest {
   void getGameByIdTest() throws Exception {
     SubmitForm submitForm = new SubmitForm();
     submitForm.setGameId(game.getId());
-    submitForm.setLetter('0');
+    submitForm.setLetter("0");
 
     // Mocked binding result
     BindingResult mockBindingResult = mock(BindingResult.class);
