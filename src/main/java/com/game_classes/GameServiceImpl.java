@@ -3,7 +3,6 @@ package com.game_classes;
 import java.io.File;
 import java.util.Random;
 import java.util.Scanner;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.game_classes.interfaces.GameRepository;
@@ -52,8 +51,6 @@ public class GameServiceImpl implements GameService {
 
   @Override
   public Game createNewGame() {
-    String gameId = UUID.randomUUID().toString();
-
     var wordAndNum = getRandomWord().split(" ");
     String word = wordAndNum[0];
     StringBuilder guessedWord = new StringBuilder();
@@ -69,13 +66,15 @@ public class GameServiceImpl implements GameService {
     }
     guessedWord.append(last);
 
-    Game game = new Game(gameId, word, guessedWord.toString(), 7, Integer.parseInt(wordAndNum[1]));
-    gameRepository.save(game);
+    Game game =
+        new Game(
+            random.nextLong(), word, guessedWord.toString(), 7, Integer.parseInt(wordAndNum[1]));
+    gameRepository.createGame(game);
     return game;
   }
 
   @Override
-  public Game guessLetter(String gameId, char letter) {
+  public Game guessLetter(long gameId, char letter) {
     Game game = gameRepository.findById(gameId);
     if (game == null) {
       return null;
@@ -106,13 +105,13 @@ public class GameServiceImpl implements GameService {
 
     game.setGuessedWord(newGuessedWord.toString());
     game.setAttemptsLeft(attemptsLeft);
-    gameRepository.save(game);
+    gameRepository.updateGame(game);
 
     return game;
   }
 
   @Override
-  public Game getGameState(String gameId) {
+  public Game getGameState(long gameId) {
     Game game = gameRepository.findById(gameId);
     if (game == null) {
       return null;
@@ -121,13 +120,13 @@ public class GameServiceImpl implements GameService {
   }
 
   @Override
-  public String getUsersLetters(String gameId) {
+  public String getUsersLetters(long gameId) {
     Game game = gameRepository.findById(gameId);
     return game.getLetters();
   }
 
   @Override
-  public Game resetGame(String gameId) {
+  public Game resetGame(long gameId) {
 
     Game game = gameRepository.findById(gameId);
     if (game != null) {
@@ -152,15 +151,15 @@ public class GameServiceImpl implements GameService {
       game.setGuessedWord(guessedWord.toString());
       game.setAttemptsLeft(7);
       game.setWordNum(Integer.parseInt(wordAndNum[1]));
-      gameRepository.save(game);
+      gameRepository.updateGame(game);
     }
     return game;
   }
 
   @Override
-  public void addOponentId(String id, Game userGame) {
+  public void addOponentId(long id, Game userGame) {
     userGame.setOpponentId(id);
-    gameRepository.save(userGame);
+    gameRepository.updateGame(userGame);
   }
 
   @Override
@@ -169,7 +168,7 @@ public class GameServiceImpl implements GameService {
   }
 
   @Override
-  public String getFromQueue() {
+  public long getFromQueue() {
     return gameRepository.getFromQueue();
   }
 }

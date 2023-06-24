@@ -5,19 +5,19 @@ import com.game_classes.models.Game;
 public interface GameService {
   Game createNewGame();
 
-  Game guessLetter(String gameId, char letter);
+  Game guessLetter(long gameId, char letter);
 
-  Game getGameState(String gameId);
+  Game getGameState(long gameId);
 
-  Game resetGame(String gameId);
+  Game resetGame(long gameId);
 
   String getRandomWord();
 
-  String getUsersLetters(String gameId);
+  String getUsersLetters(long gameId);
 
-  void addOponentId(String id, Game userGame);
+  void addOponentId(long id, Game userGame);
 
   void addToQueue(Game game);
 
-  String getFromQueue();
+  long getFromQueue();
 }

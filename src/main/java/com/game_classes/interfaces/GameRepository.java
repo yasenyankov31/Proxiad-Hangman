@@ -3,11 +3,15 @@ package com.game_classes.interfaces;
 import com.game_classes.models.Game;
 
 public interface GameRepository {
-  void save(Game game);
+  void createGame(Game game);
 
-  Game findById(String gameId);
+  void updateGame(Game game);
 
-  void addToQueue(String id);
+  void deleteGame(Game game);
 
-  String getFromQueue();
+  Game findById(long gameId);
+
+  void addToQueue(long id);
+
+  long getFromQueue();
 }

@@ -10,7 +10,7 @@ public class GlobalExceptionHandler {
   public ModelAndView handleException(Exception ex) {
     ModelAndView modelAndView = new ModelAndView();
     modelAndView.setViewName("error");
-    modelAndView.addObject("errorMessage", "An error occurred: " + ex.getMessage());
+    modelAndView.addObject("errorMessage", "An error occurred: " + ex.getLocalizedMessage());
     return modelAndView;
   }
 }

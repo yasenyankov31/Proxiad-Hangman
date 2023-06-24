@@ -1,15 +1,25 @@
 package com.game_classes.models;
 
+import java.util.Calendar;
+import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Game {
-  private String id;
+  @Id private long id;
+
   private String word;
   private String guessedWord;
   private String lettersUsed;
   private int attemptsLeft;
   private int wordNum;
-  private String opponentId;
+  private long opponentId;
+  private Date date;
 
-  public Game(String id, String word, String guessedWord, int attemptsLeft, int wordNum) {
+  public Game() {}
+
+  public Game(long id, String word, String guessedWord, int attemptsLeft, int wordNum) {
     super();
     this.id = id;
     this.word = word;
@@ -17,6 +27,16 @@ public class Game {
     this.setAttemptsLeft(attemptsLeft);
     this.lettersUsed = "";
     this.wordNum = wordNum;
+    Calendar today = Calendar.getInstance();
+    this.date = today.getTime();
+  }
+
+  public void setId(long id) {
+    this.id = id;
+  }
+
+  public long getId() {
+    return id;
   }
 
   public void setLettersUsed(String lettersUsed) {
@@ -29,14 +49,6 @@ public class Game {
 
   public void addLetter(String lettersUsed) {
     this.lettersUsed += lettersUsed;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
   }
 
   public String getWord() {
@@ -71,12 +83,20 @@ public class Game {
     this.wordNum = wordNum;
   }
 
-  public String getOpponentId() {
+  public long getOpponentId() {
     return opponentId;
   }
 
-  public void setOpponentId(String opponentId) {
+  public void setOpponentId(long opponentId) {
     this.opponentId = opponentId;
+  }
+
+  public Date getDate() {
+    return date;
+  }
+
+  public void setDate(Date date) {
+    this.date = date;
   }
 
   public String getInfo() {

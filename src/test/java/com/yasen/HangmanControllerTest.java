@@ -1,7 +1,6 @@
 package com.yasen;
 
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -36,10 +35,11 @@ class HangmanControllerTest {
   private MockMvc mockMvc;
 
   private Game game;
+  long gameId = 2830948093284L;
 
   @BeforeEach
   public void setup() {
-    game = new Game("sampleId", "example", "*******", 7, 2);
+    game = new Game(gameId, "example", "*******", 7, 2);
     game.setLettersUsed("a");
     MockitoAnnotations.openMocks(this);
     mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
@@ -77,7 +77,7 @@ class HangmanControllerTest {
         mockMvc
             .perform(
                 MockMvcRequestBuilders.post("/guess")
-                    .param("gameId", submitForm.getGameId())
+                    .param(gameId + "", submitForm.getGameId() + "")
                     .param("letter", submitForm.getLetter() + ""))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.view().name("game"))
@@ -116,7 +116,7 @@ class HangmanControllerTest {
         mockMvc
             .perform(
                 MockMvcRequestBuilders.post("/reset")
-                    .param("gameId", submitForm.getGameId())
+                    .param(gameId + "", submitForm.getGameId() + "")
                     .param("letter", submitForm.getLetter() + ""))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.view().name("game"))
@@ -155,7 +155,7 @@ class HangmanControllerTest {
         mockMvc
             .perform(
                 MockMvcRequestBuilders.post("/getGame")
-                    .param("gameId", submitForm.getGameId())
+                    .param(gameId + "", submitForm.getGameId() + "")
                     .param("letter", submitForm.getLetter() + ""))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.view().name("game"))
@@ -187,7 +187,7 @@ class HangmanControllerTest {
         mockMvc
             .perform(
                 MockMvcRequestBuilders.post("/getGame")
-                    .param("gameId", game.getId())
+                    .param(gameId + "", game.getId() + "")
                     .param("letter", ""))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.view().name("error"))
@@ -199,6 +199,6 @@ class HangmanControllerTest {
     assertNotNull(modelAndView.getModel().get("errorMessage"));
 
     // Verify that the gameService methods were not called
-    verify(gameService, never()).getGameState(anyString());
+    verify(gameService, never()).getGameState(gameId);
   }
 }
