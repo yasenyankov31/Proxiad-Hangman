@@ -1,13 +1,18 @@
 package com.game_classes.interfaces;
 
 import java.util.List;
+
+import com.game_classes.interfaces.ModelInterfaces.TopPlayerStats;
+import com.game_classes.interfaces.ModelInterfaces.UserRankData;
 import com.game_classes.models.Game;
-import com.game_classes.models.User;
 
 public interface RankingService {
-  public void completeGame(Game game, User user);
+	public void completeGame(Game game, String username);
 
-  List<Game> topTenOfAllTime();
+	List<TopPlayerStats> topTenOfAllTime();
 
-  List<Game> topTenOfTheMonth();
+	List<TopPlayerStats> topTenOfTheMonth();
+
+	List<UserRankData> getUserInfo(String username);
+
 }
