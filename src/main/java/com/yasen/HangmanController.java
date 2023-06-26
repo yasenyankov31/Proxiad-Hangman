@@ -2,310 +2,335 @@ package com.yasen;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.game_classes.interfaces.GameService;
 import com.game_classes.interfaces.RankingService;
+import com.game_classes.interfaces.UserService;
 import com.game_classes.interfaces.ModelInterfaces.UserRankData;
 import com.game_classes.models.Game;
 import com.game_classes.models.SubmitForm;
+import com.game_classes.models.UserData;
 
 @Controller
 public class HangmanController {
 
-	@Autowired
-	private GameService gameService;
+  @Autowired private GameService gameService;
 
-	@Autowired
-	private RankingService rankingService;
+  @Autowired private RankingService rankingService;
 
-	@RequestMapping("/")
-	public ModelAndView index() {
+  @Autowired private UserService UserService;
 
-		List<String> usernamesAllTime = new ArrayList<>();
-		List<Integer> winAllTime = new ArrayList<>();
+  @RequestMapping("/")
+  public ModelAndView index() {
 
-		List<String> usernamesForMonth = new ArrayList<>();
-		List<Integer> winsForMonth = new ArrayList<>();
+    List<String> userAllTime = new ArrayList<>();
+    List<Integer> winAllTime = new ArrayList<>();
 
-		rankingService.topTenOfAllTime().forEach(item -> {
-			usernamesAllTime.add('"' + item.getUsername() + '"');
-			winAllTime.add(item.getWinCount());
-		});
-		rankingService.topTenOfTheMonth().forEach(item -> {
-			usernamesForMonth.add('"' + item.getUsername() + '"');
-			winsForMonth.add(item.getWinCount());
-		});
+    List<String> userForMonth = new ArrayList<>();
+    List<Integer> winsForMonth = new ArrayList<>();
 
-		ModelAndView modelAndView = new ModelAndView("index");
-		modelAndView.addObject("userAllTime", usernamesAllTime);
-		modelAndView.addObject("winAllTime", winAllTime);
+    rankingService
+        .topTenOfAllTime()
+        .forEach(
+            item -> {
+              userAllTime.add('"' + item.getUsername() + '"');
+              winAllTime.add(item.getWinCount());
+            });
+    rankingService
+        .topTenOfTheMonth()
+        .forEach(
+            item -> {
+              userForMonth.add('"' + item.getUsername() + '"');
+              winsForMonth.add(item.getWinCount());
+            });
 
-		modelAndView.addObject("userForMonth", usernamesForMonth);
-		modelAndView.addObject("winsForMonth", winsForMonth);
+    ModelAndView modelAndView = new ModelAndView("index");
+    modelAndView.addObject("userAllTime", userAllTime);
+    modelAndView.addObject("winAllTime", winAllTime);
 
-		return modelAndView;
-	}
+    modelAndView.addObject("userForMonth", userForMonth);
+    modelAndView.addObject("winsForMonth", winsForMonth);
 
-	@RequestMapping("/userProfile")
-	public ModelAndView endingResult(String username) {
-		ModelAndView modelAndView = new ModelAndView("user_profile");
-		List<Integer> statusValues = new ArrayList<>();
-		int winCount = 0;
-		int lossCount = 0;
-		int prevWinCount = 0;
-		List<UserRankData> userRankDatas = rankingService.getUserInfo(username);
+    return modelAndView;
+  }
 
-		for (UserRankData rankData : userRankDatas) {
-			if (rankData.getGameStatus().equals("Won")) {
-				winCount++;
-				statusValues.add(prevWinCount++);
-			} else {
-				lossCount++;
-				statusValues.add(0);
-			}
+  @RequestMapping("/userProfile")
+  public ModelAndView endingResult(String username) {
+    ModelAndView modelAndView = new ModelAndView("user_profile");
+    List<Integer> statusValues = new ArrayList<>();
+    int winCount = 0;
+    int lossCount = 0;
+    int prevWinCount = 0;
+    List<UserRankData> userRankDatas = rankingService.getUserInfo(username);
 
-		}
+    for (UserRankData rankData : userRankDatas) {
+      if (rankData.getGameStatus().equals("Won")) {
+        winCount++;
+        statusValues.add(++prevWinCount);
+      } else {
+        lossCount++;
+        statusValues.add(0);
+        prevWinCount = 0;
+      }
+    }
 
-		modelAndView.addObject("username", username);
-		modelAndView.addObject("winCount", winCount);
-		modelAndView.addObject("lossCount", lossCount);
-		modelAndView.addObject("statusValues", statusValues);
-		modelAndView.addObject("userRankDatas", userRankDatas);
+    modelAndView.addObject("username", username);
+    modelAndView.addObject("winCount", winCount);
+    modelAndView.addObject("lossCount", lossCount);
+    modelAndView.addObject("statusValues", statusValues);
+    modelAndView.addObject("userRankDatas", userRankDatas);
 
-		return modelAndView;
-	}
+    return modelAndView;
+  }
 
-	@RequestMapping("/endingResult")
-	public ModelAndView endingResult(String username, long gameId) {
-		if (gameId == 0) {
-			return new ModelAndView("error").addObject("errorMessage", "Not existing game!");
-		}
-		if (username.isBlank() || username.isEmpty()) {
-			return new ModelAndView("error").addObject("errorMessage", "Write at least one character for username! ");
-		}
-		Game game = gameService.getGameState(gameId);
-		ModelAndView modelAndView = new ModelAndView("game");
-		String gameInfo = game.getInfo();
+  @RequestMapping("/notCompletedGames")
+  public ModelAndView notCompletedGames() {
+    ModelAndView modelAndView = new ModelAndView("not_completed_games");
+    modelAndView.addObject("unfinishedGames", gameService.getUnfinishedGames());
 
-		boolean isGameOver = gameInfo.contains("Game over") || gameInfo.contains("Game won");
-		rankingService.completeGame(game, username);
-		modelAndView.addObject("gameId", game.getId());
-		modelAndView.addObject("result", gameInfo);
-		modelAndView.addObject("lettersUsed", game.getLetters());
-		modelAndView.addObject("wordNum", game.getWordNum());
+    return modelAndView;
+  }
 
-		modelAndView.addObject("isGameOver", isGameOver);
-		return modelAndView;
-	}
+  @RequestMapping("/endingResult")
+  public ModelAndView endingResult(String username, long gameId) {
+    if (gameId == 0) {
+      return new ModelAndView("error").addObject("errorMessage", "Not existing game!");
+    }
+    if (username.isBlank() || username.isEmpty()) {
+      return new ModelAndView("error")
+          .addObject("errorMessage", "Write at least one character for UserDataname! ");
+    }
+    Game game = gameService.getGameState(gameId);
+    ModelAndView modelAndView = new ModelAndView("game");
+    String gameInfo = game.getInfo();
 
-	@RequestMapping("/createParty")
-	public ModelAndView createParty() {
-		ModelAndView modelAndView = new ModelAndView("lobby");
-		Game newGame = gameService.createNewGame();
-		modelAndView.addObject("gameId", newGame.getId());
-		gameService.addToQueue(newGame);
+    boolean isGameOver = gameInfo.contains("Game over") || gameInfo.contains("Game won");
+    rankingService.completeGame(game, username);
+    modelAndView.addObject("gameId", game.getId());
+    modelAndView.addObject("result", gameInfo);
+    modelAndView.addObject("lettersUsed", game.getLetters());
+    modelAndView.addObject("wordNum", game.getWordNum());
 
-		return modelAndView;
-	}
+    modelAndView.addObject("isGameOver", isGameOver);
+    return modelAndView;
+  }
 
-	@RequestMapping("/new")
-	public ModelAndView newGame() {
+  @RequestMapping("/createParty")
+  public ModelAndView createParty() {
+    ModelAndView modelAndView = new ModelAndView("lobby");
+    Game newGame = gameService.createNewGame();
+    modelAndView.addObject("gameId", newGame.getId());
+    gameService.addToQueue(newGame);
 
-		ModelAndView modelAndView = new ModelAndView("game");
-		Game newGame = gameService.createNewGame();
-		modelAndView.addObject("gameId", newGame.getId());
-		modelAndView.addObject("result", newGame.getInfo());
-		modelAndView.addObject("isGameOver", false);
-		modelAndView.addObject("wordNum", newGame.getWordNum());
-		return modelAndView;
-	}
+    return modelAndView;
+  }
 
-	@RequestMapping("/guess")
-	public ModelAndView guessLetter(@Valid SubmitForm submitForm, BindingResult result) {
-		ModelAndView modelAndView = new ModelAndView("game");
+  @RequestMapping("/new")
+  public ModelAndView newGame() {
 
-		if (result.hasErrors()) {
-			return new ModelAndView("error").addObject("errorMessage", result.getFieldError().getDefaultMessage());
-		}
-		Game game = gameService.guessLetter(submitForm.getGameId(), submitForm.getLetter());
-		if (game.getAttemptsLeft() < 0) {
-			game = gameService.getGameState(submitForm.getGameId());
-		}
+    ModelAndView modelAndView = new ModelAndView("game");
+    Game newGame = gameService.createNewGame();
+    modelAndView.addObject("gameId", newGame.getId());
+    modelAndView.addObject("result", newGame.getInfo());
+    modelAndView.addObject("isGameOver", false);
+    modelAndView.addObject("wordNum", newGame.getWordNum());
+    return modelAndView;
+  }
 
-		if (game == null) {
-			return new ModelAndView("error").addObject("errorMessage", "Game not found!");
-		}
+  @RequestMapping("/users")
+  public ModelAndView getUserDatas() {
+    ModelAndView modelAndView = new ModelAndView("users");
+    List<UserData> users = UserService.listAllUsers();
+    modelAndView.addObject("usersData", users);
+    return modelAndView;
+  }
 
-		String gameInfo = game.getInfo();
-		boolean isGameOver = gameInfo.contains("Game over") || gameInfo.contains("Game won");
-		if (isGameOver) {
-			return new ModelAndView("username_form").addObject("gameId", submitForm.getGameId());
-		}
+  @RequestMapping("/guess")
+  public ModelAndView guessLetter(@Valid SubmitForm submitForm, BindingResult result) {
+    ModelAndView modelAndView = new ModelAndView("game");
+    Game game = gameService.guessLetter(submitForm.getGameId(), submitForm.getLetter());
+    if (game.getAttemptsLeft() < 0) {
+      game = gameService.getGameState(submitForm.getGameId());
+    }
 
-		modelAndView.addObject("gameId", game.getId());
-		modelAndView.addObject("result", gameInfo);
-		modelAndView.addObject("lettersUsed", gameService.getUsersLetters(submitForm.getGameId()));
-		modelAndView.addObject("wordNum", game.getWordNum());
+    if (game == null) {
+      return new ModelAndView("error").addObject("errorMessage", "Game not found!");
+    }
 
-		modelAndView.addObject("isGameOver", isGameOver);
+    String gameInfo = game.getInfo();
+    boolean isGameOver = gameInfo.contains("Game over") || gameInfo.contains("Game won");
+    if (isGameOver) {
+      return new ModelAndView("username_form").addObject("gameId", submitForm.getGameId());
+    }
 
-		if (game.getOpponentId() != 0) {
-			modelAndView.addObject("opponentId", game.getOpponentId());
-			modelAndView.addObject("opponentInfo", gameService.getGameState(game.getOpponentId()).getInfo());
-		}
+    modelAndView.addObject("gameId", game.getId());
+    modelAndView.addObject("result", gameInfo);
+    modelAndView.addObject("lettersUsed", gameService.getUsersLetters(submitForm.getGameId()));
+    modelAndView.addObject("wordNum", game.getWordNum());
 
-		return modelAndView;
-	}
+    modelAndView.addObject("isGameOver", isGameOver);
 
-	@RequestMapping("/reset")
-	public ModelAndView resetGame(@Valid SubmitForm submitForm, BindingResult result) {
-		ModelAndView modelAndView = new ModelAndView("game");
+    if (game.getOpponentId() != 0) {
+      modelAndView.addObject("opponentId", game.getOpponentId());
+      modelAndView.addObject(
+          "opponentInfo", gameService.getGameState(game.getOpponentId()).getInfo());
+    }
 
-		if (result.hasErrors()) {
-			return new ModelAndView("error").addObject("errorMessage", result.getFieldError().getDefaultMessage());
-		}
-		long gameId = submitForm.getGameId();
-		Game game = gameService.getGameState(gameId);
+    return modelAndView;
+  }
 
-		if (game == null) {
-			return new ModelAndView("error").addObject("errorMessage", "Game not found!");
-		}
+  @RequestMapping("/reset")
+  public ModelAndView resetGame(@Valid SubmitForm submitForm, BindingResult result) {
+    ModelAndView modelAndView = new ModelAndView("game");
 
-		String gameInfo = gameService.resetGame(gameId).getInfo();
-		modelAndView.addObject("result", gameInfo);
-		modelAndView.addObject("gameId", gameId);
-		modelAndView.addObject("lettersUsed", gameService.getUsersLetters(gameId));
-		modelAndView.addObject("wordNum", game.getWordNum());
-		modelAndView.addObject("isGameOver", false);
+    if (result.hasErrors()) {
+      return new ModelAndView("error")
+          .addObject("errorMessage", result.getFieldError().getDefaultMessage());
+    }
+    long gameId = submitForm.getGameId();
+    Game game = gameService.getGameState(gameId);
 
-		return modelAndView;
-	}
+    if (game == null) {
+      return new ModelAndView("error").addObject("errorMessage", "Game not found!");
+    }
 
-	@RequestMapping("/getGame")
-	public ModelAndView getGameById(@Valid SubmitForm submitForm, BindingResult result) {
-		ModelAndView modelAndView = new ModelAndView("game");
+    String gameInfo = gameService.resetGame(gameId).getInfo();
+    modelAndView.addObject("result", gameInfo);
+    modelAndView.addObject("gameId", gameId);
+    modelAndView.addObject("lettersUsed", gameService.getUsersLetters(gameId));
+    modelAndView.addObject("wordNum", game.getWordNum());
+    modelAndView.addObject("isGameOver", false);
 
-		if (result.hasErrors()) {
-			return new ModelAndView("error").addObject("errorMessage", result.getFieldError().getDefaultMessage());
-		}
-		long gameId = submitForm.getGameId();
-		Game game = gameService.getGameState(gameId);
+    return modelAndView;
+  }
 
-		if (game == null) {
-			return new ModelAndView("error").addObject("errorMessage", "Game not found!");
-		}
+  @RequestMapping("/getGame")
+  public ModelAndView getGameById(@Valid SubmitForm submitForm, BindingResult result) {
+    ModelAndView modelAndView = new ModelAndView("game");
 
-		String gameInfo = game.getInfo();
-		boolean isGameOver = gameInfo.contains("Game over") || gameInfo.contains("Game won");
+    if (result.hasErrors()) {
+      return new ModelAndView("error")
+          .addObject("errorMessage", result.getFieldError().getDefaultMessage());
+    }
+    long gameId = submitForm.getGameId();
+    Game game = gameService.getGameState(gameId);
 
-		modelAndView.addObject("result", gameInfo);
-		modelAndView.addObject("gameId", gameId);
-		modelAndView.addObject("lettersUsed", gameService.getUsersLetters(gameId));
-		modelAndView.addObject("wordNum", game.getWordNum());
-		modelAndView.addObject("isGameOver", isGameOver);
+    if (game == null) {
+      return new ModelAndView("error").addObject("errorMessage", "Game not found!");
+    }
 
-		return modelAndView;
-	}
+    String gameInfo = game.getInfo();
+    boolean isGameOver = gameInfo.contains("Game over") || gameInfo.contains("Game won");
 
-	// @RequestMapping("/getOpponentInfo")
-	// public void getOpponentInfo(HttpServletRequest request, HttpServletResponse
-	// response)
-	// throws IOException {
-	// long gameid = Long.parseLong(request.getParameter("opponentId"));
-	// response.getWriter().print(gameService.getGameState(gameid).getInfo());
-	// }
-	//
-	// @RequestMapping("/startMasterGame")
-	// public ModelAndView startMasterGame(long gameId) {
-	// ModelAndView modelAndView = new ModelAndView("game");
-	// Game masterGame = gameService.getGameState(gameId);
-	// modelAndView.addObject("gameId", masterGame.getId());
-	// modelAndView.addObject("result", masterGame.getInfo());
-	// modelAndView.addObject("isGameOver", false);
-	// modelAndView.addObject("wordNum", masterGame.getWordNum());
-	// modelAndView.addObject("opponentId", masterGame.getOpponentId());
-	// Game opponentGame = gameService.getGameState(masterGame.getOpponentId());
-	//
-	// if (opponentGame == null) {
-	// return new ModelAndView("error").addObject("errorMessage", "Game not
-	// found!");
-	// }
-	//
-	// modelAndView.addObject("opponentInfo", opponentGame.getInfo());
-	// return modelAndView;
-	// }
-	//
-	// @RequestMapping("/checkIfGameStarted")
-	// public void checkIfGameStarted(HttpServletRequest request,
-	// HttpServletResponse response)
-	// throws IOException {
-	// long gameid = Long.parseLong(request.getParameter("gameId"));
-	// response.getWriter().print(gameService.getGameState(gameid).getOpponentId());
-	// }
+    if (isGameOver) {
+      return new ModelAndView("username_form").addObject("gameId", gameId);
+    }
 
-	// @RequestMapping("/joinRandomPartyGame")
-	// public ModelAndView joinRandomPartyGame(String username) {
-	// ModelAndView modelAndView = new ModelAndView("game");
-	// long opponentId = gameService.getFromQueue();
-	// if (opponentId == 0) {
-	// return new ModelAndView("error").addObject("errorMessage", "No games in
-	// queue!");
-	// }
-	// Game newGame = gameService.createNewGame(username);
-	// Game masterGame = gameService.getGameState(opponentId);
-	// if (masterGame == null) {
-	// return new ModelAndView("error").addObject("errorMessage", "Game not
-	// found!");
-	// }
-	// gameService.addOponentId(masterGame.getId(), newGame);
-	// gameService.addOponentId(newGame.getId(), masterGame);
-	//
-	// modelAndView.addObject("master", false);
-	// modelAndView.addObject("opponentId", masterGame.getId());
-	// modelAndView.addObject("gameId", newGame.getId());
-	// modelAndView.addObject("result", newGame.getInfo());
-	// modelAndView.addObject("isGameOver", false);
-	// modelAndView.addObject("wordNum", newGame.getWordNum());
-	// modelAndView.addObject("opponentInfo",
-	// gameService.getGameState(masterGame.getId()).getInfo());
-	//
-	// return modelAndView;
-	// }
-	//
-	// @RequestMapping("/joinPartyGameById")
-	// public ModelAndView joinPartyGameById(
-	// @Valid SubmitForm submitForm, String username, BindingResult result) {
-	// if (result.hasErrors()) {
-	// return new ModelAndView("error")
-	// .addObject("errorMessage", result.getFieldError().getDefaultMessage());
-	// }
-	// ModelAndView modelAndView = new ModelAndView("game");
-	// Game newGame = gameService.createNewGame(username);
-	// Game masterGame = gameService.getGameState(submitForm.getGameId());
-	// if (masterGame == null) {
-	// return new ModelAndView("error").addObject("errorMessage", "Game not
-	// found!");
-	// }
-	// gameService.addOponentId(masterGame.getId(), newGame);
-	// gameService.addOponentId(newGame.getId(), masterGame);
-	//
-	// modelAndView.addObject("master", false);
-	// modelAndView.addObject("opponentId", masterGame.getId());
-	// modelAndView.addObject("gameId", newGame.getId());
-	// modelAndView.addObject("result", newGame.getInfo());
-	// modelAndView.addObject("isGameOver", false);
-	// modelAndView.addObject("wordNum", newGame.getWordNum());
-	// modelAndView.addObject("opponentInfo",
-	// gameService.getGameState(masterGame.getId()).getInfo());
-	//
-	// return modelAndView;
-	// }
+    modelAndView.addObject("result", gameInfo);
+    modelAndView.addObject("gameId", gameId);
+    modelAndView.addObject("lettersUsed", gameService.getUsersLetters(gameId));
+    modelAndView.addObject("wordNum", game.getWordNum());
+    modelAndView.addObject("isGameOver", isGameOver);
+
+    return modelAndView;
+  }
+
+  // @RequestMapping("/getOpponentInfo")
+  // public void getOpponentInfo(HttpServletRequest request, HttpServletResponse
+  // response)
+  // throws IOException {
+  // long gameid = Long.parseLong(request.getParameter("opponentId"));
+  // response.getWriter().print(gameService.getGameState(gameid).getInfo());
+  // }
+  //
+  // @RequestMapping("/startMasterGame")
+  // public ModelAndView startMasterGame(long gameId) {
+  // ModelAndView modelAndView = new ModelAndView("game");
+  // Game masterGame = gameService.getGameState(gameId);
+  // modelAndView.addObject("gameId", masterGame.getId());
+  // modelAndView.addObject("result", masterGame.getInfo());
+  // modelAndView.addObject("isGameOver", false);
+  // modelAndView.addObject("wordNum", masterGame.getWordNum());
+  // modelAndView.addObject("opponentId", masterGame.getOpponentId());
+  // Game opponentGame = gameService.getGameState(masterGame.getOpponentId());
+  //
+  // if (opponentGame == null) {
+  // return new ModelAndView("error").addObject("errorMessage", "Game not
+  // found!");
+  // }
+  //
+  // modelAndView.addObject("opponentInfo", opponentGame.getInfo());
+  // return modelAndView;
+  // }
+  //
+  // @RequestMapping("/checkIfGameStarted")
+  // public void checkIfGameStarted(HttpServletRequest request,
+  // HttpServletResponse response)
+  // throws IOException {
+  // long gameid = Long.parseLong(request.getParameter("gameId"));
+  // response.getWriter().print(gameService.getGameState(gameid).getOpponentId());
+  // }
+
+  // @RequestMapping("/joinRandomPartyGame")
+  // public ModelAndView joinRandomPartyGame(String UserDataname) {
+  // ModelAndView modelAndView = new ModelAndView("game");
+  // long opponentId = gameService.getFromQueue();
+  // if (opponentId == 0) {
+  // return new ModelAndView("error").addObject("errorMessage", "No games in
+  // queue!");
+  // }
+  // Game newGame = gameService.createNewGame(UserDataname);
+  // Game masterGame = gameService.getGameState(opponentId);
+  // if (masterGame == null) {
+  // return new ModelAndView("error").addObject("errorMessage", "Game not
+  // found!");
+  // }
+  // gameService.addOponentId(masterGame.getId(), newGame);
+  // gameService.addOponentId(newGame.getId(), masterGame);
+  //
+  // modelAndView.addObject("master", false);
+  // modelAndView.addObject("opponentId", masterGame.getId());
+  // modelAndView.addObject("gameId", newGame.getId());
+  // modelAndView.addObject("result", newGame.getInfo());
+  // modelAndView.addObject("isGameOver", false);
+  // modelAndView.addObject("wordNum", newGame.getWordNum());
+  // modelAndView.addObject("opponentInfo",
+  // gameService.getGameState(masterGame.getId()).getInfo());
+  //
+  // return modelAndView;
+  // }
+  //
+  // @RequestMapping("/joinPartyGameById")
+  // public ModelAndView joinPartyGameById(
+  // @Valid SubmitForm submitForm, String UserDataname, BindingResult result) {
+  // if (result.hasErrors()) {
+  // return new ModelAndView("error")
+  // .addObject("errorMessage", result.getFieldError().getDefaultMessage());
+  // }
+  // ModelAndView modelAndView = new ModelAndView("game");
+  // Game newGame = gameService.createNewGame(UserDataname);
+  // Game masterGame = gameService.getGameState(submitForm.getGameId());
+  // if (masterGame == null) {
+  // return new ModelAndView("error").addObject("errorMessage", "Game not
+  // found!");
+  // }
+  // gameService.addOponentId(masterGame.getId(), newGame);
+  // gameService.addOponentId(newGame.getId(), masterGame);
+  //
+  // modelAndView.addObject("master", false);
+  // modelAndView.addObject("opponentId", masterGame.getId());
+  // modelAndView.addObject("gameId", newGame.getId());
+  // modelAndView.addObject("result", newGame.getInfo());
+  // modelAndView.addObject("isGameOver", false);
+  // modelAndView.addObject("wordNum", newGame.getWordNum());
+  // modelAndView.addObject("opponentInfo",
+  // gameService.getGameState(masterGame.getId()).getInfo());
+  //
+  // return modelAndView;
+  // }
 }

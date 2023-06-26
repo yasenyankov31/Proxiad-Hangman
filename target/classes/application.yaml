@@ -2,7 +2,7 @@ server:
   port: 8080
 
 spring:
-  datasource: 
+  datasource:
     url: jdbc:mariadb://localhost:3306/Hangman
     username: root
     password: admin
@@ -23,3 +23,13 @@ spring:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
+  flyway:
+    enabled: true
+    validate-on-migrate: true
+    locations: classpath:db/migration
+    baselineOnMigrate: true
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

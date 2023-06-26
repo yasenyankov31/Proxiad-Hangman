@@ -1,6 +1,7 @@
 package com.game_classes;
 
 import java.io.File;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -170,5 +171,10 @@ public class GameServiceImpl implements GameService {
   @Override
   public long getFromQueue() {
     return gameRepository.getFromQueue();
+  }
+
+  @Override
+  public List<Game> getUnfinishedGames() {
+    return gameRepository.getUnfinishedGames();
   }
 }

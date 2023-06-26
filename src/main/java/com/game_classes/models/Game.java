@@ -2,112 +2,113 @@ package com.game_classes.models;
 
 import java.util.Calendar;
 import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Game {
-	@Id
-	private long id;
+  @Id private long id;
 
-	private String word;
-	private String guessedWord;
-	private String lettersUsed;
-	private int attemptsLeft;
-	private int wordNum;
-	private long opponentId;
-	private Date date;
+  private String word;
+  private String guessedWord;
+  private String lettersUsed;
+  private int attemptsLeft;
+  private int wordNum;
+  private long opponentId;
+  private Date date;
 
-	public Game() {
-	}
+  @OneToOne(mappedBy = "game")
+  private CompletedGame completedGame;
 
-	public Game(long id, String word, String guessedWord, int attemptsLeft, int wordNum) {
-		super();
-		this.id = id;
-		this.word = word;
-		this.guessedWord = guessedWord;
-		this.setAttemptsLeft(attemptsLeft);
-		this.lettersUsed = "";
-		this.wordNum = wordNum;
-		Calendar today = Calendar.getInstance();
-		this.date = today.getTime();
-	}
+  public Game() {}
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  public Game(long id, String word, String guessedWord, int attemptsLeft, int wordNum) {
+    super();
+    this.id = id;
+    this.word = word;
+    this.guessedWord = guessedWord;
+    this.setAttemptsLeft(attemptsLeft);
+    this.lettersUsed = "";
+    this.wordNum = wordNum;
+    Calendar today = Calendar.getInstance();
+    this.date = today.getTime();
+  }
 
-	public long getId() {
-		return id;
-	}
+  public void setId(long id) {
+    this.id = id;
+  }
 
-	public void setLettersUsed(String lettersUsed) {
-		this.lettersUsed = lettersUsed;
-	}
+  public long getId() {
+    return id;
+  }
 
-	public String getLetters() {
-		return lettersUsed;
-	}
+  public void setLettersUsed(String lettersUsed) {
+    this.lettersUsed = lettersUsed;
+  }
 
-	public void addLetter(String lettersUsed) {
-		this.lettersUsed += lettersUsed;
-	}
+  public String getLetters() {
+    return lettersUsed;
+  }
 
-	public String getWord() {
-		return word;
-	}
+  public void addLetter(String lettersUsed) {
+    this.lettersUsed += lettersUsed;
+  }
 
-	public void setWord(String word) {
-		this.word = word;
-	}
+  public String getWord() {
+    return word;
+  }
 
-	public String getGuessedWord() {
-		return guessedWord;
-	}
+  public void setWord(String word) {
+    this.word = word;
+  }
 
-	public void setGuessedWord(String guessedWord) {
-		this.guessedWord = guessedWord;
-	}
+  public String getGuessedWord() {
+    return guessedWord;
+  }
 
-	public int getAttemptsLeft() {
-		return attemptsLeft;
-	}
+  public void setGuessedWord(String guessedWord) {
+    this.guessedWord = guessedWord;
+  }
 
-	public void setAttemptsLeft(int attemptsLeft) {
-		this.attemptsLeft = attemptsLeft;
-	}
+  public int getAttemptsLeft() {
+    return attemptsLeft;
+  }
 
-	public int getWordNum() {
-		return wordNum;
-	}
+  public void setAttemptsLeft(int attemptsLeft) {
+    this.attemptsLeft = attemptsLeft;
+  }
 
-	public void setWordNum(int wordNum) {
-		this.wordNum = wordNum;
-	}
+  public int getWordNum() {
+    return wordNum;
+  }
 
-	public long getOpponentId() {
-		return opponentId;
-	}
+  public void setWordNum(int wordNum) {
+    this.wordNum = wordNum;
+  }
 
-	public void setOpponentId(long opponentId) {
-		this.opponentId = opponentId;
-	}
+  public long getOpponentId() {
+    return opponentId;
+  }
 
-	public Date getDate() {
-		return date;
-	}
+  public void setOpponentId(long opponentId) {
+    this.opponentId = opponentId;
+  }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+  public Date getDate() {
+    return date;
+  }
 
-	public String getInfo() {
-		if (attemptsLeft == 0) {
-			return "Game over! The word was " + word;
-		} else if (this.word.equals(this.guessedWord)) {
-			return "Game won! The word was " + word;
-		}
-		return "Guessed word: " + this.guessedWord + " , Attempts left: " + this.attemptsLeft;
-	}
+  public void setDate(Date date) {
+    this.date = date;
+  }
+
+  public String getInfo() {
+    if (attemptsLeft == 0) {
+      return "Game over! The word was " + word;
+    } else if (this.word.equals(this.guessedWord)) {
+      return "Game won! The word was " + word;
+    }
+    return "Guessed word: " + this.guessedWord + " , Attempts left: " + this.attemptsLeft;
+  }
 }

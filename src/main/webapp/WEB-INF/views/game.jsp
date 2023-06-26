@@ -8,10 +8,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <title>Guess the word</title>
 </head>
 <body>
-
+  <ul class="navbar">
+    <li style="padding-left:100px"><a class="active" href="/">Home</a></li>
+    <li><a href="/notCompletedGames">Not completed games</a></li>
+    <li><a href="/users">Users</a></li>
+  </ul>
  <div class="container">
  	<input id="word_num" type="hidden" value="${wordNum}">
  		 <div class="grid-container">
@@ -187,7 +195,38 @@
 		}
 	  </c:otherwise>
 	</c:choose>
+	
+body{
+font-family: 'Varela Round', sans-serif;
+}
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  background-color: #333;
+  overflow: hidden;
+}
 
+.navbar li {
+  float: left;
+}
+
+.navbar li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size:30px;
+}
+
+.navbar li a:hover {
+  background-color: #111;
+}
 	.item {
 	  background-color: #80808085;
 	  padding: 10px;

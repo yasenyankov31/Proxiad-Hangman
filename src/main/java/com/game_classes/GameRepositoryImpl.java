@@ -8,10 +8,13 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 import com.game_classes.interfaces.GameRepository;
+import com.game_classes.models.CompletedGame;
 import com.game_classes.models.Game;
 
 @Repository
@@ -85,5 +88,18 @@ public class GameRepositoryImpl implements GameRepository {
     criteriaQuery.where(criteriaBuilder.equal(root.get("id"), game.getId()));
 
     entityManager.createQuery(criteriaQuery).executeUpdate();
+  }
+
+  @Override
+  public List<Game> getUnfinishedGames() {
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Game> query = criteriaBuilder.createQuery(Game.class);
+
+    Root<Game> gameRoot = query.from(Game.class);
+    Join<Game, CompletedGame> completedGameJoin = gameRoot.join("completedGame", JoinType.LEFT);
+
+    query.select(gameRoot).where(criteriaBuilder.isNull(completedGameJoin.get("id")));
+
+    return entityManager.createQuery(query).getResultList();
   }
 }

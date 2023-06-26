@@ -1,21 +1,23 @@
 package com.game_classes.models;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import com.game_classes.interfaces.CharConstraint;
 
 public class SubmitForm {
   @NotNull(message = "Game ID must not be blank")
-  private long gameId;
+  @NotEmpty(message = "Invalid game id")
+  private String gameId;
 
   @CharConstraint
   @NotNull(message = "Letter must not be null")
   private String letter;
 
   public long getGameId() {
-    return gameId;
+    return Long.parseLong(gameId);
   }
 
-  public void setGameId(long gameId) {
+  public void setGameId(String gameId) {
     this.gameId = gameId;
   }
 

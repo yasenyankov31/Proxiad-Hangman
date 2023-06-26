@@ -22,6 +22,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.ModelAndView;
 import com.game_classes.interfaces.GameRepository;
 import com.game_classes.interfaces.GameService;
+import com.game_classes.interfaces.RankingService;
 import com.game_classes.models.Game;
 import com.game_classes.models.SubmitForm;
 
@@ -29,6 +30,8 @@ class HangmanControllerTest {
   @Mock private GameRepository repository;
 
   @Mock private GameService gameService;
+
+  @Mock private RankingService rankingService;
 
   @InjectMocks private HangmanController controller;
 
@@ -61,7 +64,7 @@ class HangmanControllerTest {
   @Test
   void guessLetterTest() throws Exception {
     SubmitForm submitForm = new SubmitForm();
-    submitForm.setGameId(game.getId());
+    submitForm.setGameId(game.getId() + "");
     submitForm.setLetter("A");
 
     // Mocked binding result
@@ -77,7 +80,7 @@ class HangmanControllerTest {
         mockMvc
             .perform(
                 MockMvcRequestBuilders.post("/guess")
-                    .param(gameId + "", submitForm.getGameId() + "")
+                    .param("gameId", submitForm.getGameId() + "")
                     .param("letter", submitForm.getLetter() + ""))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.view().name("game"))
@@ -99,7 +102,7 @@ class HangmanControllerTest {
   @Test
   void resetGameTest() throws Exception {
     SubmitForm submitForm = new SubmitForm();
-    submitForm.setGameId(game.getId());
+    submitForm.setGameId(game.getId() + "");
     submitForm.setLetter("0");
 
     // Mocked binding result
@@ -116,7 +119,7 @@ class HangmanControllerTest {
         mockMvc
             .perform(
                 MockMvcRequestBuilders.post("/reset")
-                    .param(gameId + "", submitForm.getGameId() + "")
+                    .param("gameId", submitForm.getGameId() + "")
                     .param("letter", submitForm.getLetter() + ""))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.view().name("game"))
@@ -139,7 +142,7 @@ class HangmanControllerTest {
   @Test
   void getGameByIdTest() throws Exception {
     SubmitForm submitForm = new SubmitForm();
-    submitForm.setGameId(game.getId());
+    submitForm.setGameId(game.getId() + "");
     submitForm.setLetter("0");
 
     // Mocked binding result
@@ -155,7 +158,7 @@ class HangmanControllerTest {
         mockMvc
             .perform(
                 MockMvcRequestBuilders.post("/getGame")
-                    .param(gameId + "", submitForm.getGameId() + "")
+                    .param("gameId", submitForm.getGameId() + "")
                     .param("letter", submitForm.getLetter() + ""))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.view().name("game"))
@@ -187,7 +190,7 @@ class HangmanControllerTest {
         mockMvc
             .perform(
                 MockMvcRequestBuilders.post("/getGame")
-                    .param(gameId + "", game.getId() + "")
+                    .param("gameId", game.getId() + "")
                     .param("letter", ""))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.view().name("error"))

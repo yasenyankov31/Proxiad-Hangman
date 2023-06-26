@@ -1,5 +1,6 @@
 package com.game_classes.interfaces;
 
+import java.util.List;
 import com.game_classes.models.Game;
 
 public interface GameService {
@@ -10,6 +11,8 @@ public interface GameService {
   Game getGameState(long gameId);
 
   Game resetGame(long gameId);
+
+  List<Game> getUnfinishedGames();
 
   String getRandomWord();
 

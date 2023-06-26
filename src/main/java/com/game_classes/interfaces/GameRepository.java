@@ -1,5 +1,6 @@
 package com.game_classes.interfaces;
 
+import java.util.List;
 import com.game_classes.models.Game;
 
 public interface GameRepository {
@@ -14,4 +15,6 @@ public interface GameRepository {
   void addToQueue(long id);
 
   long getFromQueue();
+
+  List<Game> getUnfinishedGames();
 }

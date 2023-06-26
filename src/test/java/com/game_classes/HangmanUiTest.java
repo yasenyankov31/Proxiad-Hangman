@@ -4,15 +4,13 @@ import static org.testng.Assert.assertEquals;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
-
-import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
-
-import io.github.bonigarcia.wdm.WebDriverManager;
+import org.testng.annotations.Test;
 
 public class HangmanUiTest {
   private static ChromeDriver driver;
@@ -20,9 +18,10 @@ public class HangmanUiTest {
 
   @BeforeTest
   void openBrowser() {
-    System.setProperty("webdriver.http.factory", "jdk-http-client");
-    WebDriverManager.chromedriver().setup();
-    driver = new ChromeDriver();
+    System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+    ChromeOptions options = new ChromeOptions();
+    options.addArguments("--remote-allow-origins=*");
+    driver = new ChromeDriver(options);
   }
 
   @Test

@@ -2,11 +2,20 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <title>Player ${username} statistics</title>
 
 </head>
 <body>
+ <ul class="navbar">
+   <li style="padding-left:100px"><a class="active" href="/">Home</a></li>
+   <li><a href="/notCompletedGames">Not completed games</a></li>
+   <li><a href="/users">Users</a></li>
+ </ul>
 
 <div class="container">
 	<h1>Player ${username} statistics</h1>
@@ -49,6 +58,37 @@
 </div>
 </body>
   <style>
+  body{
+  font-family: 'Varela Round', sans-serif;
+  }
+		  .navbar {
+		  position: fixed;
+		  top: 0;
+		  left: 0;
+		  width: 100%;
+		  margin: 0;
+		  padding: 0;
+		  list-style-type: none;
+		  background-color: #333;
+		  overflow: hidden;
+		}
+		
+		.navbar li {
+		  float: left;
+		}
+		
+		.navbar li a {
+		  display: block;
+		  color: white;
+		  text-align: center;
+		  padding: 14px 16px;
+		  text-decoration: none;
+		  font-size:30px;
+		}
+		
+		.navbar li a:hover {
+		  background-color: #111;
+		}
       .container {
           max-width: 800px;
           margin: 0 auto;
@@ -95,8 +135,20 @@ let lineChart=new Chart("lineChart", {
     }]
   },
   options: {
-    legend: {display: false}
-  }
+	    legend: {display: false},
+	    title: {
+	      display: false,
+	      
+	    },
+	    scales: {
+	        yAxes: [{
+	          ticks: {
+	            beginAtZero: true,
+	            callback: function(value) {if (value % 1 === 0) {return value;}}
+	          }
+	        }]
+	      }
+	  }
 });
 var gameStat = ["Wins", "Losses"];
 var statValues = [${winCount},${lossCount}];
