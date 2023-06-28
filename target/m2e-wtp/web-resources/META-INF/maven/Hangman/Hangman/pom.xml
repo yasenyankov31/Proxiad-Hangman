@@ -175,7 +175,7 @@
          <plugin>
             <artifactId>maven-compiler-plugin</artifactId>
             <configuration>
-               <release>19</release>
+               <release>18</release>
             </configuration>
          </plugin>
          <plugin>

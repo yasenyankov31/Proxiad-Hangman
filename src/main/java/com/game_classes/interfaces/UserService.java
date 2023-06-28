@@ -1,12 +1,15 @@
 package com.game_classes.interfaces;
 
 import java.util.List;
+
+import org.springframework.data.domain.Page;
+
 import com.game_classes.models.UserData;
 
 public interface UserService {
-  void createOrUpdateUser(UserData user);
+	void createOrUpdateUser(UserData user);
 
-  void deleteUser(long userId);
+	void deleteUsers(List<Long> ids);
 
-  List<UserData> listAllUsers();
+	Page<UserData> listAllUsers(Integer pageNum);
 }

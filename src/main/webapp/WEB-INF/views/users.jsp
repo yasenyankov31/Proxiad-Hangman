@@ -28,8 +28,8 @@
                     <div class="col-sm-6">
      </div>
      <div class="col-sm-6">
-      <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>     
-      <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Employee</span></a> 
+      <a href="#deleteEmployeeModal" onclick="getSelectedCheckboxIds()" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>     
+      <a href="#addEmployeeModal" id="openAddModal"  class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Employee</span></a> 
      </div>
            </div>
             </div>
@@ -50,12 +50,12 @@
 			    </tr>
 			  </thead>
 			  <tbody>
-			  <c:forEach var="data" items="${usersData}">
+			  <c:forEach var="data" items="${usersData.content }">
 			    <tr>
 			      <td>
 			        <span class="custom-checkbox">
-			          <input type="checkbox" id="checkbox1" name="options[]" value="1">
-			          <label for="checkbox1"></label>
+			          <input type="checkbox" id="checkbox${data.getId() }" name="options[]" value="${data.getId()}">
+			          <label for="checkbox${data.getId() }"></label>
 			        </span>
 			      </td>
 			      <td>${data.getUsername()}</td>
@@ -63,62 +63,68 @@
 			      <td>${data.getAge()}</td>
 			      <td>${data.getBirthDate()}</td>
 			      <td>
-			        <a href="#editEmployeeModal" class="edit" data-toggle="modal">
-			          <i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
+			        <a href="#editEmployeeModal " class="edit" data-toggle="modal">
+			          <i class="material-icons" onclick="selectEditUserId('${data.getId()}','${data.getUsername()}','${data.getPassword()}','${data.getAge()}','${data.getBirthDate()}')" data-toggle="tooltip" title="Edit">&#xE254;</i>
 			        </a>
 			        <a href="#deleteEmployeeModal" class="delete" data-toggle="modal">
-			          <i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
+			          <i class="material-icons" data-toggle="tooltip" onclick="selectDeleteUserId(${data.getId()})" title="Delete">&#xE872;</i>
 			        </a>
 			      </td>
 			    </tr>
 			   </c:forEach>
 			  </tbody>
 			</table>
+			
+			<div class="clearfix">
+			    <div class="hint-text">Showing <b>${usersData.content.size()}</b> out of <b id="totalUsers">${usersData.getTotalElements()}</b> entries</div>
+			    <ul class="pagination" id="pagination">
+			        <li class="page-item ${pageNum < 1 ? 'disabled' : ''}">
+			            <a href="/users?pageNum=${pageNum-1<0?0:pageNum-1}">Previous</a>
+			        </li>
+			        <c:forEach var="data" begin="1" end="${usersData.totalPages}" step="1">
+			            <li class="page-item ${data == usersData.number + 1 ? 'active' : ''}">
+			                <a href="/users?pageNum=${data-1}" class="page-link">${data}</a>
+			            </li>
+			        </c:forEach>
+			        <li class="page-item ${pageNum == usersData.totalPages-1 ? 'disabled' : ''}">
+			            <a href="/users?pageNum=${pageNum+1>usersData.totalPages-1?usersData.totalPages-1:pageNum+1}">Next</a>
+			        </li>
+			    </ul>
+			</div>
 
-   <div class="clearfix">
-                <div class="hint-text">Showing <b>5</b> out of <b>100</b> entries</div>
-                <ul class="pagination">
-                    <li class="page-item disabled"><a href="#">Previous</a></li>
-                    <li class="page-item"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item active"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">4</a></li>
-                    <li class="page-item"><a href="#" class="page-link">5</a></li>
-                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                </ul>
-            </div>
         </div>
     </div>
  <!-- Edit Modal HTML -->
  <div id="addEmployeeModal" class="modal fade">
   <div class="modal-dialog">
    <div class="modal-content">
-    <form>
+    <form action="updateUser" method="post">
      <div class="modal-header">      
       <h4 class="modal-title">Add Employee</h4>
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
      </div>
      <div class="modal-body">     
       <div class="form-group">
-       <label>Name</label>
-       <input type="text" class="form-control" required>
+       <label>Username</label>
+        <input type="hidden" id="pageNum" name="pageNum" value="${pageNum}" required>
+       <input name="username" id="addUsernameInput"  type="text" class="form-control" value="" required>
       </div>
       <div class="form-group">
-       <label>Email</label>
-       <input type="email" class="form-control" required>
+       <label>Password</label>
+       <input  name="password" id="addPasswordInput" type="text" class="form-control" value="" required>
       </div>
       <div class="form-group">
-       <label>Address</label>
-       <textarea class="form-control" required></textarea>
+       <label>Age</label>
+       <input   name="age" id="addAgeInput" type="number" class="form-control" value="" required>
       </div>
       <div class="form-group">
-       <label>Phone</label>
-       <input type="text" class="form-control" required>
+       <label>Birth Date</label>
+       <input   name="birthDate" id="addDateInput" type="date" class="form-control" value="" required>
       </div>     
      </div>
      <div class="modal-footer">
       <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-      <input type="submit" class="btn btn-success" value="Add">
+      <input type="submit" id="addUserBtn" class="btn btn-success" value="Add">
      </div>
     </form>
    </div>
@@ -128,32 +134,34 @@
  <div id="editEmployeeModal" class="modal fade">
   <div class="modal-dialog">
    <div class="modal-content">
-    <form>
+    <form action="updateUser" method="post">
      <div class="modal-header">      
       <h4 class="modal-title">Edit Employee</h4>
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
      </div>
      <div class="modal-body">     
       <div class="form-group">
-       <label>Name</label>
-       <input type="text" class="form-control" required>
+       <label>Username</label>
+       <input type="hidden" id="pageNum" name="pageNum" value="${pageNum}" required>
+       <input name="username" id="updateUsernameInput" type="text" class="form-control" required>
       </div>
       <div class="form-group">
-       <label>Email</label>
-       <input type="email" class="form-control" required>
+       <label>Password</label>
+       <input name="password" id="updatePasswordInput" type="text" class="form-control" required>
       </div>
       <div class="form-group">
-       <label>Address</label>
-       <textarea class="form-control" required></textarea>
+       <label>Age</label>
+       <input name="age" id="updateAgeInput" type="number" class="form-control" required>
       </div>
       <div class="form-group">
-       <label>Phone</label>
-       <input type="text" class="form-control" required>
+       <label>Birth Date</label>
+       <input name="birthDate" id="updateDateInput" type="date" class="form-control" required>
       </div>     
      </div>
      <div class="modal-footer">
       <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-      <input type="submit" class="btn btn-info" value="Save">
+      <input type="hidden" name="id" id="userEditId" value="">
+      <input type="submit" id="updateUserBtn" class="btn btn-info" value="Save">
      </div>
     </form>
    </div>
@@ -163,7 +171,7 @@
  <div id="deleteEmployeeModal" class="modal fade">
   <div class="modal-dialog">
    <div class="modal-content">
-    <form>
+    <div>
      <div class="modal-header">      
       <h4 class="modal-title">Delete Employee</h4>
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -174,9 +182,10 @@
      </div>
      <div class="modal-footer">
       <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-      <input type="submit" class="btn btn-danger" value="Delete">
+      <input type="hidden" name="userDeleteId" id="userDeleteId" value="">
+      <input type="submit" id="deleteConfirm" onclick="deleteUsers()" class="btn btn-danger" value="Delete">
      </div>
-    </form>
+    </div>
    </div>
   </div>
  </div>
@@ -433,36 +442,86 @@
  } 
 </style>
 <script type="text/javascript">
-$(document).ready(function()
-{
- // Activate tooltip
- $('[data-toggle="tooltip"]').tooltip();
- 
- // Select/Deselect checkboxes
- var checkbox = $('table tbody input[type="checkbox"]');
- $("#selectAll").click(function()
- {
-  if(this.checked){
-   checkbox.each(function()
-   {
-    this.checked = true;                        
-   });
-  }
-  else
-  {
-   checkbox.each(function()
-   {
-    this.checked = false;                        
-   });
-  } 
- });
- checkbox.click(function()
- {
-  if(!this.checked)
-  {
-   $("#selectAll").prop("checked", false);
-  }
- });
-});
+	let deleteIds=[]
+	function selectDeleteUserId(userId){
+		var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+		checkboxes.forEach(function(checkbox) {
+		  checkbox.checked = false;
+		});
+		deleteIds=[]
+		deleteIds.push(userId)
+	}
+	function selectEditUserId(userId,username,password,age,birthDate){
+		document.getElementById("userEditId").value=userId;
+		
+		document.getElementById("username").value=username;
+		document.getElementById("password").value=password;
+		document.getElementById("age").value=age;
+		document.getElementById("birthDate").value=birthDate;
+	}
+	function getSelectedCheckboxIds() {
+		  deleteIds=[]
+		  var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+		   Array.from(checkboxes).map(function(checkbox) {
+		   if(checkbox.value!=="on"){
+			   deleteIds.push(checkbox.value);
+		   }
+		  });
+			  console.log("Selected Checkbox IDs:", deleteIds);
+	}
+	function deleteUsers(){
+		var formData = new FormData();
+		deleteIds.forEach(function(id) {
+		  formData.append('ids', id);
+		});
+		formData.append('pageNum',${pageNum});
+
+		// Make an AJAX POST request
+		var xhr = new XMLHttpRequest();
+		var url = '/deleteUsers'; // Replace with the actual URL of your controller method
+
+		xhr.open('POST', url, true);
+
+		xhr.onreadystatechange = function () {
+		  if (xhr.readyState === 4 && xhr.status === 200) {
+			  const nameAndPort=location.protocol + '//' + location.host
+			  window.location.href = nameAndPort+"/users"
+		  }
+		};
+
+		xhr.send(formData);
+	}
+
+	$(document).ready(function()
+	{
+	 // Activate tooltip
+	 $('[data-toggle="tooltip"]').tooltip();
+	 
+	 // Select/Deselect checkboxes
+	 var checkbox = $('table tbody input[type="checkbox"]');
+	 $("#selectAll").click(function()
+	 {
+	  if(this.checked){
+	   checkbox.each(function()
+	   {
+	    this.checked = true;                        
+	   });
+	  }
+	  else
+	  {
+	   checkbox.each(function()
+	   {
+	    this.checked = false;                        
+	   });
+	  } 
+	 });
+	 checkbox.click(function()
+	 {
+	  if(!this.checked)
+	  {
+	   $("#selectAll").prop("checked", false);
+	  }
+	 });
+	});
 </script>
 </html>     

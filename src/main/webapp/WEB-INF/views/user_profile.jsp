@@ -25,7 +25,7 @@
             <h2>Player progression</h2>
             <canvas id="lineChart" style="width:100%;max-width:600px;max-height:800px"></canvas>
         </div>
-        <div  style="padding-left: 100px;padding-bottom: 100px;">
+        <div  style="padding-left: 100px;padding-bottom: 20px;">
             <!-- Content for the second column of the grid -->
             <h2>Player win/lose ration</h2>
             <canvas id="pieChart" style="width:100%;max-width:300px"></canvas>
@@ -43,7 +43,7 @@
         </tr>
         </thead>
         <tbody>
-           <c:forEach var="data" items="${userRankDatas}">
+           <c:forEach var="data" items="${userRankDatas.content}">
                 <tr>
                 	 <td>${data.getGameStatus()}</td>
 			         <td>${data.getWord()}</td>
@@ -55,6 +55,22 @@
 
         </tbody>
     </table>
+		<div class="clearfix">
+		  <div class="hint-text">Showing <b>${userRankDatas.content.size()}</b> out of <b>${userRankDatas.getTotalElements()}</b> entries</div>
+		  <ul class="pagination">
+		      <li class="page-item ${pageNum < 1 ? 'disabled' : ''}">
+		          <a href="/userProfile?username=${username}&pageNum=${pageNum-1<0?0:pageNum-1}">Previous</a>
+		      </li>
+		      <c:forEach var="data" begin="1" end="${userRankDatas.totalPages}" step="1">
+		          <li class="page-item ${data == userRankDatas.number + 1 ? 'active' : ''}">
+		              <a href="/userProfile?username=${username}&pageNum=${data-1}" class="page-link">${data}</a>
+		          </li>
+		      </c:forEach>
+		      <li class="page-item ${pageNum == userRankDatas.totalPages-1 ? 'disabled' : ''}">
+		          <a href="/userProfile?username=${username}&pageNum=${pageNum+1>userRankDatas.totalPages-1?userRankDatas.totalPages-1:pageNum+1}">Next</a>
+		        </li>
+		    </ul>
+		</div>
 </div>
 </body>
   <style>
@@ -113,6 +129,43 @@
       th {
           background-color: #f2f2f2;
       }
+       .pagination {
+        float: right;
+        margin: 0 0 5px;
+    }
+    .pagination li a {
+        border: none;
+        font-size: 13px;
+        min-width: 30px;
+        min-height: 30px;
+        color: #999;
+        margin: 0 2px;
+        line-height: 30px;
+        border-radius: 1px !important;
+        text-align: center;
+        padding: 0 6px;
+    }
+    .pagination li a:hover {
+        color: #666;
+    } 
+    .pagination li.active a, .pagination li.active a.page-link {
+        background: #03A9F4;
+    }
+    .pagination li.active a:hover {        
+        background: #0397d6;
+    }
+ .pagination li.disabled i {
+        color: #ccc;
+    }
+    .pagination li i {
+        font-size: 16px;
+        padding-top: 6px
+    }
+    .hint-text {
+        float: left;
+        margin-top: 10px;
+        font-size: 13px;
+    }  
   </style>
 <script>
 function generateAscendingArray(highestNumber) {

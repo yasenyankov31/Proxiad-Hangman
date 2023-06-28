@@ -8,8 +8,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Not finished games</title>
 </head>
 
 <body>
@@ -28,7 +30,7 @@
         </tr>
         </thead>
 		<tbody>
-		  <c:forEach var="game" items="${unfinishedGames}">
+		  <c:forEach var="game" items="${unfinishedGames.content}">
 		    <tr>
 		      <td>${game.getAttemptsLeft()}</td>
 		      <td>${game.getGuessedWord()}</td>
@@ -43,9 +45,27 @@
 		  </c:forEach>
 		</tbody>
     </table>
+    <div class="clearfix">
+	    <div class="hint-text">Showing <b>${unfinishedGames.content.size()}</b> out of <b>${unfinishedGames.getTotalElements()}</b> entries</div>
+	    <ul class="pagination">
+	        <li class="page-item ${pageNum < 1 ? 'disabled' : ''}">
+	            <a href="/notCompletedGames?pageNum=${pageNum-1<0?0:pageNum-1}">Previous</a>
+	        </li>
+	        <c:forEach var="data" begin="1" end="${unfinishedGames.totalPages}" step="1">
+	            <li class="page-item ${data == unfinishedGames.number + 1 ? 'active' : ''}">
+	                <a href="/notCompletedGames?pageNum=${data-1}" class="page-link">${data}</a>
+	            </li>
+	        </c:forEach>
+	        <li class="page-item ${pageNum == unfinishedGames.totalPages-1 ? 'disabled' : ''}">
+	            <a href="/notCompletedGames?pageNum=${pageNum+1>unfinishedGames.totalPages-1?unfinishedGames.totalPages-1:pageNum+1}">Next</a>
+	        </li>
+	    </ul>
+	</div>
+    
   </div>
 </body>
 <style>
+
 	body {
 	  display: grid;
 	  place-items: center;
@@ -102,5 +122,42 @@
 	.button-container button {
 	  margin: 5px;
 	}
+	 .pagination {
+        float: right;
+        margin: 0 0 5px;
+    }
+    .pagination li a {
+        border: none;
+        font-size: 13px;
+        min-width: 30px;
+        min-height: 30px;
+        color: #999;
+        margin: 0 2px;
+        line-height: 30px;
+        border-radius: 1px !important;
+        text-align: center;
+        padding: 0 6px;
+    }
+    .pagination li a:hover {
+        color: #666;
+    } 
+    .pagination li.active a, .pagination li.active a.page-link {
+        background: #03A9F4;
+    }
+    .pagination li.active a:hover {        
+        background: #0397d6;
+    }
+ .pagination li.disabled i {
+        color: #ccc;
+    }
+    .pagination li i {
+        font-size: 16px;
+        padding-top: 6px
+    }
+    .hint-text {
+        float: left;
+        margin-top: 10px;
+        font-size: 13px;
+    }  
 </style>
 </html>

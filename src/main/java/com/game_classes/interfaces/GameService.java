@@ -1,26 +1,27 @@
 package com.game_classes.interfaces;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+
 import com.game_classes.models.Game;
 
 public interface GameService {
-  Game createNewGame();
+	Game createNewGame();
 
-  Game guessLetter(long gameId, char letter);
+	Game guessLetter(long gameId, char letter);
 
-  Game getGameState(long gameId);
+	Game getGameState(long gameId);
 
-  Game resetGame(long gameId);
+	Game resetGame(long gameId);
 
-  List<Game> getUnfinishedGames();
+	Page<Game> getUnfinishedGames(int pageNum);
 
-  String getRandomWord();
+	String getRandomWord();
 
-  String getUsersLetters(long gameId);
+	String getUsersLetters(long gameId);
 
-  void addOponentId(long id, Game userGame);
+	void addOponentId(long id, Game userGame);
 
-  void addToQueue(Game game);
+	void addToQueue(Game game);
 
-  long getFromQueue();
+	long getFromQueue();
 }

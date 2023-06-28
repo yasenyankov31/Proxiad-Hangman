@@ -33,7 +33,7 @@ class HangmanControllerTest {
 
   @Mock private RankingService rankingService;
 
-  @InjectMocks private HangmanController controller;
+  @InjectMocks private GameController controller;
 
   private MockMvc mockMvc;
 

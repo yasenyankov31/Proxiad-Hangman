@@ -32,13 +32,8 @@
     </div>
     <div class="grid-item"></div>
     <div class="grid-item">
-      <form action="getGame" method="get">
-        <input type="text" id="gameId" name="gameId">
-        <input type="hidden" value="1" id="letter" name="letter">
-        <button>Search for single game by id</button>
-      </form>
       <form action="new" method="get">
-        <button>Create single game</button>
+        <button>Start single game</button>
       </form>
     </div>
     <div class="grid-item"></div>
