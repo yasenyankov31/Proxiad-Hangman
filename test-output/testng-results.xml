@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+<testng-results ignored="0" total="3" passed="3" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2023-06-29T00:16:52 EEST" name="Default suite" finished-at="2023-06-29T00:17:07 EEST" duration-ms="14236">
+  <suite started-at="2023-06-29T16:04:23 EEST" name="Default suite" finished-at="2023-06-29T16:05:00 EEST" duration-ms="36637">
     <groups>
     </groups>
-    <test started-at="2023-06-29T00:16:52 EEST" name="Default test" finished-at="2023-06-29T00:17:07 EEST" duration-ms="14236">
+    <test started-at="2023-06-29T16:04:23 EEST" name="Default test" finished-at="2023-06-29T16:05:00 EEST" duration-ms="36637">
       <class name="com.game_classes.UsersUITest">
-        <test-method is-config="true" signature="openBrowser()[pri:0, instance:com.game_classes.UsersUITest@616ac46a]" started-at="2023-06-29T00:16:52 EEST" name="openBrowser" finished-at="2023-06-29T00:16:54 EEST" duration-ms="2060" status="PASS">
+        <test-method is-config="true" signature="openBrowser()[pri:0, instance:com.game_classes.UsersUITest@609cd4d8]" started-at="2023-06-29T16:04:23 EEST" name="openBrowser" finished-at="2023-06-29T16:04:32 EEST" duration-ms="8310" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- openBrowser -->
-        <test-method signature="updateUserTest()[pri:0, instance:com.game_classes.UsersUITest@616ac46a]" started-at="2023-06-29T00:16:54 EEST" name="updateUserTest" finished-at="2023-06-29T00:17:06 EEST" duration-ms="12051" status="PASS">
+        <test-method signature="createUserTest()[pri:0, instance:com.game_classes.UsersUITest@609cd4d8]" started-at="2023-06-29T16:04:32 EEST" name="createUserTest" finished-at="2023-06-29T16:04:44 EEST" duration-ms="11865" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- createUserTest -->
+        <test-method signature="deleteUserTest()[pri:0, instance:com.game_classes.UsersUITest@609cd4d8]" started-at="2023-06-29T16:04:44 EEST" name="deleteUserTest" finished-at="2023-06-29T16:04:48 EEST" duration-ms="4744" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- deleteUserTest -->
+        <test-method signature="updateUserTest()[pri:0, instance:com.game_classes.UsersUITest@609cd4d8]" started-at="2023-06-29T16:04:48 EEST" name="updateUserTest" finished-at="2023-06-29T16:05:00 EEST" duration-ms="11574" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- updateUserTest -->
-        <test-method is-config="true" signature="closeBrowser()[pri:0, instance:com.game_classes.UsersUITest@616ac46a]" started-at="2023-06-29T00:17:07 EEST" name="closeBrowser" finished-at="2023-06-29T00:17:07 EEST" duration-ms="91" status="PASS">
+        <test-method is-config="true" signature="closeBrowser()[pri:0, instance:com.game_classes.UsersUITest@609cd4d8]" started-at="2023-06-29T16:05:00 EEST" name="closeBrowser" finished-at="2023-06-29T16:05:00 EEST" duration-ms="98" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- closeBrowser -->

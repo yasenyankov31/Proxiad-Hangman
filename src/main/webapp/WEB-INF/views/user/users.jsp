@@ -59,10 +59,10 @@
 			          <label for="checkbox${data.getId() }"></label>
 			        </span>
 			      </td>
-			      <td>${data.getUsername()}</td>
-			      <td>${data.getPassword()}</td>
-			      <td>${data.getAge()}</td>
-			      <td>${data.getBirthDate()}</td>
+			      <td id="username">${data.getUsername()}</td>
+			      <td id="password">${data.getPassword()}</td>
+			      <td id="age">${data.getAge()}</td>
+			      <td id="birthDate">${data.getBirthDate()}</td>
 			      <td>
 			        <a href="#editEmployeeModal " class="edit" data-toggle="modal">
 			          <i class="material-icons" onclick="selectEditUserId('${data.getId()}','${data.getUsername()}','${data.getPassword()}','${data.getAge()}','${data.getBirthDate()}')" data-toggle="tooltip" title="Edit">&#xE254;</i>
@@ -71,7 +71,7 @@
 			          <i class="material-icons" data-toggle="tooltip" onclick="selectDeleteUserId(${data.getId()})" title="Delete">&#xE872;</i>
 			        </a>
 			      </td>
-			      <td>
+			    	   <td>
   			      	<a href="/userProfile?username=${data.getUsername()}" class="view" >
 						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
 						  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
@@ -462,10 +462,10 @@
 	function selectEditUserId(userId,username,password,age,birthDate){
 		document.getElementById("userEditId").value=userId;
 		
-		document.getElementById("username").value=username;
-		document.getElementById("password").value=password;
-		document.getElementById("age").value=age;
-		document.getElementById("birthDate").value=birthDate;
+		document.getElementById("updateUsernameInput").value=username;
+		document.getElementById("updatePasswordInput").value=password;
+		document.getElementById("updateAgeInput").value=age;
+		document.getElementById("updateDateInput").value=birthDate;
 	}
 	function getSelectedCheckboxIds() {
 		  deleteIds=[]

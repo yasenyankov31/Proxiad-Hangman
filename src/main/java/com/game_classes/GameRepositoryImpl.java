@@ -2,7 +2,6 @@ package com.game_classes;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -14,111 +13,123 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
-
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-
 import com.game_classes.interfaces.GameRepository;
-import com.game_classes.models.CompletedGame;
-import com.game_classes.models.Game;
+import com.game_classes.models.Game.CompletedGame;
+import com.game_classes.models.Game.Game;
 
 @Repository
+@Transactional
 public class GameRepositoryImpl implements GameRepository {
 
-	@PersistenceContext
-	EntityManager entityManager;
+  @PersistenceContext EntityManager entityManager;
 
-	private List<Long> queue = new ArrayList<>();
+  private List<Long> queue = new ArrayList<>();
 
-	@Override
-	@Transactional
-	public void createGame(Game game) {
-		entityManager.persist(game);
-	}
+  @Override
+  public void createGame(Game game) {
+    entityManager.persist(game);
+  }
 
-	@Transactional
-	@Override
-	public Game findById(long gameId) {
-		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Game> criteriaQuery = criteriaBuilder.createQuery(Game.class);
-		Root<Game> root = criteriaQuery.from(Game.class);
+  public void updateGameHibernate(Game game) {
+    Session session = entityManager.unwrap(Session.class);
+    session.update(game);
+  }
 
-		// Apply your criteria to the query
-		// Example: Adding a WHERE clause to filter by a specific property
-		criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("id"), gameId));
+  public Game findByIdHibernate(long gameId) {
+    Criteria criteria = entityManager.unwrap(Session.class).createCriteria(Game.class);
+    criteria.add(Restrictions.eq("id", gameId));
 
-		return entityManager.createQuery(criteriaQuery).getSingleResult();
-	}
+    return (Game) criteria.uniqueResult();
+  }
 
-	@Override
-	public void addToQueue(long id) {
-		queue.add(id);
-	}
+  @Override
+  public Game findById(long gameId) {
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Game> criteriaQuery = criteriaBuilder.createQuery(Game.class);
+    Root<Game> root = criteriaQuery.from(Game.class);
 
-	@Override
-	public long getFromQueue() {
-		if (queue.isEmpty()) {
-			return 0;
-		}
-		long id = queue.get(0);
-		queue.remove(0);
-		return id;
-	}
+    // Apply your criteria to the query
+    // Example: Adding a WHERE clause to filter by a specific property
+    criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("id"), gameId));
 
-	@Transactional
-	@Override
-	public void updateGame(Game game) {
-		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaUpdate<Game> criteriaUpdate = criteriaBuilder.createCriteriaUpdate(Game.class);
-		Root<Game> root = criteriaUpdate.from(Game.class);
-		// Set the update values for all properties
-		criteriaUpdate.set("word", game.getWord()).set("guessedWord", game.getGuessedWord())
-				.set("lettersUsed", game.getLetters()).set("attemptsLeft", game.getAttemptsLeft())
-				.set("wordNum", game.getWordNum()).where(criteriaBuilder.equal(root.get("id"), game.getId()));
+    return entityManager.createQuery(criteriaQuery).getSingleResult();
+  }
 
-		// Execute the update query
-		entityManager.createQuery(criteriaUpdate).executeUpdate();
-	}
+  @Override
+  public void addToQueue(long id) {
+    queue.add(id);
+  }
 
-	@Transactional
-	@Override
-	public void deleteGame(Game game) {
-		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaDelete<Game> criteriaQuery = criteriaBuilder.createCriteriaDelete(Game.class);
-		Root<Game> root = criteriaQuery.from(Game.class);
+  @Override
+  public long getFromQueue() {
+    if (queue.isEmpty()) {
+      return 0;
+    }
+    long id = queue.get(0);
+    queue.remove(0);
+    return id;
+  }
 
-		criteriaQuery.where(criteriaBuilder.equal(root.get("id"), game.getId()));
+  @Override
+  public void updateGame(Game game) {
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaUpdate<Game> criteriaUpdate = criteriaBuilder.createCriteriaUpdate(Game.class);
+    Root<Game> root = criteriaUpdate.from(Game.class);
+    // Set the update values for all properties
+    criteriaUpdate
+        .set("word", game.getWord())
+        .set("guessedWord", game.getGuessedWord())
+        .set("lettersUsed", game.getLetters())
+        .set("attemptsLeft", game.getAttemptsLeft())
+        .set("wordNum", game.getWordNum())
+        .where(criteriaBuilder.equal(root.get("id"), game.getId()));
 
-		entityManager.createQuery(criteriaQuery).executeUpdate();
-	}
+    // Execute the update query
+    entityManager.createQuery(criteriaUpdate).executeUpdate();
+  }
 
-	@Override
-	public Page<Game> getUnfinishedGames(Pageable pageable) {
-		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Game> query = criteriaBuilder.createQuery(Game.class);
-		Root<Game> gameRoot = query.from(Game.class);
-		Join<Game, CompletedGame> completedGameJoin = gameRoot.join("completedGame", JoinType.LEFT);
+  @Override
+  public void deleteGame(Game game) {
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaDelete<Game> criteriaQuery = criteriaBuilder.createCriteriaDelete(Game.class);
+    Root<Game> root = criteriaQuery.from(Game.class);
 
-		query.select(gameRoot).where(criteriaBuilder.isNull(completedGameJoin.get("id")));
+    criteriaQuery.where(criteriaBuilder.equal(root.get("id"), game.getId()));
 
-		// Apply pagination to the query
-		query.orderBy(criteriaBuilder.asc(gameRoot.get("id")));
+    entityManager.createQuery(criteriaQuery).executeUpdate();
+  }
 
-		TypedQuery<Game> typedQuery = entityManager.createQuery(query);
+  @Override
+  public Page<Game> getUnfinishedGames(Pageable pageable) {
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Game> query = criteriaBuilder.createQuery(Game.class);
+    Root<Game> gameRoot = query.from(Game.class);
+    Join<Game, CompletedGame> completedGameJoin = gameRoot.join("completedGame", JoinType.LEFT);
 
-		// Get the total number of rows without pagination
-		List<Game> totalResults = entityManager.createQuery(query).getResultList();
-		int totalRows = totalResults.size();
+    query.select(gameRoot).where(criteriaBuilder.isNull(completedGameJoin.get("id")));
 
-		// Set pagination parameters
-		typedQuery.setFirstResult((int) pageable.getOffset());
-		typedQuery.setMaxResults(pageable.getPageSize());
+    // Apply pagination to the query
+    query.orderBy(criteriaBuilder.asc(gameRoot.get("id")));
 
-		List<Game> games = typedQuery.getResultList();
+    TypedQuery<Game> typedQuery = entityManager.createQuery(query);
 
-		return new PageImpl<>(games, pageable, totalRows);
-	}
+    // Get the total number of rows without pagination
+    List<Game> totalResults = entityManager.createQuery(query).getResultList();
+    int totalRows = totalResults.size();
 
+    // Set pagination parameters
+    typedQuery.setFirstResult((int) pageable.getOffset());
+    typedQuery.setMaxResults(pageable.getPageSize());
+
+    List<Game> games = typedQuery.getResultList();
+
+    return new PageImpl<>(games, pageable, totalRows);
+  }
 }

@@ -1,4 +1,4 @@
-package com.game_classes.models;
+package com.game_classes.models.Game;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import com.game_classes.models.UserData;
 
 @Entity
 public class RankingPerGamer {

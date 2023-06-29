@@ -1,0 +1,1 @@
+ALTER TABLE completed_game ADD CONSTRAINT FK1gt4jvy1sev6pa5dfvv1jycj4 FOREIGN KEY (ranking_per_gamer_id) REFERENCES ranking_per_gamer (id);

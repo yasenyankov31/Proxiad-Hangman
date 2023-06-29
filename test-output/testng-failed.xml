@@ -5,8 +5,10 @@
     <classes>
       <class name="com.game_classes.UsersUITest">
         <methods>
-          <include name="deleteUserTest"/>
+          <include name="createUserTest"/>
+          <include name="updateUserTest"/>
           <include name="openBrowser"/>
+          <include name="closeBrowser"/>
         </methods>
       </class> <!-- com.game_classes.UsersUITest -->
     </classes>

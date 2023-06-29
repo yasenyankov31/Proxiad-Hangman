@@ -5,10 +5,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
@@ -19,56 +17,54 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-
 import com.game_classes.interfaces.JpaRepositories.UserRepository;
 import com.game_classes.models.UserData;
+import com.game_classes.servicesImpl.UserServiceImpl;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
 
-	@Mock
-	private UserRepository userRepository;
+  @Mock private UserRepository userRepository;
 
-	@InjectMocks
-	private UserServiceImpl userService;
+  @InjectMocks private UserServiceImpl userService;
 
-	@BeforeEach
-	public void setup() {
-		MockitoAnnotations.openMocks(this);
-	}
+  @BeforeEach
+  public void setup() {
+    MockitoAnnotations.openMocks(this);
+  }
 
-	@Test
-	public void testCreateOrUpdateUser() {
-		UserData user = new UserData();
+  @Test
+  public void testCreateOrUpdateUser() {
+    UserData user = new UserData();
 
-		userService.createOrUpdateUser(user);
+    userService.createOrUpdateUser(user);
 
-		verify(userRepository, times(1)).save(user);
-	}
+    verify(userRepository, times(1)).save(user);
+  }
 
-	@Test
-	public void testListAllUsers() {
-		int pageNum = 0;
-		int pageSize = 5;
-		PageRequest pageable = PageRequest.of(pageNum, pageSize);
-		List<UserData> userList = new ArrayList<>();
-		Page<UserData> expectedPage = new PageImpl<>(userList, pageable, userList.size());
+  @Test
+  public void testListAllUsers() {
+    int pageNum = 0;
+    int pageSize = 5;
+    PageRequest pageable = PageRequest.of(pageNum, pageSize);
+    List<UserData> userList = new ArrayList<>();
+    Page<UserData> expectedPage = new PageImpl<>(userList, pageable, userList.size());
 
-		when(userRepository.findAll(pageable)).thenReturn(expectedPage);
+    when(userRepository.findAll(pageable)).thenReturn(expectedPage);
 
-		Page<UserData> resultPage = userService.listAllUsers(pageNum);
+    Page<UserData> resultPage = userService.listAllUsers(pageNum);
 
-		assertEquals(expectedPage, resultPage);
-		verify(userRepository, times(1)).findAll(pageable);
-	}
+    assertEquals(expectedPage, resultPage);
+    verify(userRepository, times(1)).findAll(pageable);
+  }
 
-	@Test
-	public void testDeleteUsers() {
-		List<Long> ids = new ArrayList<>();
-		doNothing().when(userRepository).deleteAllById(ids);
+  @Test
+  public void testDeleteUsers() {
+    List<Long> ids = new ArrayList<>();
+    doNothing().when(userRepository).deleteAllById(ids);
 
-		userService.deleteUsers(ids);
+    userService.deleteUsers(ids);
 
-		verify(userRepository, times(1)).deleteAllById(ids);
-	}
+    verify(userRepository, times(1)).deleteAllById(ids);
+  }
 }

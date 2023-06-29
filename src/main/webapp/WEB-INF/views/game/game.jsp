@@ -20,7 +20,7 @@
     <li><a href="/notCompletedGames">Not completed games</a></li>
     <li><a href="/users">Users</a></li>
   </ul>
- <div class="container">
+ <div class="container" style="padding-top:100px">
  	<input id="word_num" type="hidden" value="${wordNum}">
  		 <div class="grid-container">
 	  	<div class="keyboard-container item">

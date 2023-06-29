@@ -1,0 +1,1 @@
+ALTER TABLE completed_game ADD CONSTRAINT FKjas8719ejn5kx0oyyhdvwkupd FOREIGN KEY (game_id) REFERENCES game (id);
