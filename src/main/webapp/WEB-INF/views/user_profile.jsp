@@ -17,7 +17,7 @@
    <li><a href="/users">Users</a></li>
  </ul>
 
-<div class="container">
+<div class="container" style="padding-top: 100px;">
 	<h1>Player ${username} statistics</h1>
     <div class="grid">
         <div style="margin-top:50px">

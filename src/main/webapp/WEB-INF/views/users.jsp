@@ -47,6 +47,7 @@
 			      <th>Age</th>
 			      <th>Birth Date</th>
 			      <th>Actions</th>
+			      <th>View profile</th>
 			    </tr>
 			  </thead>
 			  <tbody>
@@ -68,6 +69,13 @@
 			        </a>
 			        <a href="#deleteEmployeeModal" class="delete" data-toggle="modal">
 			          <i class="material-icons" data-toggle="tooltip" onclick="selectDeleteUserId(${data.getId()})" title="Delete">&#xE872;</i>
+			        </a>
+			      </td>
+			      <td>
+  			      	<a href="/userProfile?username=${data.getUsername()}" class="view" >
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+						  <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+						</svg>
 			        </a>
 			      </td>
 			    </tr>
