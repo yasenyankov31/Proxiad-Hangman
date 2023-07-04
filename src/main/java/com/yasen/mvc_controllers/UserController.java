@@ -1,4 +1,4 @@
-package com.yasen.controllers;
+package com.yasen.mvc_controllers;
 
 import java.util.ArrayList;
 import java.util.List;

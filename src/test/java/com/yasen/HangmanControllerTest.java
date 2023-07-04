@@ -25,7 +25,7 @@ import com.game_classes.interfaces.Services.GameService;
 import com.game_classes.interfaces.Services.RankingService;
 import com.game_classes.models.SubmitForm;
 import com.game_classes.models.Game.Game;
-import com.yasen.controllers.GameController;
+import com.yasen.mvc_controllers.GameController;
 
 class HangmanControllerTest {
   @Mock private GameRepository repository;
