@@ -4,7 +4,6 @@ CREATE TABLE game (
     date DATETIME,
     guessed_word VARCHAR(255),
     letters_used VARCHAR(255),
-    opponent_id BIGINT NOT NULL,
     word VARCHAR(255),
     word_num INTEGER NOT NULL,
     PRIMARY KEY (id)

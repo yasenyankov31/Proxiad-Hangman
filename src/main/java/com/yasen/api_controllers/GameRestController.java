@@ -4,163 +4,152 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.game_classes.interfaces.GameFactory;
 import com.game_classes.interfaces.Services.GameService;
 import com.game_classes.interfaces.Services.RankingService;
-import com.game_classes.models.SubmitForm;
+import com.game_classes.models.Dto.GameDto;
 import com.game_classes.models.Game.Game;
 import com.game_classes.models.Game.RankingData;
 
 @RestController
 @RequestMapping("/api/ranking")
 public class GameRestController {
-  @Autowired private GameService gameService;
+	@Autowired
+	private GameService gameService;
 
-  @Autowired private RankingService rankingService;
+	@Autowired
+	private RankingService rankingService;
 
-  @GetMapping("/")
-  public Map<String, RankingData> getRankingData() {
-    List<String> userAllTime = new ArrayList<>();
-    List<Integer> winAllTime = new ArrayList<>();
+	@Autowired
+	private GameFactory gameFactory;
 
-    List<String> userForMonth = new ArrayList<>();
-    List<Integer> winsForMonth = new ArrayList<>();
+	@GetMapping("/")
+	public Map<String, RankingData> getRankingData() {
+		List<String> userAllTime = new ArrayList<>();
+		List<Integer> winAllTime = new ArrayList<>();
 
-    rankingService
-        .topTenOfAllTime()
-        .forEach(
-            item -> {
-              userAllTime.add(item.getUsername());
-              winAllTime.add(item.getWinCount());
-            });
+		List<String> userForMonth = new ArrayList<>();
+		List<Integer> winsForMonth = new ArrayList<>();
 
-    rankingService
-        .topTenOfTheMonth()
-        .forEach(
-            item -> {
-              userForMonth.add(item.getUsername());
-              winsForMonth.add(item.getWinCount());
-            });
+		rankingService.topTenOfAllTime().forEach(item -> {
+			userAllTime.add(item.getUsername());
+			winAllTime.add(item.getWinCount());
+		});
 
-    RankingData allTimeData = new RankingData(userAllTime, winAllTime);
-    RankingData monthData = new RankingData(userForMonth, winsForMonth);
+		rankingService.topTenOfTheMonth().forEach(item -> {
+			userForMonth.add(item.getUsername());
+			winsForMonth.add(item.getWinCount());
+		});
 
-    Map<String, RankingData> responseData = new HashMap<>();
-    responseData.put("allTime", allTimeData);
-    responseData.put("month", monthData);
+		RankingData allTimeData = new RankingData(userAllTime, winAllTime);
+		RankingData monthData = new RankingData(userForMonth, winsForMonth);
 
-    return responseData;
-  }
+		Map<String, RankingData> responseData = new HashMap<>();
+		responseData.put("allTime", allTimeData);
+		responseData.put("month", monthData);
 
-  @GetMapping("/notCompletedGames")
-  public ResponseEntity<List<Game>> getNotCompletedGames(
-      @RequestParam(required = false) Integer pageNum) {
-    if (pageNum == null) {
-      pageNum = 0;
-    }
-    Page<Game> unfinishedGames = gameService.getUnfinishedGames(pageNum);
-    return ResponseEntity.ok().body(unfinishedGames.getContent());
-  }
+		return responseData;
+	}
 
-  @GetMapping("/endingResult")
-  public ResponseEntity<String> getEndingResult(
-      @RequestParam String username, @RequestParam long gameId) {
-    if (gameId == 0) {
-      return ResponseEntity.badRequest().body("Not existing game!");
-    }
-    if (username.isBlank() || username.isEmpty()) {
-      return ResponseEntity.badRequest().body("Write at least one character for Username!");
-    }
-    Game game = gameService.getGameState(gameId);
-    String gameInfo = game.getInfo();
-    boolean isGameOver = gameInfo.contains("Game over") || gameInfo.contains("Game won");
-    rankingService.completeGame(game, username);
-    return ResponseEntity.ok().body(gameInfo);
-  }
+	@GetMapping("/notCompletedGames/{pageNum}")
+	public ResponseEntity<List<GameDto>> getNotCompletedGames(@PathVariable Integer pageNum) {
+		if (pageNum == null) {
+			pageNum = 0;
+		}
+		Page<Game> unfinishedGames = gameService.getUnfinishedGames(pageNum);
 
-  @PostMapping("/new")
-  public ResponseEntity<Game> createNewGame() {
-    Game newGame = gameService.createNewGame();
-    return ResponseEntity.ok().body(newGame);
-  }
+		return ResponseEntity.ok().body(gameFactory.fromEntities(unfinishedGames.getContent()));
+	}
 
-  @PostMapping("/guess")
-  public ResponseEntity<Game> guessLetter(
-      @Valid @RequestBody SubmitForm submitForm, BindingResult result) {
-    Game game = gameService.guessLetter(submitForm.getGameId(), submitForm.getLetter());
-    if (game.getAttemptsLeft() < 0) {
-      game = gameService.getGameState(submitForm.getGameId());
-    }
+	@GetMapping("/endingResult/{gameId}/{username}")
+	public ResponseEntity<String> getEndingResult(@PathVariable long gameId, @PathVariable String username) {
+		if (gameId == 0) {
+			return ResponseEntity.badRequest().body("Not existing game!");
+		}
+		if (username.isBlank() || username.isEmpty()) {
+			return ResponseEntity.badRequest().body("Write at least one character for Username!");
+		}
+		Game game = gameService.getGameState(gameId);
+		String gameInfo = game.getInfo();
+		rankingService.completeGame(game, username);
+		return ResponseEntity.ok().body(gameInfo);
+	}
 
-    if (game == null) {
-      return ResponseEntity.badRequest().body(null);
-    }
+	@PostMapping("/new")
+	public ResponseEntity<GameDto> createNewGame() {
+		Game newGame = gameService.createNewGame();
+		GameDto gameDto = gameFactory.fromEntity(newGame);
+		gameDto.setGameOver(false);
+		return ResponseEntity.ok().body(gameDto);
+	}
 
-    String gameInfo = game.getInfo();
-    boolean isGameOver = gameInfo.contains("Game over") || gameInfo.contains("Game won");
+	@PostMapping("/guess/{gameId}/{letter}")
+	public ResponseEntity<GameDto> guessLetter(@PathVariable long gameId, @PathVariable Character letter) {
+		Game game = gameService.guessLetter(gameId, letter);
+		GameDto gameDto = gameFactory.fromEntity(game);
+		if (game.getAttemptsLeft() < 0) {
+			game = gameService.getGameState(letter);
+		}
 
-    if (isGameOver) {
-      return ResponseEntity.ok().body(game);
-    }
+		if (game == null) {
+			return ResponseEntity.badRequest().body(null);
+		}
 
-    game.setLettersUsed(gameService.getUsersLetters(submitForm.getGameId()));
-    game.setWordNum(game.getWordNum());
+		String gameInfo = game.getInfo();
+		boolean isGameOver = gameInfo.contains("Game over") || gameInfo.contains("Game won");
 
-    return ResponseEntity.ok().body(game);
-  }
+		if (isGameOver) {
+			return ResponseEntity.ok().body(gameDto);
+		}
 
-  @PostMapping("/reset")
-  public ResponseEntity<Game> resetGame(
-      @Valid @RequestBody SubmitForm submitForm, BindingResult result) {
-    if (result.hasErrors()) {
-      return ResponseEntity.badRequest().body(null);
-    }
-    long gameId = submitForm.getGameId();
-    Game game = gameService.getGameState(gameId);
+		game.setLettersUsed(gameService.getUsersLetters(gameId));
+		game.setWordNum(game.getWordNum());
 
-    if (game == null) {
-      return ResponseEntity.badRequest().body(null);
-    }
+		return ResponseEntity.ok().body(gameDto);
+	}
 
-    gameService.resetGame(gameId);
-    game.setLettersUsed(gameService.getUsersLetters(gameId));
-    game.setWordNum(game.getWordNum());
+	@PostMapping("/reset/{gameId}")
+	public ResponseEntity<GameDto> resetGame(@PathVariable long gameId) {
+		Game game = gameService.getGameState(gameId);
 
-    return ResponseEntity.ok().body(game);
-  }
+		if (game == null) {
+			return ResponseEntity.badRequest().body(null);
+		}
 
-  @PostMapping("/getGame/{gameId}")
-  public ResponseEntity<Game> getGameById(@PathVariable long gameId) {
-    Game game = gameService.getGameState(gameId);
+		gameService.resetGame(gameId);
+		game.setLettersUsed(gameService.getUsersLetters(gameId));
+		game.setWordNum(game.getWordNum());
 
-    if (game == null) {
-      return ResponseEntity.badRequest().body(null);
-    }
+		return ResponseEntity.ok().body(gameFactory.fromEntity(game));
+	}
 
-    String gameInfo = game.getInfo();
-    boolean isGameOver =
-        gameInfo.contains("Game over")
-            || gameInfo.contains("Game won")
-            || game.getAttemptsLeft() <= 0;
+	@PostMapping("/getGame/{gameId}")
+	public ResponseEntity<GameDto> getGameById(@PathVariable long gameId) {
+		Game game = gameService.getGameState(gameId);
 
-    if (isGameOver) {
-      return ResponseEntity.ok().body(game);
-    }
+		if (game == null) {
+			return ResponseEntity.badRequest().body(null);
+		}
 
-    game.setLettersUsed(gameService.getUsersLetters(gameId));
-    game.setWordNum(game.getWordNum());
+		String gameInfo = game.getInfo();
+		boolean isGameOver = gameInfo.contains("Game over") || gameInfo.contains("Game won")
+				|| game.getAttemptsLeft() <= 0;
 
-    return ResponseEntity.ok().body(game);
-  }
+		game.setLettersUsed(gameService.getUsersLetters(gameId));
+		game.setWordNum(game.getWordNum());
+		GameDto gameDto = gameFactory.fromEntity(game);
+		gameDto.setGameOver(isGameOver);
+
+		return ResponseEntity.ok().body(gameDto);
+	}
 }
