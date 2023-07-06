@@ -1,4 +1,4 @@
-package com.game_classes.models.Game;
+package com.game_classes.models.game;
 
 import java.util.Calendar;
 import java.util.Date;

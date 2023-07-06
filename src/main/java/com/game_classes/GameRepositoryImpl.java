@@ -21,8 +21,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import com.game_classes.interfaces.GameRepository;
-import com.game_classes.models.Game.CompletedGame;
-import com.game_classes.models.Game.Game;
+import com.game_classes.models.game.CompletedGame;
+import com.game_classes.models.game.Game;
 
 @Repository
 @Transactional

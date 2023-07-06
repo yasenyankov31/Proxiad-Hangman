@@ -8,16 +8,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import com.game_classes.interfaces.JpaRepositories.CompletedGameRepository;
-import com.game_classes.interfaces.JpaRepositories.RankingRepository;
-import com.game_classes.interfaces.JpaRepositories.UserRepository;
-import com.game_classes.interfaces.ModelInterfaces.TopPlayerStats;
-import com.game_classes.interfaces.ModelInterfaces.UserRankData;
-import com.game_classes.interfaces.Services.RankingService;
+import com.game_classes.interfaces.jpaRepositories.CompletedGameRepository;
+import com.game_classes.interfaces.jpaRepositories.RankingRepository;
+import com.game_classes.interfaces.jpaRepositories.UserRepository;
+import com.game_classes.interfaces.modelInterfaces.TopPlayerStats;
+import com.game_classes.interfaces.modelInterfaces.UserRankData;
+import com.game_classes.interfaces.services.RankingService;
 import com.game_classes.models.UserData;
-import com.game_classes.models.Game.CompletedGame;
-import com.game_classes.models.Game.Game;
-import com.game_classes.models.Game.RankingPerGamer;
+import com.game_classes.models.game.CompletedGame;
+import com.game_classes.models.game.Game;
+import com.game_classes.models.game.RankingPerGamer;
 
 @Service
 public class RankingServiceImpl implements RankingService {

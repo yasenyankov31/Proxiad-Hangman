@@ -1,4 +1,4 @@
-package com.game_classes.interfaces.JpaRepositories;
+package com.game_classes.interfaces.jpaRepositories;
 
 import java.util.List;
 

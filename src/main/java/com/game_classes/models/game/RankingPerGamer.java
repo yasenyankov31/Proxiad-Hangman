@@ -1,7 +1,8 @@
-package com.game_classes.models.Game;
+package com.game_classes.models.game;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,7 +19,7 @@ public class RankingPerGamer {
 
   @OneToOne private UserData userData;
 
-  @OneToMany(mappedBy = "rankingPerGamer")
+  @OneToMany(mappedBy = "rankingPerGamer", cascade = CascadeType.ALL)
   private List<CompletedGame> completedGames = new ArrayList<>();
 
   public RankingPerGamer(UserData userData, CompletedGame completedGame) {

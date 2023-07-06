@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.game_classes.interfaces.GameFactory;
-import com.game_classes.models.Dto.GameDto;
-import com.game_classes.models.Game.Game;
+import com.game_classes.models.dto.GameDto;
+import com.game_classes.models.game.Game;
 
 @Component
 public class GameFactoryImpl implements GameFactory {

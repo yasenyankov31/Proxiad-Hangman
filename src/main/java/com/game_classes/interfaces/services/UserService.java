@@ -1,4 +1,4 @@
-package com.game_classes.interfaces.Services;
+package com.game_classes.interfaces.services;
 
 import java.util.List;
 import org.springframework.data.domain.Page;

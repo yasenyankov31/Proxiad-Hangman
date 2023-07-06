@@ -1,8 +1,7 @@
-package com.game_classes.models.Dto;
+package com.game_classes.models.dto;
 
 import java.util.Date;
-
-import com.game_classes.models.Game.Game;
+import com.game_classes.models.game.Game;
 
 public class GameDto {
 	private long id;

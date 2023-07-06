@@ -10,8 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.game_classes.interfaces.GameRepository;
-import com.game_classes.interfaces.Services.GameService;
-import com.game_classes.models.Game.Game;
+import com.game_classes.interfaces.services.GameService;
+import com.game_classes.models.game.Game;
 
 @Service
 public class GameServiceImpl implements GameService {

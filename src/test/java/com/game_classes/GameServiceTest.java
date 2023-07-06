@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import com.game_classes.models.Game.Game;
+import com.game_classes.models.game.Game;
 import com.game_classes.servicesImpl.GameServiceImpl;
 
 class GameServiceTest {

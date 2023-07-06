@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import com.game_classes.interfaces.JpaRepositories.UserRepository;
-import com.game_classes.interfaces.Services.UserService;
+import com.game_classes.interfaces.jpaRepositories.UserRepository;
+import com.game_classes.interfaces.services.UserService;
 import com.game_classes.models.UserData;
 
 @Service

@@ -21,10 +21,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.ModelAndView;
 import com.game_classes.interfaces.GameRepository;
-import com.game_classes.interfaces.Services.GameService;
-import com.game_classes.interfaces.Services.RankingService;
+import com.game_classes.interfaces.services.GameService;
+import com.game_classes.interfaces.services.RankingService;
 import com.game_classes.models.SubmitForm;
-import com.game_classes.models.Game.Game;
+import com.game_classes.models.game.Game;
 import com.yasen.mvc_controllers.GameController;
 
 class HangmanControllerTest {

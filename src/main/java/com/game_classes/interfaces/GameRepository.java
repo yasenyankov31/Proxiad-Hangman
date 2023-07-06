@@ -2,7 +2,7 @@ package com.game_classes.interfaces;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import com.game_classes.models.Game.Game;
+import com.game_classes.models.game.Game;
 
 public interface GameRepository {
   void createGame(Game game);

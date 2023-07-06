@@ -1,7 +1,7 @@
-package com.game_classes.interfaces.Services;
+package com.game_classes.interfaces.services;
 
 import org.springframework.data.domain.Page;
-import com.game_classes.models.Game.Game;
+import com.game_classes.models.game.Game;
 
 public interface GameService {
   Game createNewGame();

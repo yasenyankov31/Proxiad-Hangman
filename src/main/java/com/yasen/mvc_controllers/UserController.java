@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import com.game_classes.interfaces.ModelInterfaces.UserRankData;
-import com.game_classes.interfaces.Services.RankingService;
-import com.game_classes.interfaces.Services.UserService;
+import com.game_classes.interfaces.modelInterfaces.UserRankData;
+import com.game_classes.interfaces.services.RankingService;
+import com.game_classes.interfaces.services.UserService;
 import com.game_classes.models.UserData;
 
 @Controller
@@ -35,7 +35,7 @@ public class UserController {
   }
 
   @RequestMapping("/userProfile")
-  public ModelAndView endingResult(String username, Integer pageNum) {
+  public ModelAndView userProfile(String username, Integer pageNum) {
     ModelAndView modelAndView = new ModelAndView("user/user_profile");
     if (pageNum == null) {
       pageNum = 0;

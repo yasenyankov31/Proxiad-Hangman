@@ -1,4 +1,4 @@
-package com.game_classes.interfaces.JpaRepositories;
+package com.game_classes.interfaces.jpaRepositories;
 
 import java.util.Date;
 import java.util.List;
@@ -6,9 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import com.game_classes.interfaces.ModelInterfaces.TopPlayerStats;
-import com.game_classes.interfaces.ModelInterfaces.UserRankData;
-import com.game_classes.models.Game.CompletedGame;
+import com.game_classes.interfaces.modelInterfaces.TopPlayerStats;
+import com.game_classes.interfaces.modelInterfaces.UserRankData;
+import com.game_classes.models.game.CompletedGame;
 
 public interface CompletedGameRepository extends CrudRepository<CompletedGame, Long> {
   @Query(

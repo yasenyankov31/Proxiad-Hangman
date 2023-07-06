@@ -1,4 +1,4 @@
-package com.game_classes.interfaces.ModelInterfaces;
+package com.game_classes.interfaces.modelInterfaces;
 
 import java.util.Date;
 

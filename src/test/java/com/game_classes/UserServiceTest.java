@@ -17,7 +17,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import com.game_classes.interfaces.JpaRepositories.UserRepository;
+import com.game_classes.interfaces.jpaRepositories.UserRepository;
 import com.game_classes.models.UserData;
 import com.game_classes.servicesImpl.UserServiceImpl;
 

@@ -11,11 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.game_classes.interfaces.Services.GameService;
-import com.game_classes.interfaces.Services.RankingService;
+import com.game_classes.interfaces.services.GameService;
+import com.game_classes.interfaces.services.RankingService;
 import com.game_classes.models.SubmitForm;
-import com.game_classes.models.Game.Game;
+import com.game_classes.models.game.Game;
 
 @Controller
 public class GameController {
