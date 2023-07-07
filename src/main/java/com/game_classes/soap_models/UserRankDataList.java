@@ -13,21 +13,20 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for anonymous complex type.
+ * <p>Java class for UserRankDataList complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType>
+ * &lt;complexType name="UserRankDataList">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="RankingDataSoap" type="{http://www.game_classes.com/soap-models}RankingDataSoap" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="UserRankDataList" type="{http://www.game_classes.com/soap-models}UserRankDataSoap" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -37,42 +36,41 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "", propOrder = {
-    "rankingDataSoap"
+@XmlType(name = "UserRankDataList", propOrder = {
+    "userRankDataList"
 })
-@XmlRootElement(name = "RankingDataSoapList")
-public class RankingDataSoapList {
+public class UserRankDataList {
 
-    @XmlElement(name = "RankingDataSoap")
-    protected List<RankingDataSoap> rankingDataSoap;
+    @XmlElement(name = "UserRankDataList")
+    protected List<UserRankDataSoap> userRankDataList;
 
     /**
-     * Gets the value of the rankingDataSoap property.
+     * Gets the value of the userRankDataList property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the rankingDataSoap property.
+     * This is why there is not a <CODE>set</CODE> method for the userRankDataList property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getRankingDataSoap().add(newItem);
+     *    getUserRankDataList().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link RankingDataSoap }
+     * {@link UserRankDataSoap }
      * 
      * 
      */
-    public List<RankingDataSoap> getRankingDataSoap() {
-        if (rankingDataSoap == null) {
-            rankingDataSoap = new ArrayList<RankingDataSoap>();
+    public List<UserRankDataSoap> getUserRankDataList() {
+        if (userRankDataList == null) {
+            userRankDataList = new ArrayList<UserRankDataSoap>();
         }
-        return this.rankingDataSoap;
+        return this.userRankDataList;
     }
 
 }

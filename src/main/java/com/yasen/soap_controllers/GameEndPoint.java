@@ -1,16 +1,22 @@
 package com.yasen.soap_controllers;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.xml.datatype.DatatypeConfigurationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
+import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
+import com.game_classes.interfaces.modelInterfaces.UserRankData;
 import com.game_classes.interfaces.services.RankingService;
 import com.game_classes.soap_models.RankingDataSoap;
 import com.game_classes.soap_models.RankingDataSoapList;
+import com.game_classes.soap_models.UserProfileSoap;
+import com.game_classes.soap_models.UserRankDataList;
+import com.game_classes.soap_models.UserRankDataSoap;
+import com.game_classes.soap_models.UserRankingRequest;
 
 @Endpoint
 public class GameEndPoint {
@@ -21,40 +27,70 @@ public class GameEndPoint {
 
 	@PayloadRoot(namespace = NAMESPACE, localPart = "RankingRequest")
 	@ResponsePayload
-	public RankingDataSoapList getLoanStatus() {
+	public RankingDataSoapList getRankingGameData() {
 
 		RankingDataSoapList list = new RankingDataSoapList();
 
-		List<String> userAllTime = new ArrayList<>();
-		List<Integer> winAllTime = new ArrayList<>();
+		RankingDataSoap monthData = new RankingDataSoap();
+		RankingDataSoap allTimeData = new RankingDataSoap();
 
-		List<String> userForMonth = new ArrayList<>();
-		List<Integer> winsForMonth = new ArrayList<>();
+		monthData.setRankType("monthly");
+
+		allTimeData.setRankType("allTime");
 
 		rankingService.topTenOfAllTime().forEach(item -> {
-			userAllTime.add(item.getUsername());
-			winAllTime.add(item.getWinCount());
+			allTimeData.getUserNames().add(item.getUsername());
+			allTimeData.getWinCounts().add(item.getWinCount());
 		});
 
 		rankingService.topTenOfTheMonth().forEach(item -> {
-			userForMonth.add(item.getUsername());
-			winsForMonth.add(item.getWinCount());
+			monthData.getUserNames().add(item.getUsername());
+			monthData.getWinCounts().add(item.getWinCount());
 		});
-
-		RankingDataSoap monthData = new RankingDataSoap();
-		monthData.setRankType("monthly");
-		monthData.setUserNames(userForMonth);
-		monthData.setWinCounts(winsForMonth);
-
-		RankingDataSoap allTimeData = new RankingDataSoap();
-		allTimeData.setRankType("allTime");
-		allTimeData.setUserNames(userAllTime);
-		allTimeData.setWinCounts(winAllTime);
 
 		list.getRankingDataSoap().add(monthData);
 		list.getRankingDataSoap().add(allTimeData);
 
 		return list;
+	}
+
+	@PayloadRoot(namespace = NAMESPACE, localPart = "UserRankingRequest")
+	@ResponsePayload
+	public UserProfileSoap getRankingUserData(@RequestPayload UserRankingRequest request)
+			throws DatatypeConfigurationException {
+		UserProfileSoap userProfileSoap = new UserProfileSoap();
+		UserRankDataList userRankDataList = new UserRankDataList();
+		Integer pageNum = request.getPageNum();
+		String username = request.getUsername();
+
+		int winCount = 0;
+		int lossCount = 0;
+		int prevWinCount = 0;
+
+		Page<UserRankData> userRankDataPaged = rankingService.getUserInfo(username, pageNum);
+		for (UserRankData userRankData : userRankDataPaged) {
+			UserRankDataSoap dataSoap = new UserRankDataSoap(userRankData);
+			userRankDataList.getUserRankDataList().add(dataSoap);
+		}
+
+		Page<UserRankData> userRankProgressAllTime = rankingService.getUserInfo(username, null);
+
+		for (UserRankData rankData : userRankProgressAllTime) {
+			if (rankData.getGameStatus().equals("Won")) {
+				winCount++;
+				userProfileSoap.getStatusValues().add(++prevWinCount);
+			} else {
+				lossCount++;
+				userProfileSoap.getStatusValues().add(0);
+				prevWinCount = 0;
+			}
+		}
+		userProfileSoap.setUserRankDataPaged(userRankDataList);
+		userProfileSoap.setLossCount(lossCount);
+		userProfileSoap.setWinCount(winCount);
+
+		return userProfileSoap;
+
 	}
 
 }
