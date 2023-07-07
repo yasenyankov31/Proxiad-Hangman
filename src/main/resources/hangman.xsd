@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://www.game_classes.com/soap-models"
+            xmlns:tns="http://www.game_classes.com/soap-models"
+            elementFormDefault="qualified">
+
+  <xsd:element name="RankingDataSoapList">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="RankingDataSoap" type="tns:RankingDataSoap" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:complexType name="RankingDataSoap">
+    <xsd:sequence>
+      <xsd:element name="rankType" type="xsd:string" />
+      <xsd:element name="userNames" type="tns:UserNameList"/>
+      <xsd:element name="winCounts" type="tns:WinCountList"/>
+    </xsd:sequence>
+  </xsd:complexType>
+ 
+  <xsd:simpleType name="UserNameList">
+    <xsd:list itemType="xsd:string"/>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="WinCountList">
+    <xsd:list itemType="xsd:int"/>
+  </xsd:simpleType>
+  
+  <xsd:element name="RankingRequest">
+  </xsd:element>
+
+</xsd:schema>
+
+

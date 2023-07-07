@@ -178,6 +178,24 @@
                <release>18</release>
             </configuration>
          </plugin>
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>jaxb2-maven-plugin</artifactId>
+			<version>1.5</version>
+			<executions>
+				<execution>
+					<id>xjc</id>
+					<goals>
+						<goal>xjc</goal>
+					</goals>
+				</execution>
+			</executions>
+			<configuration>
+				<schemaDirectory>${project.basedir}/src/main/resources/</schemaDirectory>
+				<outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+				<clearOutputDir>false</clearOutputDir>
+			</configuration>
+		</plugin>
          <plugin>
             <artifactId>maven-war-plugin</artifactId>
          </plugin>
