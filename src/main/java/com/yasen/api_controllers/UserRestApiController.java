@@ -26,7 +26,7 @@ import com.game_classes.models.dto.UserDto;
 import com.game_classes.models.dto.UserProfileDto;
 
 @RestController
-public class UserRestController {
+public class UserRestApiController {
 	@Autowired
 	private UserService userService;
 

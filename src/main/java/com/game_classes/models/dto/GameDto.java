@@ -1,11 +1,11 @@
 package com.game_classes.models.dto;
 
 import java.util.Date;
+
 import com.game_classes.models.game.Game;
 
 public class GameDto {
 	private long id;
-	private String word;
 	private String guessedWord;
 	private String lettersUsed;
 	private int attemptsLeft;
@@ -18,7 +18,6 @@ public class GameDto {
 
 	public GameDto(Game game) {
 		this.id = game.getId();
-		this.word = game.getWord();
 		this.guessedWord = game.getGuessedWord();
 		this.lettersUsed = game.getLetters();
 		this.attemptsLeft = game.getAttemptsLeft();
@@ -32,14 +31,6 @@ public class GameDto {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public String getWord() {
-		return word;
-	}
-
-	public void setWord(String word) {
-		this.word = word;
 	}
 
 	public String getGuessedWord() {

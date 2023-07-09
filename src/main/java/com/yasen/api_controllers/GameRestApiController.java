@@ -22,7 +22,7 @@ import com.game_classes.models.game.RankingData;
 
 @RestController
 @RequestMapping("/api/ranking")
-public class GameRestController {
+public class GameRestApiController {
 	@Autowired
 	private GameService gameService;
 

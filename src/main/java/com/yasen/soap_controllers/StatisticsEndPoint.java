@@ -19,7 +19,7 @@ import com.game_classes.soap_models.UserRankDataSoap;
 import com.game_classes.soap_models.UserRankingRequest;
 
 @Endpoint
-public class GameEndPoint {
+public class StatisticsEndPoint {
 
 	private static final String NAMESPACE = "http://www.game_classes.com/soap-models";
 	@Autowired
