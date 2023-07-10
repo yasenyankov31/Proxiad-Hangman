@@ -175,6 +175,10 @@
 	    <artifactId>mockwebserver</artifactId>
 	    <scope>test</scope>
 	</dependency>
+	<dependency>
+	    <groupId>com.fasterxml.jackson.datatype</groupId>
+	    <artifactId>jackson-datatype-jsr310</artifactId>
+	</dependency>
    </dependencies>
    <build>
       <resources>
@@ -192,7 +196,7 @@
                <release>18</release>
             </configuration>
          </plugin>
-		<plugin>
+<!--		<plugin>
 			<groupId>org.codehaus.mojo</groupId>
 			<artifactId>jaxb2-maven-plugin</artifactId>
 			<version>1.5</version>
@@ -210,6 +214,7 @@
 				<clearOutputDir>false</clearOutputDir>
 			</configuration>
 		</plugin>
+		-->
          <plugin>
             <artifactId>maven-war-plugin</artifactId>
          </plugin>

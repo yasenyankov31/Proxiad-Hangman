@@ -5,7 +5,7 @@
     <classes>
       <class name="com.yasen.rest.UserRestControllerTest">
         <methods>
-          <include name="getUsersData"/>
+          <include name="getUsersDataTest"/>
         </methods>
       </class> <!-- com.yasen.rest.UserRestControllerTest -->
     </classes>

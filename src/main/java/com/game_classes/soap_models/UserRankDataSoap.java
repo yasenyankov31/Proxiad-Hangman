@@ -3,7 +3,7 @@
 // Implementation, vhudson-jaxb-ri-2.1-2
 // See <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a>
 // Any modifications to this file will be lost upon recompilation of the source schema.
-// Generated on: 2023.07.10 at 10:08:04 пр.об. EEST
+// Generated on: 2023.07.10 at 01:34:46 сл.об. EEST
 //
 
 package com.game_classes.soap_models;
@@ -81,7 +81,6 @@ public class UserRankDataSoap {
     calendar.setTime(rankData.getStartDate());
     this.startDate = DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
   }
-
   /**
    * Sets the value of the gameStatus property.
    *
