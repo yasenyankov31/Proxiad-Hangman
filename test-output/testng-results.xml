@@ -2,20 +2,20 @@
 <testng-results ignored="0" total="2" passed="2" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2023-07-10T14:52:11 EEST" name="Default suite" finished-at="2023-07-10T14:52:15 EEST" duration-ms="3997">
+  <suite started-at="2023-07-11T13:41:16 EEST" name="Default suite" finished-at="2023-07-11T13:41:18 EEST" duration-ms="2480">
     <groups>
     </groups>
-    <test started-at="2023-07-10T14:52:11 EEST" name="Default test" finished-at="2023-07-10T14:52:15 EEST" duration-ms="3997">
-      <class name="com.yasen.rest.UserRestControllerTest">
-        <test-method signature="getUsersDataTest()[pri:0, instance:com.yasen.rest.UserRestControllerTest@752325ad]" started-at="2023-07-10T14:52:11 EEST" name="getUsersDataTest" finished-at="2023-07-10T14:52:14 EEST" duration-ms="2723" status="PASS">
+    <test started-at="2023-07-11T13:41:16 EEST" name="Default test" finished-at="2023-07-11T13:41:18 EEST" duration-ms="2480">
+      <class name="com.yasen.rest.UserRestAssuredControllerTest">
+        <test-method signature="getUsersDataTest()[pri:0, instance:com.yasen.rest.UserRestAssuredControllerTest@79c97cb]" started-at="2023-07-11T13:41:16 EEST" name="getUsersDataTest" finished-at="2023-07-11T13:41:17 EEST" duration-ms="1742" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- getUsersDataTest -->
-        <test-method signature="userProfileTest()[pri:0, instance:com.yasen.rest.UserRestControllerTest@752325ad]" started-at="2023-07-10T14:52:14 EEST" name="userProfileTest" finished-at="2023-07-10T14:52:15 EEST" duration-ms="1226" status="PASS">
+        <test-method signature="userProfileTest()[pri:0, instance:com.yasen.rest.UserRestAssuredControllerTest@79c97cb]" started-at="2023-07-11T13:41:17 EEST" name="userProfileTest" finished-at="2023-07-11T13:41:18 EEST" duration-ms="702" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- userProfileTest -->
-      </class> <!-- com.yasen.rest.UserRestControllerTest -->
+      </class> <!-- com.yasen.rest.UserRestAssuredControllerTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

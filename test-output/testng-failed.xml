@@ -3,11 +3,12 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="com.yasen.rest.UserRestControllerTest">
+      <class name="com.yasen.rest.UserRestAssuredControllerTest">
         <methods>
           <include name="getUsersDataTest"/>
+          <include name="userProfileTest"/>
         </methods>
-      </class> <!-- com.yasen.rest.UserRestControllerTest -->
+      </class> <!-- com.yasen.rest.UserRestAssuredControllerTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

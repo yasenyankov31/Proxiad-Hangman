@@ -1,22 +1,19 @@
-package com.game_classes.models.dto;
+package com.yasen.soapContractLast.soap_models;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-
-import com.game_classes.interfaces.modelInterfaces.UserRankData;
-
-public class UserProfileDto {
+public class UserProfileDtoCL {
 	List<Integer> statusValues;
-	Page<UserRankData> userRankDatas;
+	List<UserRankDataDtoCL> userRankDatas;
 
 	int winCount = 0;
 	int lossCount = 0;
 
-	public UserProfileDto() {
+	public UserProfileDtoCL() {
 	}
 
-	public UserProfileDto(List<Integer> statusValues, Page<UserRankData> userRankDatas, int winCount, int lossCount) {
+	public UserProfileDtoCL(List<Integer> statusValues, List<UserRankDataDtoCL> userRankDatas, int winCount,
+			int lossCount) {
 		this.statusValues = statusValues;
 		this.userRankDatas = userRankDatas;
 		this.winCount = winCount;
@@ -31,11 +28,11 @@ public class UserProfileDto {
 		this.statusValues = statusValues;
 	}
 
-	public Page<UserRankData> getUserRankDatas() {
+	public List<UserRankDataDtoCL> getUserRankDatas() {
 		return userRankDatas;
 	}
 
-	public void setUserRankDatas(Page<UserRankData> userRankDatas) {
+	public void setUserRankDatas(List<UserRankDataDtoCL> userRankDatas) {
 		this.userRankDatas = userRankDatas;
 	}
 

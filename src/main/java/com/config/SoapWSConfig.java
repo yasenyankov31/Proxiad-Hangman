@@ -14,7 +14,6 @@ import org.springframework.xml.xsd.XsdSchema;
 @Configuration
 @EnableWs
 public class SoapWSConfig {
-
 	@Bean
 	public ServletRegistrationBean<MessageDispatcherServlet> messageDispatcherServlet(ApplicationContext context) {
 		MessageDispatcherServlet servlet = new MessageDispatcherServlet();
