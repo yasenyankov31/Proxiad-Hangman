@@ -3,6 +3,8 @@ package com.game_classes;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
 import com.game_classes.interfaces.GameFactory;
@@ -19,12 +21,12 @@ public class GameFactoryImpl implements GameFactory {
 	}
 
 	@Override
-	public List<GameDto> fromEntities(List<Game> games) {
-		List<GameDto> gamesDtos = new ArrayList<GameDto>();
-		for (Game game : games) {
-			gamesDtos.add(new GameDto(game));
+	public Page<GameDto> fromEntities(Page<Game> games) {
+		List<GameDto> gameDtos = new ArrayList<>();
+		for (Game gameData : games.getContent()) {
+			gameDtos.add(new GameDto(gameData));
 		}
-		return gamesDtos;
+		return new PageImpl<>(gameDtos, games.getPageable(), games.getTotalElements());
 	}
 
 }

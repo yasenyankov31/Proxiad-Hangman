@@ -10,7 +10,7 @@ import javax.persistence.OneToOne;
 @Entity
 public class Game {
 	@Id
-	private long id;
+	private Long id;
 
 	private String word;
 	private String guessedWord;
@@ -37,11 +37,11 @@ public class Game {
 		this.date = today.getTime();
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 

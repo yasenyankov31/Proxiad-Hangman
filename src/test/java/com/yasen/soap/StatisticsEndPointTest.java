@@ -6,12 +6,14 @@ import static org.springframework.ws.test.server.ResponseMatchers.noFault;
 import static org.springframework.ws.test.server.ResponseMatchers.payload;
 import static org.springframework.ws.test.server.ResponseMatchers.validPayload;
 import static org.springframework.ws.test.server.ResponseMatchers.xpath;
+
 import java.io.IOException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,44 +26,51 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.ws.test.server.MockWebServiceClient;
 import org.springframework.xml.transform.StringSource;
+
 import com.game_classes.interfaces.jpaRepositories.RankingRepository;
 import com.game_classes.interfaces.modelInterfaces.TopPlayerStats;
 import com.game_classes.interfaces.modelInterfaces.UserRankData;
 import com.game_classes.interfaces.services.RankingService;
+import com.game_classes.interfaces.services.UserService;
 
 @WebServiceServerTest
 class StatisticsEndPointTest {
 
-  private static final String NAME_SPACE = "http://www.game_classes.com/soap-models";
+	private static final String NAME_SPACE = "http://www.game_classes.com/soap-models";
 
-  private static final Map<String, String> NAMESPACE_MAPPING = createMapping();
+	private static final Map<String, String> NAMESPACE_MAPPING = createMapping();
 
-  @Autowired private MockWebServiceClient client;
+	@Autowired
+	private MockWebServiceClient client;
 
-  @MockBean private RankingRepository rankingRepository;
+	@MockBean
+	private RankingRepository rankingRepository;
 
-  @MockBean private RankingService rankingService;
+	@MockBean
+	private RankingService rankingService;
 
-  private List<TopPlayerStats> topPlayerStatsTestList = new ArrayList<>();
+	@MockBean
+	private UserService userService;
 
-  private List<UserRankData> rankDataTestClassList = new ArrayList<>();
+	private List<TopPlayerStats> topPlayerStatsTestList = new ArrayList<>();
 
-  Page<UserRankData> rankDataTestClassPaged;
+	private List<UserRankData> rankDataTestClassList = new ArrayList<>();
 
-  @BeforeEach
-  public void setup() {
-    Date date = new Date(0);
-    Pageable pageable = PageRequest.of(1, 1);
+	Page<UserRankData> rankDataTestClassPaged;
 
-    TopPlayerStatsTestClass testClass = new TopPlayerStatsTestClass("test", 1, 2, date);
-    topPlayerStatsTestList.add(testClass);
-    UserRankDataTestClass rankDataTestClass =
-        new UserRankDataTestClass("Won", "word", "abcd", 2, date);
-    rankDataTestClassList.add(rankDataTestClass);
-    rankDataTestClassPaged = new PageImpl<>(rankDataTestClassList, pageable, 0);
-  }
+	@BeforeEach
+	public void setup() {
+		Date date = new Date(0);
+		Pageable pageable = PageRequest.of(1, 1);
 
-  @Test
+		TopPlayerStatsTestClass testClass = new TopPlayerStatsTestClass("test", 1, 2, date);
+		topPlayerStatsTestList.add(testClass);
+		UserRankDataTestClass rankDataTestClass = new UserRankDataTestClass("Won", "word", "abcd", 2, date);
+		rankDataTestClassList.add(rankDataTestClass);
+		rankDataTestClassPaged = new PageImpl<>(rankDataTestClassList, pageable, 0);
+	}
+
+	@Test
   void getRankingGameDataTest() throws IOException {
     when(rankingService.topTenOfAllTime()).thenReturn(topPlayerStatsTestList);
 
@@ -96,10 +105,11 @@ class StatisticsEndPointTest {
                 .evaluatesTo("monthly"));
   }
 
-  @Test
+	@Test
   void getRankingUserDataTest() throws IOException {
     when(rankingService.getUserInfo("test123", 0)).thenReturn(rankDataTestClassPaged);
     when(rankingService.getUserInfo("test123", null)).thenReturn(rankDataTestClassPaged);
+    when(!userService.checkIfUserExist("test123")).thenReturn(true);
     StringSource request =
         new StringSource(
             "<tns:UserRankingRequest xmlns:tns='"
@@ -137,9 +147,34 @@ class StatisticsEndPointTest {
             xpath("/ns2:UserProfileSoap/ns2:statusValues", NAMESPACE_MAPPING).evaluatesTo("1"));
   }
 
-  private static Map<String, String> createMapping() {
-    Map<String, String> mapping = new HashMap<>();
-    mapping.put("ns2", NAME_SPACE);
-    return mapping;
-  }
+	@Test
+	void getRankingUserDataInvalidUsernameTest() throws IOException {
+	    when(rankingService.getUserInfo("test123", 0)).thenReturn(rankDataTestClassPaged);
+	    when(rankingService.getUserInfo("test123", null)).thenReturn(rankDataTestClassPaged);
+	    StringSource request =
+	        new StringSource(
+	            "<tns:UserRankingRequest xmlns:tns='"
+	                + NAME_SPACE
+	                + "'>"
+	                + "<tns:username>test123</tns:username>"
+	                + "<tns:pageNum>0</tns:pageNum>"
+	                + "</tns:UserRankingRequest>");
+
+	    StringSource expectedFaultResponse =
+	            new StringSource("<SOAP-ENV:Fault xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">"
+	            		+ "<faultcode xmlns:ns0=\"http://www.game_classes.com/soap-models\">"
+	            		+ "ns0:User with this username doesn't exist!"
+	            		+ "</faultcode>"
+	            		+ "<faultstring xml:lang=\"en\">@faultString</faultstring></SOAP-ENV:Fault>");
+
+	    client
+	        .sendRequest(withPayload(request))// Asserting a fault response
+	        .andExpect(payload(expectedFaultResponse));
+	}
+
+	private static Map<String, String> createMapping() {
+		Map<String, String> mapping = new HashMap<>();
+		mapping.put("ns2", NAME_SPACE);
+		return mapping;
+	}
 }

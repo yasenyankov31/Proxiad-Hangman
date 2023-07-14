@@ -1,20 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="2" passed="2" failed="0" skipped="0">
+<testng-results ignored="0" total="7" passed="7" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2023-07-11T13:41:16 EEST" name="Default suite" finished-at="2023-07-11T13:41:18 EEST" duration-ms="2480">
+  <suite started-at="2023-07-14T12:33:12 EEST" name="Default suite" finished-at="2023-07-14T12:33:15 EEST" duration-ms="2154">
     <groups>
     </groups>
-    <test started-at="2023-07-11T13:41:16 EEST" name="Default test" finished-at="2023-07-11T13:41:18 EEST" duration-ms="2480">
+    <test started-at="2023-07-14T12:33:12 EEST" name="Default test" finished-at="2023-07-14T12:33:15 EEST" duration-ms="2154">
       <class name="com.yasen.rest.UserRestAssuredControllerTest">
-        <test-method signature="getUsersDataTest()[pri:0, instance:com.yasen.rest.UserRestAssuredControllerTest@79c97cb]" started-at="2023-07-11T13:41:16 EEST" name="getUsersDataTest" finished-at="2023-07-11T13:41:17 EEST" duration-ms="1742" status="PASS">
+        <test-method signature="createUserTest()[pri:1, instance:com.yasen.rest.UserRestAssuredControllerTest@34f6515b]" started-at="2023-07-14T12:33:12 EEST" name="createUserTest" finished-at="2023-07-14T12:33:14 EEST" duration-ms="1783" status="PASS">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- getUsersDataTest -->
-        <test-method signature="userProfileTest()[pri:0, instance:com.yasen.rest.UserRestAssuredControllerTest@79c97cb]" started-at="2023-07-11T13:41:17 EEST" name="userProfileTest" finished-at="2023-07-11T13:41:18 EEST" duration-ms="702" status="PASS">
+        </test-method> <!-- createUserTest -->
+        <test-method signature="getUserTest()[pri:2, instance:com.yasen.rest.UserRestAssuredControllerTest@34f6515b]" started-at="2023-07-14T12:33:14 EEST" name="getUserTest" finished-at="2023-07-14T12:33:14 EEST" duration-ms="82" status="PASS">
           <reporter-output>
           </reporter-output>
-        </test-method> <!-- userProfileTest -->
+        </test-method> <!-- getUserTest -->
+        <test-method signature="updateUserTest()[pri:3, instance:com.yasen.rest.UserRestAssuredControllerTest@34f6515b]" started-at="2023-07-14T12:33:14 EEST" name="updateUserTest" finished-at="2023-07-14T12:33:14 EEST" duration-ms="32" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- updateUserTest -->
+        <test-method signature="getUserExistTest()[pri:4, instance:com.yasen.rest.UserRestAssuredControllerTest@34f6515b]" started-at="2023-07-14T12:33:14 EEST" name="getUserExistTest" finished-at="2023-07-14T12:33:14 EEST" duration-ms="74" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getUserExistTest -->
+        <test-method signature="getUserNotExistTest()[pri:5, instance:com.yasen.rest.UserRestAssuredControllerTest@34f6515b]" started-at="2023-07-14T12:33:14 EEST" name="getUserNotExistTest" finished-at="2023-07-14T12:33:14 EEST" duration-ms="29" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getUserNotExistTest -->
+        <test-method signature="deleteUserNotExistTest()[pri:6, instance:com.yasen.rest.UserRestAssuredControllerTest@34f6515b]" started-at="2023-07-14T12:33:14 EEST" name="deleteUserNotExistTest" finished-at="2023-07-14T12:33:14 EEST" duration-ms="30" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- deleteUserNotExistTest -->
+        <test-method signature="deleteUserExistTest()[pri:7, instance:com.yasen.rest.UserRestAssuredControllerTest@34f6515b]" started-at="2023-07-14T12:33:14 EEST" name="deleteUserExistTest" finished-at="2023-07-14T12:33:15 EEST" duration-ms="80" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- deleteUserExistTest -->
       </class> <!-- com.yasen.rest.UserRestAssuredControllerTest -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->

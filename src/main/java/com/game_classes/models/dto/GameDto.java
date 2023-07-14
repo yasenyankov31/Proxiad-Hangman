@@ -5,7 +5,7 @@ import java.util.Date;
 import com.game_classes.models.game.Game;
 
 public class GameDto {
-	private long id;
+	private Long id;
 	private String guessedWord;
 	private String lettersUsed;
 	private int attemptsLeft;
@@ -25,11 +25,11 @@ public class GameDto {
 		this.date = game.getDate();
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -80,4 +80,5 @@ public class GameDto {
 	public void setGameOver(boolean isGameOver) {
 		this.isGameOver = isGameOver;
 	}
+
 }

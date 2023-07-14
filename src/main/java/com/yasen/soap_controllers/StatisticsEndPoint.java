@@ -11,8 +11,10 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 import com.game_classes.interfaces.modelInterfaces.UserRankData;
 import com.game_classes.interfaces.services.RankingService;
+import com.game_classes.interfaces.services.UserService;
 import com.game_classes.soap_models.RankingDataSoap;
 import com.game_classes.soap_models.RankingDataSoapList;
+import com.game_classes.soap_models.SoapException;
 import com.game_classes.soap_models.UserProfileSoap;
 import com.game_classes.soap_models.UserRankDataList;
 import com.game_classes.soap_models.UserRankDataSoap;
@@ -24,6 +26,9 @@ public class StatisticsEndPoint {
 	private static final String NAMESPACE = "http://www.game_classes.com/soap-models";
 	@Autowired
 	private RankingService rankingService;
+
+	@Autowired
+	private UserService userService;
 
 	@PayloadRoot(namespace = NAMESPACE, localPart = "RankingRequest")
 	@ResponsePayload
@@ -57,11 +62,14 @@ public class StatisticsEndPoint {
 	@PayloadRoot(namespace = NAMESPACE, localPart = "UserRankingRequest")
 	@ResponsePayload
 	public UserProfileSoap getRankingUserData(@RequestPayload UserRankingRequest request)
-			throws DatatypeConfigurationException {
+			throws DatatypeConfigurationException, SoapException {
 		UserProfileSoap userProfileSoap = new UserProfileSoap();
 		UserRankDataList userRankDataList = new UserRankDataList();
 		Integer pageNum = request.getPageNum();
 		String username = request.getUsername();
+		if (!userService.checkIfUserExist(username)) {
+			throw new SoapException("Invalid username.");
+		}
 
 		int winCount = 0;
 		int lossCount = 0;

@@ -78,7 +78,7 @@ public class UserController {
 		if (result.hasErrors()) {
 			return new ModelAndView("error").addObject("errorMessage", result.getFieldError().getDefaultMessage());
 		}
-		userService.createOrUpdateUser(userData);
+		userService.updateUser(userData);
 		ModelAndView modelAndView = new ModelAndView("user/users");
 		Page<UserData> users = userService.listAllUsers(pageNum);
 		modelAndView.addObject("usersData", users);

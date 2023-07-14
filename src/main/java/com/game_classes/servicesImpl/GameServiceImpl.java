@@ -70,8 +70,11 @@ public class GameServiceImpl implements GameService {
 			}
 		}
 		guessedWord.append(last);
+		long min = 100L;
+		long max = 99999999999L;
 
-		Game game = new Game(random.nextLong(), word, guessedWord.toString(), 7, Integer.parseInt(wordAndNum[1]));
+		long gameId = random.nextLong() % (max - min + 1) + min;
+		Game game = new Game(gameId, word, guessedWord.toString(), 7, Integer.parseInt(wordAndNum[1]));
 		gameRepository.createGame(game);
 		return game;
 	}

@@ -16,7 +16,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class UserData {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
-	private long id;
+	private Long id;
 	@NotBlank(message = "Username can't be blank")
 	private String username;
 	@NotBlank(message = "Password can't be blank")
@@ -42,7 +42,7 @@ public class UserData {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

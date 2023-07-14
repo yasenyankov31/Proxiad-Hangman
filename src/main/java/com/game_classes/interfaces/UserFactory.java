@@ -1,11 +1,12 @@
 package com.game_classes.interfaces;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+
 import com.game_classes.models.UserData;
 import com.game_classes.models.dto.UserDto;
 
 public interface UserFactory {
-  public UserDto fromEntity(UserData user);
+	public UserDto fromEntity(UserData user);
 
-  public List<UserDto> fromEntities(List<UserData> users);
+	public Page<UserDto> fromEntities(Page<UserData> users);
 }

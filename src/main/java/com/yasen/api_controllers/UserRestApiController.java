@@ -2,115 +2,148 @@ package com.yasen.api_controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.game_classes.interfaces.UserFactory;
 import com.game_classes.interfaces.modelInterfaces.UserRankData;
 import com.game_classes.interfaces.services.RankingService;
 import com.game_classes.interfaces.services.UserService;
+import com.game_classes.models.ErrorResponse;
+import com.game_classes.models.SuccessResponse;
 import com.game_classes.models.UserData;
 import com.game_classes.models.dto.UserDto;
 import com.game_classes.models.dto.UserProfileDto;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
-@RequestMapping("/api/userController")
+@RequestMapping("/api/users")
 public class UserRestApiController {
-  @Autowired private UserService userService;
+	@Autowired
+	private UserService userService;
 
-  @Autowired private RankingService rankingService;
+	@Autowired
+	private RankingService rankingService;
 
-  @Autowired private UserFactory userFactory;
+	@Autowired
+	private UserFactory userFactory;
 
-  @GetMapping("/users/{pageNum}")
-  public ResponseEntity<List<UserDto>> getUsersData(@PathVariable Integer pageNum) {
-    if (pageNum == null) {
-      pageNum = 0;
-    }
-    Page<UserData> users = userService.listAllUsers(pageNum);
+	@GetMapping("/{pageNum}")
+	@Operation(summary = "Show all users", description = "Returns a list of user data.")
+	public ResponseEntity<Page<UserDto>> getUsersData(@PathVariable Integer pageNum) {
+		if (pageNum == null) {
+			pageNum = 0;
+		}
+		Page<UserData> users = userService.listAllUsers(pageNum);
 
-    return ResponseEntity.ok().body(userFactory.fromEntities(users.getContent()));
-  }
+		return ResponseEntity.ok().body(userFactory.fromEntities(users));
+	}
 
-  @GetMapping("/userProfile/{username}/{pageNum}")
-  public ResponseEntity<UserProfileDto> userProfile(
-      @PathVariable String username, @PathVariable(required = false) Integer pageNum) {
-    pageNum = pageNum != null ? pageNum : 0;
-    int winCount = 0;
-    int lossCount = 0;
-    int prevWinCount = 0;
-    List<Integer> statusValues = new ArrayList<>();
-    Page<UserRankData> userRankDatas = rankingService.getUserInfo(username, pageNum);
-    Page<UserRankData> userRankProgressAllTime = rankingService.getUserInfo(username, null);
+	@GetMapping("/user/{username}")
+	@Operation(summary = "Get user game statistics and played games", description = "Returns  statistic of a user profile.")
+	public ResponseEntity<UserProfileDto> userProfile(@PathVariable(required = true) String username,
+			@RequestParam(required = false) Integer pageNum) {
+		if (!userService.checkIfUserExist(username)) {
+			throw new IllegalArgumentException("Username doesn't exist!");
+		}
 
-    for (UserRankData rankData : userRankProgressAllTime) {
-      if (rankData.getGameStatus().equals("Won")) {
-        winCount++;
-        statusValues.add(++prevWinCount);
-      } else {
-        lossCount++;
-        statusValues.add(0);
-        prevWinCount = 0;
-      }
-    }
+		pageNum = pageNum != null ? pageNum : 0;
+		int winCount = 0;
+		int lossCount = 0;
+		int prevWinCount = 0;
+		List<Integer> statusValues = new ArrayList<>();
+		Page<UserRankData> userRankDatas = rankingService.getUserInfo(username, pageNum);
+		Page<UserRankData> userRankProgressAllTime = rankingService.getUserInfo(username, null);
 
-    UserProfileDto userProfileDto =
-        new UserProfileDto(statusValues, userRankDatas, winCount, lossCount);
+		for (UserRankData rankData : userRankProgressAllTime) {
+			if (rankData.getGameStatus().equals("Won")) {
+				winCount++;
+				statusValues.add(++prevWinCount);
+			} else {
+				lossCount++;
+				statusValues.add(0);
+				prevWinCount = 0;
+			}
+		}
 
-    return ResponseEntity.ok(userProfileDto);
-  }
+		UserProfileDto userProfileDto = new UserProfileDto(statusValues, userRankDatas, winCount, lossCount);
 
-  @PostMapping("/createUser/{pageNum}")
-  public ResponseEntity<List<UserDto>> createUser(
-      @Valid @RequestBody UserData userData, @PathVariable Integer pageNum, BindingResult result) {
-    if (result.hasErrors()) {
-      return ResponseEntity.badRequest().body(null);
-    }
+		return ResponseEntity.ok(userProfileDto);
+	}
 
-    userService.createOrUpdateUser(userData);
-    Page<UserData> users = userService.listAllUsers(pageNum);
+	@PostMapping("/user")
+	@Operation(summary = "Creates new user", description = "Returns a list of updated user data.")
+	public ResponseEntity<SuccessResponse> createUser(@Valid @RequestBody UserData userData, BindingResult result) {
+		if (result.hasErrors()) {
+			throw new IllegalArgumentException("User formdata is invalid!");
+		}
 
-    List<UserDto> userDtos = userFactory.fromEntities(users.getContent());
+		userService.createUser(userData);
+		SuccessResponse response = new SuccessResponse("createUser", "User created successfully!");
 
-    return ResponseEntity.ok().body(userDtos);
-  }
+		return ResponseEntity.ok().body(response);
+	}
 
-  @PatchMapping("/updateUser/{pageNum}")
-  public ResponseEntity<List<UserDto>> updateUser(
-      @Valid @RequestBody UserData userData, @PathVariable Integer pageNum, BindingResult result) {
-    if (result.hasErrors()) {
-      return ResponseEntity.badRequest().body(null);
-    }
+	@PutMapping("/user")
+	@Operation(summary = "Updates user information", description = "Returns a list of updated user data.")
+	public ResponseEntity<SuccessResponse> updateUser(@Valid @RequestBody UserData userData, BindingResult result) {
+		if (result.hasErrors()) {
+			throw new IllegalArgumentException("User formdata is invalid!");
+		}
 
-    userService.createOrUpdateUser(userData);
-    Page<UserData> users = userService.listAllUsers(pageNum);
+		userService.updateUser(userData);
 
-    List<UserDto> userDtos = userFactory.fromEntities(users.getContent());
+		SuccessResponse response = new SuccessResponse("updateUser", "User updated successfully!");
 
-    return ResponseEntity.ok().body(userDtos);
-  }
+		return ResponseEntity.ok().body(response);
+	}
 
-  @DeleteMapping("/deleteUsers/{pageNum}")
-  public ResponseEntity<List<UserDto>> deleteUsers(
-      @RequestBody List<Long> ids, @RequestParam Integer pageNum) {
-    if (ids.isEmpty()) {
-      return ResponseEntity.badRequest().body(null);
-    }
+	@DeleteMapping("/user/{userId}")
+	@Operation(summary = "Deletes single user", description = "Returns a list of updated user data.")
+	public ResponseEntity<SuccessResponse> deleteUser(@PathVariable(required = true) Long userId) {
 
-    userService.deleteUsers(ids);
-    Page<UserData> users = userService.listAllUsers(pageNum);
+		if (!userService.checkIfUserExist(userId)) {
+			throw new IllegalArgumentException("User doesn't exist!");
+		}
+		userService.deleteUser(userId);
+		SuccessResponse response = new SuccessResponse("deleteUser", "User deleted successfully!");
 
-    return ResponseEntity.ok().body(userFactory.fromEntities(users.getContent()));
-  }
+		return ResponseEntity.ok().body(response);
+	}
+
+	@DeleteMapping("/")
+	@Operation(summary = "Deletes list of users", description = "Returns a list of updated user data.")
+	public ResponseEntity<SuccessResponse> deleteUsers(@RequestBody List<Long> ids) {
+		if (ids.isEmpty()) {
+			throw new IllegalArgumentException("Empty list of ids!");
+		}
+
+		userService.deleteUsers(ids);
+		SuccessResponse response = new SuccessResponse("deleteUsers", "Users deleted successfully!");
+
+		return ResponseEntity.ok().body(response);
+	}
+
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+		ErrorResponse errorResponse = new ErrorResponse("Bad request", ex.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+	}
 }
