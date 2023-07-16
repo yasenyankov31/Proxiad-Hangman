@@ -157,6 +157,7 @@ class UserRestAssuredControllerTest {
 	}
 
 	@Test(priority = 7)
+
 	public void deleteUserExistTest() throws InterruptedException {
 		Response response = given().when().get(BASE_URL + "/0");
 		String jsonResponse = response.body().asString();

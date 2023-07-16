@@ -6,14 +6,18 @@ import static org.testng.Assert.assertNotEquals;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Map;
 import java.util.Scanner;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.game_classes.models.ErrorResponse;
 import com.game_classes.models.dto.GameDto;
+import com.game_classes.models.game.RankingData;
 
 class WebClientGameRestTest {
 	private static final String url = "http://localhost:8080/api/games";
@@ -25,6 +29,16 @@ class WebClientGameRestTest {
 		ResponseEntity<GameDto> new_game = webClient.post().uri("/game").retrieve().toEntity(GameDto.class).block();
 
 		return new_game.getBody();
+	}
+
+	@Test
+	void getRankingDataTest() {
+		WebClient webClient = WebClient.create(url);
+		ResponseEntity<Map<String, RankingData>> new_game = webClient.get().uri("/").retrieve()
+				.toEntity(new ParameterizedTypeReference<Map<String, RankingData>>() {
+				}).block();
+
+		assertNotNull(new_game.getBody());
 	}
 
 	@Test
@@ -76,7 +90,7 @@ class WebClientGameRestTest {
 		GameDto createdGame = creategame();
 		webClient = WebClient.create(url);
 
-		ResponseEntity<GameDto> object = webClient.put().uri("/game/reset/{id}", createdGame.getId()).retrieve()
+		ResponseEntity<GameDto> object = webClient.put().uri("/game/{id}/reset", createdGame.getId()).retrieve()
 				.toEntity(GameDto.class).block();
 
 		GameDto game = object.getBody();
@@ -124,6 +138,15 @@ class WebClientGameRestTest {
 			flag = "changed";
 		}
 		assertNotNull(flag);
+	}
+
+	void getEndingResultTest() {
+		WebClient webClient = WebClient.create(url);
+		ErrorResponse error = webClient.get().uri("/game/ending-result/{gameId}", 1234).retrieve()
+				.toEntity(ErrorResponse.class).block().getBody();
+
+		assertEquals(error.getError(), "Bad request");
+		assertEquals(error.getMessage(), "Game doesn't exist!");
 	}
 
 	private char[] getMissingLetters(String word) {

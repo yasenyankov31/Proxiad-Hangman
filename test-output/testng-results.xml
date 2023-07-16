@@ -1,37 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testng-results ignored="0" total="7" passed="7" failed="0" skipped="0">
+<testng-results ignored="0" total="1" passed="0" failed="1" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2023-07-14T12:33:12 EEST" name="Default suite" finished-at="2023-07-14T12:33:15 EEST" duration-ms="2154">
+  <suite started-at="2023-07-16T23:23:16 EEST" name="Default suite" finished-at="2023-07-16T23:23:18 EEST" duration-ms="1806">
     <groups>
     </groups>
-    <test started-at="2023-07-14T12:33:12 EEST" name="Default test" finished-at="2023-07-14T12:33:15 EEST" duration-ms="2154">
+    <test started-at="2023-07-16T23:23:16 EEST" name="Default test" finished-at="2023-07-16T23:23:18 EEST" duration-ms="1806">
       <class name="com.yasen.rest.UserRestAssuredControllerTest">
-        <test-method signature="createUserTest()[pri:1, instance:com.yasen.rest.UserRestAssuredControllerTest@34f6515b]" started-at="2023-07-14T12:33:12 EEST" name="createUserTest" finished-at="2023-07-14T12:33:14 EEST" duration-ms="1783" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- createUserTest -->
-        <test-method signature="getUserTest()[pri:2, instance:com.yasen.rest.UserRestAssuredControllerTest@34f6515b]" started-at="2023-07-14T12:33:14 EEST" name="getUserTest" finished-at="2023-07-14T12:33:14 EEST" duration-ms="82" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getUserTest -->
-        <test-method signature="updateUserTest()[pri:3, instance:com.yasen.rest.UserRestAssuredControllerTest@34f6515b]" started-at="2023-07-14T12:33:14 EEST" name="updateUserTest" finished-at="2023-07-14T12:33:14 EEST" duration-ms="32" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- updateUserTest -->
-        <test-method signature="getUserExistTest()[pri:4, instance:com.yasen.rest.UserRestAssuredControllerTest@34f6515b]" started-at="2023-07-14T12:33:14 EEST" name="getUserExistTest" finished-at="2023-07-14T12:33:14 EEST" duration-ms="74" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getUserExistTest -->
-        <test-method signature="getUserNotExistTest()[pri:5, instance:com.yasen.rest.UserRestAssuredControllerTest@34f6515b]" started-at="2023-07-14T12:33:14 EEST" name="getUserNotExistTest" finished-at="2023-07-14T12:33:14 EEST" duration-ms="29" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- getUserNotExistTest -->
-        <test-method signature="deleteUserNotExistTest()[pri:6, instance:com.yasen.rest.UserRestAssuredControllerTest@34f6515b]" started-at="2023-07-14T12:33:14 EEST" name="deleteUserNotExistTest" finished-at="2023-07-14T12:33:14 EEST" duration-ms="30" status="PASS">
-          <reporter-output>
-          </reporter-output>
-        </test-method> <!-- deleteUserNotExistTest -->
-        <test-method signature="deleteUserExistTest()[pri:7, instance:com.yasen.rest.UserRestAssuredControllerTest@34f6515b]" started-at="2023-07-14T12:33:14 EEST" name="deleteUserExistTest" finished-at="2023-07-14T12:33:15 EEST" duration-ms="80" status="PASS">
+        <test-method signature="deleteUserExistTest()[pri:7, instance:com.yasen.rest.UserRestAssuredControllerTest@14008db3]" started-at="2023-07-16T23:23:16 EEST" name="deleteUserExistTest" finished-at="2023-07-16T23:23:18 EEST" duration-ms="1770" status="FAIL">
+          <exception class="java.lang.NullPointerException">
+            <message>
+              <![CDATA[Cannot invoke "com.game_classes.models.dto.UserDto.getId()" because "foundUser" is null]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[java.lang.NullPointerException: Cannot invoke "com.game_classes.models.dto.UserDto.getId()" because "foundUser" is null
+at com.yasen.rest.UserRestAssuredControllerTest.deleteUserExistTest(UserRestAssuredControllerTest.java:201)
+at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+at java.base/java.lang.reflect.Method.invoke(Method.java:577)
+at org.testng.internal.invokers.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:139)
+at org.testng.internal.invokers.TestInvoker.invokeMethod(TestInvoker.java:664)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethod(TestInvoker.java:227)
+at org.testng.internal.invokers.MethodRunner.runInSequence(MethodRunner.java:50)
+at org.testng.internal.invokers.TestInvoker$MethodInvocationAgent.invoke(TestInvoker.java:957)
+at org.testng.internal.invokers.TestInvoker.invokeTestMethods(TestInvoker.java:200)
+at org.testng.internal.invokers.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:148)
+at org.testng.internal.invokers.TestMethodWorker.run(TestMethodWorker.java:128)
+at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+at org.testng.TestRunner.privateRun(TestRunner.java:848)
+at org.testng.TestRunner.run(TestRunner.java:621)
+at org.testng.SuiteRunner.runTest(SuiteRunner.java:443)
+at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:437)
+at org.testng.SuiteRunner.privateRun(SuiteRunner.java:397)
+at org.testng.SuiteRunner.run(SuiteRunner.java:336)
+at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:95)
+at org.testng.TestNG.runSuitesSequentially(TestNG.java:1280)
+at org.testng.TestNG.runSuitesLocally(TestNG.java:1200)
+at org.testng.TestNG.runSuites(TestNG.java:1114)
+at org.testng.TestNG.run(TestNG.java:1082)
+at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
+at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
+at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
+]]>
+            </full-stacktrace>
+          </exception> <!-- java.lang.NullPointerException -->
           <reporter-output>
           </reporter-output>
         </test-method> <!-- deleteUserExistTest -->

@@ -121,7 +121,7 @@ public class GameRestApiController {
 		return ResponseEntity.ok().body(gameDto);
 	}
 
-	@PutMapping("/game/reset/{gameId}")
+	@PutMapping("/game/{gameId}/reset")
 	@Operation(summary = "Refreshes the word and the attempts for an ongoing game ", description = "Returns a new game.")
 	public ResponseEntity<GameDto> resetGame(@PathVariable Long gameId) {
 		Game game = gameService.getGameState(gameId);

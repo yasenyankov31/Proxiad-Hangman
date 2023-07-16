@@ -5,8 +5,7 @@
     <classes>
       <class name="com.yasen.rest.UserRestAssuredControllerTest">
         <methods>
-          <include name="getUserExistTest"/>
-          <include name="getUserTest"/>
+          <include name="deleteUserExistTest"/>
         </methods>
       </class> <!-- com.yasen.rest.UserRestAssuredControllerTest -->
     </classes>
