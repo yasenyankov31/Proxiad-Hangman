@@ -137,6 +137,11 @@ public class UserRestApiController {
     if (ids.isEmpty()) {
       throw new IllegalArgumentException("Empty list of ids!");
     }
+    for (Long userId : ids) {
+      if (!userService.checkIfUserExist(userId)) {
+        throw new IllegalArgumentException("User doesn't exist!");
+      }
+    }
 
     userService.deleteUsers(ids);
     SuccessResponse response = new SuccessResponse("deleteUsers", "Users deleted successfully!");
