@@ -3,162 +3,186 @@ package com.yasen.rest;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Map;
 import java.util.Scanner;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
-
 import com.game_classes.models.ErrorResponse;
 import com.game_classes.models.dto.GameDto;
 import com.game_classes.models.game.RankingData;
 
 class WebClientGameRestTest {
-	private static final String url = "http://localhost:8080/api/games";
+  private static final String url = "http://localhost:8080/api/games";
 
-	private static WebClient webClient;
+  private static WebClient webClient;
 
-	GameDto creategame() {
-		webClient = WebClient.create(url);
-		ResponseEntity<GameDto> new_game = webClient.post().uri("/game").retrieve().toEntity(GameDto.class).block();
+  GameDto creategame() {
+    webClient = WebClient.create(url);
+    ResponseEntity<GameDto> new_game =
+        webClient.post().uri("").retrieve().toEntity(GameDto.class).block();
 
-		return new_game.getBody();
-	}
+    return new_game.getBody();
+  }
 
-	@Test
-	void getRankingDataTest() {
-		WebClient webClient = WebClient.create(url);
-		ResponseEntity<Map<String, RankingData>> new_game = webClient.get().uri("/").retrieve()
-				.toEntity(new ParameterizedTypeReference<Map<String, RankingData>>() {
-				}).block();
+  @Test
+  void getRankingDataTest() {
+    WebClient webClient = WebClient.create(url);
+    ResponseEntity<Map<String, RankingData>> new_game =
+        webClient
+            .get()
+            .uri("")
+            .retrieve()
+            .toEntity(new ParameterizedTypeReference<Map<String, RankingData>>() {})
+            .block();
 
-		assertNotNull(new_game.getBody());
-	}
+    assertNotNull(new_game.getBody());
+  }
 
-	@Test
-	void createGameTest() {
-		webClient = WebClient.create(url);
-		ResponseEntity<GameDto> new_game = webClient.post().uri("/game").retrieve().toEntity(GameDto.class).block();
+  @Test
+  void createGameTest() {
+    webClient = WebClient.create(url);
+    ResponseEntity<GameDto> new_game =
+        webClient.post().uri("").retrieve().toEntity(GameDto.class).block();
 
-		assertNotNull(new_game.getBody());
-	}
+    assertNotNull(new_game.getBody());
+  }
 
-	@Test
-	void getGameByIdTest() {
+  @Test
+  void getGameByIdTest() {
 
-		GameDto createdGame = creategame();
-		webClient = WebClient.create(url);
+    GameDto createdGame = creategame();
+    webClient = WebClient.create(url);
 
-		ResponseEntity<GameDto> object = webClient.get().uri("/game/{id}", createdGame.getId()).retrieve()
-				.toEntity(GameDto.class).block();
+    ResponseEntity<GameDto> object =
+        webClient
+            .get()
+            .uri("/{id}", createdGame.getId())
+            .retrieve()
+            .toEntity(GameDto.class)
+            .block();
 
-		GameDto game = object.getBody();
+    GameDto game = object.getBody();
 
-		assertNotNull(game);
+    assertNotNull(game);
 
-		assertEquals(game.getId(), createdGame.getId());
+    assertEquals(game.getId(), createdGame.getId());
 
-		assertEquals(game.getAttemptsLeft(), createdGame.getAttemptsLeft());
+    assertEquals(game.getAttemptsLeft(), createdGame.getAttemptsLeft());
 
-		assertEquals(game.getGuessedWord(), createdGame.getGuessedWord());
+    assertEquals(game.getGuessedWord(), createdGame.getGuessedWord());
 
-		assertEquals(game.getDate().toString(), createdGame.getDate().toString());
-	}
+    assertEquals(game.getDate().toString(), createdGame.getDate().toString());
+  }
 
-	@Test
-	void getNotCompleteGameTest() {
-		// Create a RestTemplate instance
-		RestTemplate restTemplate = new RestTemplate();
+  @Test
+  void getNotCompleteGameTest() {
+    // Create a RestTemplate instance
+    RestTemplate restTemplate = new RestTemplate();
 
-		// Send a GET request and retrieve the response
-		ResponseEntity<Object> response = restTemplate.getForEntity(url + "/not-completed-games/0", Object.class);
+    // Send a GET request and retrieve the response
+    ResponseEntity<Object> response =
+        restTemplate.getForEntity(url + "/not-completed-games", Object.class);
 
-		assertEquals(200, response.getStatusCodeValue());
+    assertEquals(response.getStatusCodeValue(), 200);
 
-		assertEquals(true, response.hasBody());
-	}
+    assertEquals(response.hasBody(), true);
+  }
 
-	@Test
-	void resetGameByIdTest() {
+  @Test
+  void resetGameByIdTest() {
 
-		GameDto createdGame = creategame();
-		webClient = WebClient.create(url);
+    GameDto createdGame = creategame();
+    webClient = WebClient.create(url);
 
-		ResponseEntity<GameDto> object = webClient.put().uri("/game/{id}/reset", createdGame.getId()).retrieve()
-				.toEntity(GameDto.class).block();
+    ResponseEntity<GameDto> object =
+        webClient
+            .put()
+            .uri("/{id}/reset", createdGame.getId())
+            .retrieve()
+            .toEntity(GameDto.class)
+            .block();
 
-		GameDto game = object.getBody();
+    GameDto game = object.getBody();
 
-		assertNotNull(game);
+    assertNotNull(game);
 
-		assertEquals(game.getAttemptsLeft(), createdGame.getAttemptsLeft());
+    assertEquals(game.getAttemptsLeft(), createdGame.getAttemptsLeft());
 
-		assertNotEquals(game.getGuessedWord(), createdGame.getGuessedWord());
+    assertNotEquals(game.getGuessedWord(), createdGame.getGuessedWord());
 
-		assertNotEquals(game.getGuessedWord(), "");
+    assertNotEquals(game.getGuessedWord(), "");
 
-		assertEquals(game.getDate().toString(), createdGame.getDate().toString());
-	}
+    assertEquals(game.getDate().toString(), createdGame.getDate().toString());
+  }
 
-	@Test
-	void guessLetterTest() throws FileNotFoundException {
+  @Test
+  void guessLetterTest() throws FileNotFoundException {
 
-		GameDto createdGame = creategame();
+    GameDto createdGame = creategame();
 
-		String wordToTest = "";
+    String wordToTest = "";
 
-		File file = new File("wordlist.txt");
-		int index = 0;
+    File file = new File("wordlist.txt");
+    int index = 0;
 
-		try (Scanner reader = new Scanner(file)) {
-			while (reader.hasNextLine()) {
-				String data = reader.nextLine();
-				if (index == createdGame.getWordNum()) {
-					wordToTest = data;
-				}
+    try (Scanner reader = new Scanner(file)) {
+      while (reader.hasNextLine()) {
+        String data = reader.nextLine();
+        if (index == createdGame.getWordNum()) {
+          wordToTest = data;
+        }
 
-				index++;
-			}
-		}
-		var missingLetters = getMissingLetters(wordToTest.toUpperCase());
-		ResponseEntity<GameDto> object = webClient.put()
-				.uri("/game/{id}/guess-letter?letter=" + missingLetters[0], createdGame.getId()).retrieve()
-				.toEntity(GameDto.class).block();
+        index++;
+      }
+    }
+    var missingLetters = getMissingLetters(wordToTest.toUpperCase());
+    ResponseEntity<GameDto> object =
+        webClient
+            .put()
+            .uri("/{id}/guess-letter?letter=" + missingLetters[0], createdGame.getId())
+            .retrieve()
+            .toEntity(GameDto.class)
+            .block();
 
-		GameDto guessedGame = object.getBody();
-		String flag = null;
+    GameDto guessedGame = object.getBody();
+    String flag = null;
 
-		if (guessedGame.getAttemptsLeft() != createdGame.getAttemptsLeft()) {
-			flag = "changed";
-		}
-		assertNotNull(flag);
-	}
+    if (guessedGame.getAttemptsLeft() != createdGame.getAttemptsLeft()) {
+      flag = "changed";
+    }
+    assertNotNull(flag);
+  }
 
-	void getEndingResultTest() {
-		WebClient webClient = WebClient.create(url);
-		ErrorResponse error = webClient.get().uri("/game/ending-result/{gameId}", 1234).retrieve()
-				.toEntity(ErrorResponse.class).block().getBody();
+  void getEndingResultTest() {
+    WebClient webClient = WebClient.create(url);
+    ErrorResponse error =
+        webClient
+            .get()
+            .uri("/{gameId}/ending-result", 1234)
+            .retrieve()
+            .toEntity(ErrorResponse.class)
+            .block()
+            .getBody();
 
-		assertEquals(error.getError(), "Bad request");
-		assertEquals(error.getMessage(), "Game doesn't exist!");
-	}
+    assertEquals(error.getError(), "Bad request");
+    assertEquals(error.getMessage(), "Game doesn't exist!");
+  }
 
-	private char[] getMissingLetters(String word) {
-		String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		StringBuilder missingLetters = new StringBuilder();
+  private char[] getMissingLetters(String word) {
+    String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    StringBuilder missingLetters = new StringBuilder();
 
-		for (char letter : alphabet.toCharArray()) {
-			if (word.indexOf(letter) == -1) {
-				missingLetters.append(letter);
-			}
-		}
+    for (char letter : alphabet.toCharArray()) {
+      if (word.indexOf(letter) == -1) {
+        missingLetters.append(letter);
+      }
+    }
 
-		return missingLetters.toString().toCharArray();
-	}
+    return missingLetters.toString().toCharArray();
+  }
 }
