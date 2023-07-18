@@ -34,6 +34,7 @@ public class RankingServiceImpl implements RankingService {
 
 	UserData checkIfUserExist(String username) {
 		List<UserData> users = userRepository.findAllByUsername(username);
+
 		if (users.size() == 0) {
 			UserData newUser = new UserData();
 			newUser.setUsername(username);

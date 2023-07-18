@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.game_classes.interfaces.services.GameService;
 import com.game_classes.interfaces.services.RankingService;
 import com.game_classes.models.SubmitForm;
@@ -67,10 +68,7 @@ public class GameController {
 	}
 
 	@RequestMapping("/endingResult")
-	public ModelAndView endingResult(String username, long gameId) {
-		if (gameId == 0) {
-			return new ModelAndView("error").addObject("errorMessage", "Not existing game!");
-		}
+	public ModelAndView endingResult(String username, Long gameId) {
 		if (username.isBlank() || username.isEmpty()) {
 			return new ModelAndView("error").addObject("errorMessage",
 					"Write at least one character for UserDataname! ");

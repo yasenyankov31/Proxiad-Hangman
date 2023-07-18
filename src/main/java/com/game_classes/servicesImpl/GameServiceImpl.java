@@ -119,9 +119,6 @@ public class GameServiceImpl implements GameService {
 	@Override
 	public Game getGameState(long gameId) {
 		Game game = gameRepository.findById(gameId);
-		if (game == null) {
-			return null;
-		}
 		return game;
 	}
 
