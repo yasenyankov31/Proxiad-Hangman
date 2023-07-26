@@ -29,7 +29,7 @@
      </div>
      <div class="col-sm-6">
       <a href="#deleteEmployeeModal" onclick="getSelectedCheckboxIds()" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>     
-      <a href="#addEmployeeModal" id="openAddModal"  class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Employee</span></a> 
+      <a href="#addEmployeeModal" id="openAddModal"  class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add new player</span></a> 
      </div>
            </div>
             </div>
@@ -108,7 +108,7 @@
    <div class="modal-content">
     <form action="updateUser" method="post">
      <div class="modal-header">      
-      <h4 class="modal-title">Add Employee</h4>
+      <h4 class="modal-title">Add new player</h4>
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
      </div>
      <div class="modal-body">     
@@ -144,7 +144,7 @@
    <div class="modal-content">
     <form action="updateUser" method="post">
      <div class="modal-header">      
-      <h4 class="modal-title">Edit Employee</h4>
+      <h4 class="modal-title">Edit player</h4>
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
      </div>
      <div class="modal-body">     

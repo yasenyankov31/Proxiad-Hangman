@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import com.game_classes.models.GameStatus;
+
 @Entity
 public class Game {
 	@Id
@@ -97,12 +99,12 @@ public class Game {
 		this.date = date;
 	}
 
-	public String getInfo() {
+	public GameStatus getGameState() {
 		if (attemptsLeft == 0) {
-			return "Game over! The word was " + word;
+			return GameStatus.Lost;
 		} else if (this.word.equals(this.guessedWord)) {
-			return "Game won! The word was " + word;
+			return GameStatus.Win;
 		}
-		return "Guessed word: " + this.guessedWord + " , Attempts left: " + this.attemptsLeft;
+		return GameStatus.OnGoing;
 	}
 }

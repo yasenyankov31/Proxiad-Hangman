@@ -16,6 +16,7 @@ import com.game_classes.interfaces.jpaRepositories.UserRepository;
 import com.game_classes.interfaces.modelInterfaces.TopPlayerStats;
 import com.game_classes.interfaces.modelInterfaces.UserRankData;
 import com.game_classes.interfaces.services.RankingService;
+import com.game_classes.models.GameStatus;
 import com.game_classes.models.UserData;
 import com.game_classes.models.game.CompletedGame;
 import com.game_classes.models.game.Game;
@@ -46,9 +47,9 @@ public class RankingServiceImpl implements RankingService {
 
 	@Override
 	public void completeGame(Game game, String username) {
-		String gameInfo = game.getInfo();
+		GameStatus gameResultState = game.getGameState();
 		UserData user = checkIfUserExist(username);
-		String status = gameInfo.contains("Game over") ? "Lost" : "Won";
+		String status = gameResultState == GameStatus.Lost ? "Lost" : "Won";
 		CompletedGame completedGame = new CompletedGame(status, game);
 		RankingPerGamer statistic = new RankingPerGamer(user, completedGame);
 		rankingRepository.save(statistic);

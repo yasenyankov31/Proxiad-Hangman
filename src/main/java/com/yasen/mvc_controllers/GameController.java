@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.game_classes.interfaces.services.GameService;
 import com.game_classes.interfaces.services.RankingService;
+import com.game_classes.models.GameStatus;
 import com.game_classes.models.SubmitForm;
 import com.game_classes.models.game.Game;
 
@@ -75,12 +76,12 @@ public class GameController {
 		}
 		Game game = gameService.getGameState(gameId);
 		ModelAndView modelAndView = new ModelAndView("game/game");
-		String gameInfo = game.getInfo();
+		GameStatus gameState = game.getGameState();
 
-		boolean isGameOver = gameInfo.contains("Game over") || gameInfo.contains("Game won");
+		boolean isGameOver = gameState == GameStatus.Lost || gameState == GameStatus.Win;
 		rankingService.completeGame(game, username);
 		modelAndView.addObject("gameId", game.getId());
-		modelAndView.addObject("result", gameInfo);
+		modelAndView.addObject("result", gameState.toString());
 		modelAndView.addObject("lettersUsed", game.getLetters());
 		modelAndView.addObject("wordNum", game.getWordNum());
 
@@ -104,7 +105,7 @@ public class GameController {
 		ModelAndView modelAndView = new ModelAndView("game/game");
 		Game newGame = gameService.createNewGame();
 		modelAndView.addObject("gameId", newGame.getId());
-		modelAndView.addObject("result", newGame.getInfo());
+		modelAndView.addObject("result", newGame.getGameState().toString());
 		modelAndView.addObject("isGameOver", false);
 		modelAndView.addObject("wordNum", newGame.getWordNum());
 		return modelAndView;
@@ -122,15 +123,15 @@ public class GameController {
 			return new ModelAndView("error").addObject("errorMessage", "Game not found!");
 		}
 
-		String gameInfo = game.getInfo();
-		boolean isGameOver = gameInfo.contains("Game over") || gameInfo.contains("Game won")
-				|| game.getAttemptsLeft() <= 0;
+		GameStatus gameState = game.getGameState();
+
+		boolean isGameOver = gameState == GameStatus.Lost || gameState == GameStatus.Win || game.getAttemptsLeft() <= 0;
 		if (isGameOver) {
 			return new ModelAndView("user/username_form").addObject("gameId", submitForm.getGameId());
 		}
 
 		modelAndView.addObject("gameId", game.getId());
-		modelAndView.addObject("result", gameInfo);
+		modelAndView.addObject("result", gameState.toString());
 		modelAndView.addObject("lettersUsed", gameService.getUsersLetters(submitForm.getGameId()));
 		modelAndView.addObject("wordNum", game.getWordNum());
 
@@ -153,7 +154,7 @@ public class GameController {
 			return new ModelAndView("error").addObject("errorMessage", "Game not found!");
 		}
 
-		String gameInfo = gameService.resetGame(gameId).getInfo();
+		String gameInfo = gameService.resetGame(gameId).getGuessedWord().toString();
 		modelAndView.addObject("result", gameInfo);
 		modelAndView.addObject("gameId", gameId);
 		modelAndView.addObject("lettersUsed", gameService.getUsersLetters(gameId));
@@ -176,16 +177,17 @@ public class GameController {
 		if (game == null) {
 			return new ModelAndView("error").addObject("errorMessage", "Game not found!");
 		}
+		GameStatus gameState = game.getGameState();
 
-		String gameInfo = game.getInfo();
-		boolean isGameOver = gameInfo.contains("Game over") || gameInfo.contains("Game won")
-				|| game.getAttemptsLeft() <= 0;
-
+		boolean isGameOver = gameState == GameStatus.Lost || gameState == GameStatus.Win || game.getAttemptsLeft() <= 0;
+		if (isGameOver) {
+			return new ModelAndView("user/username_form").addObject("gameId", submitForm.getGameId());
+		}
 		if (isGameOver) {
 			return new ModelAndView("user/username_form").addObject("gameId", gameId);
 		}
 
-		modelAndView.addObject("result", gameInfo);
+		modelAndView.addObject("result", gameState.toString());
 		modelAndView.addObject("gameId", gameId);
 		modelAndView.addObject("lettersUsed", gameService.getUsersLetters(gameId));
 		modelAndView.addObject("wordNum", game.getWordNum());

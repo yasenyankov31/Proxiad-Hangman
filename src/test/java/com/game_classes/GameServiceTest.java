@@ -6,41 +6,45 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
 import com.game_classes.models.game.Game;
 import com.game_classes.servicesImpl.GameServiceImpl;
 
 class GameServiceTest {
 
-  @Mock GameRepositoryImpl gameRepository;
+	@Mock
+	GameRepositoryImpl gameRepository;
 
-  @InjectMocks private GameServiceImpl gameServiceImpl;
+	@InjectMocks
+	private GameServiceImpl gameServiceImpl;
 
-  private Game game;
+	private Game game;
 
-  long gameId = 242983472832432432L;
+	long gameId = 242983472832432432L;
 
-  @BeforeEach
-  void setUp() {
-    MockitoAnnotations.openMocks(this);
-    game = new Game(gameId, "example", "*******", 7, 2);
-  }
+	@BeforeEach
+	void setUp() {
+		MockitoAnnotations.openMocks(this);
+		game = new Game(gameId, "example", "*******", 7, 2);
+	}
 
-  @Test
-  void getRandomWordTest() {
-    assertNotNull(gameServiceImpl.getRandomWord());
-  }
+	@Test
+	void getRandomWordTest() {
+		assertNotNull(gameServiceImpl.getRandomWord());
+	}
 
-  @Test
-  void getCreateNewGameTest() {
-    assertNotNull(gameServiceImpl.createNewGame());
-  }
+	@Test
+	void getCreateNewGameTest() {
+		assertNotNull(gameServiceImpl.createNewGame());
+	}
 
-  @Test
+	@Test
   void guessLetterTest() {
     // Create a new game
     when(gameRepository.findById(game.getId())).thenReturn(game);
@@ -57,7 +61,7 @@ class GameServiceTest {
     assertNotNull(result);
   }
 
-  @Test
+	@Test
   void getGameStateTest() {
     // Create a new game
     when(gameRepository.findById(game.getId())).thenReturn(game);
@@ -70,21 +74,21 @@ class GameServiceTest {
     assertNotNull(result);
   }
 
-  @Test
-  void getUsersLettersTest() {
-    // Create a new game
-    game.setLettersUsed("test");
-    when(gameRepository.findById(game.getId())).thenReturn(game);
-    String result = gameServiceImpl.getUsersLetters(gameId);
+	@Test
+	void getUsersLettersTest() {
+		// Create a new game
+		game.setLettersUsed("test");
+		when(gameRepository.findById(game.getId())).thenReturn(game);
+		String result = gameServiceImpl.getUsersLetters(gameId);
 
-    // Verify that gameRepository methods were called
-    verify(gameRepository, times(1)).findById(gameId);
+		// Verify that gameRepository methods were called
+		verify(gameRepository, times(1)).findById(gameId);
 
-    // Assert that the returned game is not null
-    assertEquals("test", result);
-  }
+		// Assert that the returned game is not null
+		assertEquals("test", result);
+	}
 
-  @Test
+	@Test
   void resetGameTest() {
     // Create a new game
     when(gameRepository.findById(game.getId())).thenReturn(game);

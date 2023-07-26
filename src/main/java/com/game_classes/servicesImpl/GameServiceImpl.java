@@ -1,6 +1,7 @@
 package com.game_classes.servicesImpl;
 
 import java.io.File;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -74,7 +75,7 @@ public class GameServiceImpl implements GameService {
 		long max = 99999999999L;
 
 		long gameId = random.nextLong() % (max - min + 1) + min;
-		Game game = new Game(gameId, word, guessedWord.toString(), 7, Integer.parseInt(wordAndNum[1]));
+		Game game = new Game(gameId, word, guessedWord.toString(), 8, Integer.parseInt(wordAndNum[1]));
 		gameRepository.createGame(game);
 		return game;
 	}
@@ -152,7 +153,7 @@ public class GameServiceImpl implements GameService {
 			game.setWord(word);
 			game.setLettersUsed("");
 			game.setGuessedWord(guessedWord.toString());
-			game.setAttemptsLeft(7);
+			game.setAttemptsLeft(8);
 			game.setWordNum(Integer.parseInt(wordAndNum[1]));
 			gameRepository.updateGame(game);
 		}
@@ -178,5 +179,15 @@ public class GameServiceImpl implements GameService {
 	public Page<Game> getUnfinishedGames(int pageNum) {
 		PageRequest pageable = PageRequest.of(pageNum, 5);
 		return gameRepository.getUnfinishedGames(pageable);
+	}
+
+	@Override
+	public List<Game> getUnfinishedGames() {
+		return gameRepository.getUnfinishedGames();
+	}
+
+	@Override
+	public boolean checkIfGameIsCompleted(long gameId) {
+		return gameRepository.checkIfGameIsCompleted(gameId);
 	}
 }

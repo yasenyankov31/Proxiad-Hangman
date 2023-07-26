@@ -8,7 +8,8 @@ import com.yasen.soapContractLast.GameEndPoint;
 
 @SpringBootApplication
 public class SpringStart {
-  @Autowired private static GameEndPoint gameEndPoint;
+  @Autowired
+  private static GameEndPoint gameEndPoint;
 
   @Autowired
   public void setGameEndPoint(GameEndPoint gameEndPoint) {

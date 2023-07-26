@@ -9,7 +9,7 @@ public class SoapException extends Exception {
 	/**
 	 * 
 	 */
-	private static final String NAMESPACE = "http://www.game_classes.com/soap-models";
+	public static final String NAMESPACE = "http://www.game_classes.com/soap-models";
 	private static final long serialVersionUID = 1L;
 
 	public SoapException(String message) {

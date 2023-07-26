@@ -29,4 +29,13 @@ public class GameFactoryImpl implements GameFactory {
 		return new PageImpl<>(gameDtos, games.getPageable(), games.getTotalElements());
 	}
 
+	@Override
+	public List<GameDto> fromEntities(List<Game> games) {
+		List<GameDto> gameDtos = new ArrayList<>();
+		for (Game gameData : games) {
+			gameDtos.add(new GameDto(gameData));
+		}
+		return gameDtos;
+	}
+
 }

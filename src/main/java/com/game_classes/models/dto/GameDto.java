@@ -2,6 +2,7 @@ package com.game_classes.models.dto;
 
 import java.util.Date;
 
+import com.game_classes.models.GameStatus;
 import com.game_classes.models.game.Game;
 
 public class GameDto {
@@ -11,7 +12,9 @@ public class GameDto {
 	private int attemptsLeft;
 	private int wordNum;
 	private Date date;
-	private boolean isGameOver;
+	private GameStatus gameStatus;
+	private boolean isCompletedGame;
+	private String originalWord;
 
 	public GameDto() {
 	}
@@ -23,6 +26,7 @@ public class GameDto {
 		this.attemptsLeft = game.getAttemptsLeft();
 		this.wordNum = game.getWordNum();
 		this.date = game.getDate();
+		this.gameStatus = game.getGameState();
 	}
 
 	public Long getId() {
@@ -73,12 +77,28 @@ public class GameDto {
 		this.date = date;
 	}
 
-	public boolean isGameOver() {
-		return isGameOver;
+	public GameStatus getGameStatus() {
+		return gameStatus;
 	}
 
-	public void setGameOver(boolean isGameOver) {
-		this.isGameOver = isGameOver;
+	public void setGameStatus(GameStatus gameStatus) {
+		this.gameStatus = gameStatus;
+	}
+
+	public boolean isCompletedGame() {
+		return isCompletedGame;
+	}
+
+	public void setCompletedGame(boolean isCompletedGame) {
+		this.isCompletedGame = isCompletedGame;
+	}
+
+	public String getOriginalWord() {
+		return originalWord;
+	}
+
+	public void setOriginalWord(String originalWord) {
+		this.originalWord = originalWord;
 	}
 
 }
