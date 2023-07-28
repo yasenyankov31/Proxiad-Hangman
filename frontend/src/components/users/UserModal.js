@@ -85,11 +85,11 @@ function UserModal({ show, closeModal, userData, updateUsers, isDeleting, delete
     }
     else {
       setAction("Edit");
-      setUserId(userData.id);
-      setUsername(userData.username);
-      setPassword(userData.password);
-      setAge(userData.age);
-      setBirthDate(userData.birthDate);
+      setUserId(userData.id || 0);
+      setUsername(userData.username || '');
+      setPassword(userData.password || '');
+      setAge(userData.age || 0);
+      setBirthDate(userData.birthDate || '');
     }
   }, [show])
 
@@ -124,7 +124,7 @@ function UserModal({ show, closeModal, userData, updateUsers, isDeleting, delete
               </Form>
             </Modal.Body>
             <Modal.Footer className="justify-content-start">
-              <Button variant="primary" onClick={submitModal}>
+              <Button data-testid="edit" variant="primary" onClick={submitModal}>
                 {action}
               </Button>
             </Modal.Footer>
@@ -163,5 +163,6 @@ function UserModal({ show, closeModal, userData, updateUsers, isDeleting, delete
     </>
   );
 }
+
 
 export default UserModal;

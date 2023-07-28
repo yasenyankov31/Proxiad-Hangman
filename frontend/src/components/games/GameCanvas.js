@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 
 
 const GameCanvas = ({ wordToGuess, attempts, resetGame }) => {
@@ -68,9 +68,10 @@ const GameCanvas = ({ wordToGuess, attempts, resetGame }) => {
     const drawFigure = (attempts) => {
         const ctx = ctxRef.current;
         const miliseconds = 500;
-        
+
         switch (attempts) {
             case 8:
+                clearCanvas();
                 break;
             case 7:
                 drawLineAnimated(ctx, 100, 400, 200, 400, miliseconds);
@@ -128,36 +129,38 @@ const GameCanvas = ({ wordToGuess, attempts, resetGame }) => {
             setFadeButton("reset-button");
             setIsButtonDisabled(true);
         }
-        for (let index = 8; index >= attempts; index--) {
+        for (let index = 7; index >= attempts; index--) {
             drawFigure(index)
         }
     }, [attempts]);
 
     const characters = wordToGuess.split('');
-    
+
 
     return (
-        <div className='guessed-word-container'>
-           {characters.includes('*')&& attempts !== 0 && <Button onClick={() => {
-                resetGame();
-                clearCanvas();
-            }}
-                id={fadeButton} className='reset-button' disabled={isButtonDisabled} >Reset word
-            </Button>} 
+        <Container className="d-flex align-items-center justify-content-center">
+            <div className='guessed-word-container'>
+                {characters.includes('*') && attempts !== 0 && <Button onClick={() => {
+                    resetGame();
+                    clearCanvas();
+                }}
+                    id={fadeButton} className='reset-button' disabled={isButtonDisabled} >Reset word
+                </Button>}
 
-            <canvas ref={canvasRef} width="500" height="500" className='game-canvas' />
+                <canvas ref={canvasRef} width="500" height="500" className='game-canvas' />
 
-            <div className='result'>
-                {characters.map((char, index) =>
-                    <p
-                        key={index}
-                        className="inline underline-breaks"
-                    >
-                        {char + ' '}
-                    </p>
-                )}</div>
+                <div className='result'>
+                    {characters.map((char, index) =>
+                        <p
+                            key={index}
+                            className="inline underline-breaks"
+                        >
+                            {char + ' '}
+                        </p>
+                    )}</div>
 
-        </div>
+            </div>
+        </Container>
     );
 };
 

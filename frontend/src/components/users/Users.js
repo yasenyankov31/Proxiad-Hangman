@@ -8,6 +8,7 @@ import PaginationComponent from '../general/Pagination';
 import UserModal from './UserModal';
 
 
+
 const fetcher = async (url) => {
     const response = await fetch(url);
     if (!response.ok) {

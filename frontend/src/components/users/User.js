@@ -22,6 +22,7 @@ const fetcher = async (url) => {
 const User = () => {
     const { username, page } = useParams();
 
+
     const gameStat = ["Wins", "Losses"];
     const barColors = [
         "#1e7145",

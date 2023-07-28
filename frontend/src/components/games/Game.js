@@ -4,17 +4,17 @@ import { Container, Row, Col, Button, Modal, Form, Spinner } from 'react-bootstr
 import { useParams } from 'react-router-dom'
 import GameCanvas from './GameCanvas';
 import Loading from '../general/Loading';
-import ErrorComponent   from '../general/Error';
+import ErrorComponent from '../general/Error';
 import { useNavigate } from 'react-router-dom';
 
 const fetcher = async (url) => {
     const response = await fetch(url);
     if (!response.ok) {
-      const errorData = await response.json(); 
-      throw new Error(errorData.message); 
+        const errorData = await response.json();
+        throw new Error(errorData.message);
     }
     return response.json();
-  };
+};
 
 
 
@@ -30,12 +30,12 @@ const Game = () => {
     const [lettersUsed, setLettersUsed] = useState("");
     const [username, setUsername] = useState('');
     const [gameInfoMessage, setGameInfoMessage] = useState('');
-    const [gameCompleted,setGameCompleted]=useState(false);
-    const [originalWord,setOriginalWord]=useState("");
+    const [gameCompleted, setGameCompleted] = useState(false);
+    const [originalWord, setOriginalWord] = useState("");
 
     const [errorGuessing, setErrorGuessing] = useState(false);
     const [errorGuessingMessage, setErrorGuessingMessage] = useState("true");
-    const [loadingEndResult,setLoadingEndResult]=useState(false);
+    const [loadingEndResult, setLoadingEndResult] = useState(false);
 
     const [keyboardId, setKeyboardId] = useState("");
     const [formZindex, setFormZindex] = useState("-1");
@@ -71,8 +71,8 @@ const Game = () => {
     }
 
     const completeGame = () => {
-        
-        if (username.length > 2 && username.length<11) {
+
+        if (username.length < 11) {
             setLoadingEndResult(true);
             fetch('/api/games/' + id + "/ending-result?username=" + username, {
                 method: 'GET',
@@ -98,7 +98,7 @@ const Game = () => {
         }
 
     }
-    
+
     const newGame = () => {
         fetch('/api/games', {
             method: 'POST',
@@ -138,10 +138,10 @@ const Game = () => {
                 setAttempts(game.attemptsLeft);
                 setGuessedWord(game.guessedWord);
                 setLettersUsed((game.lettersUsed + game.guessedWord).toUpperCase());
-                if (game.gameStatus!=="OnGoing") {
+                if (game.gameStatus !== "OnGoing") {
                     gameOver();
                 }
-                if(game.completedGame){
+                if (game.completedGame) {
                     setGameInfoMessage(game.gameStatus);
                 }
             })
@@ -150,21 +150,21 @@ const Game = () => {
                 setErrorGuessingMessage(error.message);
             });
     }
-    const viewProfile = ()=>{
-        navigate('/user/'+username+"/1");
+
+    const viewProfile = () => {
+        navigate('/user/' + username + "/1");
     }
 
     useEffect(() => {
         if (data) {
-            console.log(data)
             setAttempts(data.attemptsLeft);
             setGameCompleted(data.completedGame);
             setGuessedWord(data.guessedWord);
             setLettersUsed(data.lettersUsed.toUpperCase() + data.guessedWord.toUpperCase());
-            if (data.gameStatus!=="OnGoing") {
+            if (data.gameStatus !== "OnGoing") {
                 gameOver();
             }
-            if(data.completedGame){
+            if (data.completedGame) {
                 setGameInfoMessage(data.gameStatus);
                 setOriginalWord(data.originalWord);
             }
@@ -199,14 +199,15 @@ const Game = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <Row className='p-5'>
+            <Row >
                 <Col xs={12} lg={6} className="d-flex flex-column align-items-center ">
                     <div>
                         <div className='parent'>
                             <div style={{ zIndex: formZindex }} className='container text-center border border-dark rounded username-form'>
-                                {!loadingEndResult&& !gameInfoMessage && !gameCompleted && <div>
+                                {!loadingEndResult && !gameInfoMessage && !gameCompleted && <div>
                                     <Form.Label>Submit your name to <p>complete the game</p> </Form.Label>
-                                    <Form.Control type="text" placeholder="Your username" onChange={e => setUsername(e.target.value)} />
+                                    <Form.Control id="username" type="text" placeholder="Your username" onChange={e => setUsername(e.target.value)}
+                                         />
                                     <Button className='m-3' onClick={() => { completeGame() }}>Submit</Button>
                                 </div>}
 
@@ -215,10 +216,10 @@ const Game = () => {
                                         <span className="visually-hidden">Loading...</span>
                                     </Spinner>
                                 </div>}
-                                {(gameInfoMessage || gameCompleted) && <div>
-                                    <Form.Label className='p-3'>You {gameInfoMessage} the game.The word was {originalWord} </Form.Label>
-                                    <Button onClick={()=>{newGame()}} className='m-1' >Play again</Button>
-                                    <Button onClick={()=>{viewProfile()}} >Gamer profile</Button>
+                                {(gameInfoMessage || gameCompleted) && <div >
+                                    <Form.Label className='p-3 status'>You {gameInfoMessage} the game.The word was {originalWord}!</Form.Label>
+                                    <Button onClick={() => { newGame() }} className='m-1' >Play again</Button>
+                                    <Button onClick={() => { viewProfile() }} >Gamer profile</Button>
                                 </div>}
 
                             </div>
@@ -237,7 +238,7 @@ const Game = () => {
                         </div>
                     </div>
                 </Col>
-                <Col xs={12} lg={6} className="d-flex align-items-center justify-content-center">
+                <Col xs={12} lg={6} >
                     <GameCanvas attempts={attempts}
                         wordToGuess={guessedWord}
                         resetGame={resetGame}
