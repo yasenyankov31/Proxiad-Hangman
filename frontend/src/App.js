@@ -8,6 +8,7 @@ import Games from './components/games/Games';
 import Navbar from './components/general/Navbar';
 import User from './components/users/User';
 import Users from './components/users/Users';
+import NotFound from './components/general/NotFound';
 
 
 function App() {
@@ -22,6 +23,8 @@ function App() {
           <Route  path="/games/:page" element={<Games/>} />
           <Route  path="/user/:username/:page" element={<User/>} />
           <Route  path="/users/:page" element={<Users/>} />
+          <Route  path="/users/:page" element={<Users/>} />
+          <Route  path="*" element={<NotFound/>} />
         </Routes >
       </Router>
      
