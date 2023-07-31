@@ -17,7 +17,7 @@ function UserModal({ show, closeModal, userData, updateUsers, isDeleting, delete
 
   const [executionStatus, setExecutionStatus] = useState("");
 
-  const person = {
+  const actions = {
     "Add": "POST",
     "Edit": "PUT",
     "Delete": "DELETE"
@@ -27,7 +27,7 @@ function UserModal({ show, closeModal, userData, updateUsers, isDeleting, delete
 
   const submitModal = () => {
     fetch('/api/users' + deleteParams, {
-      method: person[action],
+      method: actions[action],
       headers: {
         'Content-Type': 'application/json',
       },

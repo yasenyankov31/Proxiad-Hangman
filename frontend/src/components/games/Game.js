@@ -187,7 +187,7 @@ const Game = () => {
 
 
     return (
-        <Container className="d-flex justify-content-around align-items-center p-5 ">
+        <Container className=" d-flex justify-content-around align-items-center "style={{marginTop:'200px'}} >
             <Modal show={errorGuessing} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Alert</Modal.Title>

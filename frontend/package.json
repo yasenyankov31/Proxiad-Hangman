@@ -2,7 +2,6 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8080",
   "dependencies": {
     "@storybook/addon-a11y": "^7.1.1",
     "@storybook/addon-knobs": "^7.0.2",
