@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Container } from 'react-bootstrap';
+import TranslateI18n from '../general/TranslateI18n';
 
 function UserModal({ show, closeModal, userData, updateUsers, isDeleting, deleteIds }) {
   const [userId, setUserId] = useState(0);
@@ -69,10 +70,10 @@ function UserModal({ show, closeModal, userData, updateUsers, isDeleting, delete
         }
         setDeleteParams(params.slice(0, -1));
 
-        setDeleteMessage("Are you sure you want to delete?");
+        setDeleteMessage("ModalDeleteWarning");
       }
       else {
-        setDeleteMessage("No users selected!");
+        setDeleteMessage("ModalDeleteException");
       }
     }
     else if (userData === null) {
@@ -103,29 +104,29 @@ function UserModal({ show, closeModal, userData, updateUsers, isDeleting, delete
             <Modal.Body>
               <Form>
                 <Form.Group className="mb-3">
-                  <Form.Label>Username</Form.Label>
+                  <Form.Label><TranslateI18n id={"UsersTableUsernameColumn"}/></Form.Label>
                   <Form.Control defaultValue={username} onChange={(e) => { setUsername(e.target.value) }} type="text" placeholder="ProPlayer123" />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  <Form.Label>Password</Form.Label>
+                  <Form.Label><TranslateI18n id={"UsersTablePasswordColumn"}/></Form.Label>
                   <Form.Control defaultValue={password} onChange={(e) => { setPassword(e.target.value) }} type="text" placeholder="Original password" />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  <Form.Label>Age</Form.Label>
+                  <Form.Label><TranslateI18n id={"UsersTableAgeColumn"}/></Form.Label>
                   <Form.Control value={age} onChange={(e) => { setAge(Number(e.target.value)) }} type="number" placeholder="Your age" />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  <Form.Label>Birth date</Form.Label>
+                  <Form.Label><TranslateI18n id={"UsersTableBirthDateColumn"}/></Form.Label>
                   <Form.Control defaultValue={birthDate} onChange={(e) => { setBirthDate(e.target.value) }} type="date" />
                 </Form.Group>
               </Form>
             </Modal.Body>
             <Modal.Footer className="justify-content-start">
               <Button data-testid="edit" variant="primary" onClick={submitModal}>
-                {action}
+              <TranslateI18n id={"ModalTitle"+action}/>
               </Button>
             </Modal.Footer>
           </>
@@ -134,8 +135,8 @@ function UserModal({ show, closeModal, userData, updateUsers, isDeleting, delete
         return (
           <div className='d-flex justify-content-center align-items-center' style={{ marginTop: "50px", marginBottom: "50px" }} >
             <Container className='text-center'>
-              <h5 >{deleteMessage}</h5>
-              {deleteIds.size>0 && <Button className='btn-danger' onClick={submitModal}>Delete</Button>}
+              <h5 className='btn-danger'><TranslateI18n id={deleteMessage}/></h5>
+              {deleteIds.size>0 && <Button className='btn-danger' onClick={submitModal}><TranslateI18n id={"ModalTitleDelete"}/></Button>}
             </Container>
           </div>
         );
@@ -155,7 +156,7 @@ function UserModal({ show, closeModal, userData, updateUsers, isDeleting, delete
     <>
       <Modal show={show} onHide={closeModal}>
         <Modal.Header closeButton>
-          <Modal.Title>{action} user</Modal.Title>
+          <Modal.Title><TranslateI18n id={"ModalTitle"+action}/></Modal.Title>
         </Modal.Header>
 
         {renderModalBody()}

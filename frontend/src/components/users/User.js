@@ -7,7 +7,8 @@ import Loading from '../general/Loading';
 import ErrorComponent from '../general/Error';
 import PaginationComponent from '../general/Pagination';
 import Chart from 'chart.js/auto';
-
+import TranslateI18n from '../general/TranslateI18n';
+import { useTranslation } from 'react-i18next';
 
 const fetcher = async (url) => {
     const response = await fetch(url);
@@ -21,13 +22,14 @@ const fetcher = async (url) => {
 
 const User = () => {
     const { username, page } = useParams();
+    const { t } = useTranslation();
 
-
-    const gameStat = ["Wins", "Losses"];
+    const gameStat = [t('WinsChart'), t('LossesChart')];
     const barColors = [
         "#1e7145",
         "#b91d47"
     ];
+    
 
 
     const userPorfileResponse = useSWR('/api/users/user-profile?username=' + username, fetcher)
@@ -86,7 +88,7 @@ const User = () => {
     return (
         <div>
             <Container className='p-5'>
-                <h1 className='p-5'>Player {username} statistics</h1>
+             <h1 className='p-5'><TranslateI18n id="UserProfileTitle"/>{username}</h1>
                 <Row>
                     <Col className="d-flex justify-content-center align-items-center">
                         <Line
@@ -94,7 +96,7 @@ const User = () => {
                                 labels: generateAscendingArray(userPorfileResponse.data.statusValues.length),
                                 datasets: [
                                     {
-                                        label: 'Win streaks',
+                                        label: t('WinStreaksChart'),
                                         data: userPorfileResponse.data.statusValues,
                                         lineTension: 0.5
                                     },
@@ -137,15 +139,15 @@ const User = () => {
                     </Col>
                 </Row>
                 <Container  >
-                    <h1 className='p-3'>All played games</h1>
+                    <h1 className='p-3'><TranslateI18n id="UserProfileTableTitle"/></h1>
                     <Table className='table-dark' striped bordered>
                         <thead>
                             <tr>
-                                <th>Word</th>
-                                <th>Attempts left</th>
-                                <th>Game status</th>
-                                <th>Creation date</th>
-                                <th>Used letters</th>
+                                <th><TranslateI18n id="UserProfileColumnWord"/></th>
+                                <th><TranslateI18n id="UserProfileColumnAttemptsLeft"/></th>
+                                <th><TranslateI18n id="UserProfileColumnGameStatus"/></th>
+                                <th><TranslateI18n id="UserProfileColumnCreationDate"/></th>
+                                <th><TranslateI18n id="UserProfileColumnUsedLetters"/></th>
                             </tr>
                         </thead>
                         <tbody>

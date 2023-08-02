@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import PaginationComponent from '../general/Pagination';
 import UserModal from './UserModal';
+import TranslateI18n from '../general/TranslateI18n';
 
 
 
@@ -158,15 +159,15 @@ const Users = () => {
                 isDeleting={isDeleting}
             />
             <div className="p-5">
-                <h1 className="p-5 d-flex flex-column align-items-center justify-content-center">All users</h1>
+                <h1 className="p-5 d-flex flex-column align-items-center justify-content-center"><TranslateI18n id={"UsersTableTitle"}/></h1>
                 <div className=" justify-content-start">
-                    <Button className='m-1 btn-primary' onClick={() => { showModal() }}>Add new user</Button>
-                    <Button className='m-1 btn-danger' onClick={() => { deleteUser(selectedUserIds) }}>Delete selected</Button>
+                    <Button className='m-1 btn-primary' onClick={() => { showModal() }}><TranslateI18n id={"UsersAddBtn"}/></Button>
+                    <Button className='m-1 btn-danger' onClick={() => { deleteUser(selectedUserIds) }}><TranslateI18n id={"UsersDeleteBtn"}/></Button>
                 </div>
                 <Table className='table-dark' striped bordered >
                     <thead>
                         <tr>
-                            <th className='text-center'>Select all
+                            <th className='text-center'><TranslateI18n id={"UsersTableSelectAllColumn"}/>
                                 <Form.Check
                                     type="checkbox"
                                     id="select-all"
@@ -174,12 +175,12 @@ const Users = () => {
                                     onChange={e => toggleSelectAll(e.target.checked)}
                                 />
                             </th>
-                            <th>Username</th>
-                            <th>Password</th>
-                            <th>Age</th>
-                            <th>Birth Date</th>
-                            <th>Actions</th>
-                            <th>View profile</th>
+                            <th><TranslateI18n id={"UsersTableUsernameColumn"}/></th>
+                            <th><TranslateI18n id={"UsersTablePasswordColumn"}/></th>
+                            <th><TranslateI18n id={"UsersTableAgeColumn"}/></th>
+                            <th><TranslateI18n id={"UsersTableBirthDateColumn"}/></th>
+                            <th><TranslateI18n id={"UsersTableActionsColumn"}/></th>
+                            <th><TranslateI18n id={"UsersTableViewProfileColumn"}/></th>
                         </tr>
                     </thead>
                     <tbody>

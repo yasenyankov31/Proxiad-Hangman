@@ -5,6 +5,7 @@ import useSWR from 'swr'
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import PaginationComponent from '../general/Pagination';
+import TranslateI18n from '../general/TranslateI18n';
 
 
 const fetcher = async (url) => {
@@ -68,13 +69,13 @@ const Games = () => {
   return (
     <Container className="d-flex flex-column align-items-center justify-content-center ">
       <div className="d-flex flex-column align-items-center justify-content-center p-5">
-        <h1 className="p-5">All on-going games</h1>
+        <h1 className="p-5"><TranslateI18n id={"GamesTableTitle"}/></h1>
         <Table className='table-dark' striped bordered >
           <thead>
             <tr>
-              <th>Attempts left</th>
-              <th>Creation date</th>
-              <th>Word progress</th>
+              <th><TranslateI18n id={"GamesTableAttemptsColumn"}/></th>
+              <th><TranslateI18n id={"GamesTableDateColumn"}/></th>
+              <th><TranslateI18n id={"GamesTableWordColumn"}/></th>
               <th></th>
             </tr>
           </thead>
@@ -87,7 +88,7 @@ const Games = () => {
                   <td>{date.toLocaleDateString()}</td>
                   <td>{game.guessedWord}</td>
                   <td>
-                    <Button onClick={() => { viewGame(game.id) }}>Continue</Button>
+                    <Button onClick={() => { viewGame(game.id) }}><TranslateI18n id={"GamesTableContinueBtn"}/></Button>
                   </td>
                 </tr>);
            })}

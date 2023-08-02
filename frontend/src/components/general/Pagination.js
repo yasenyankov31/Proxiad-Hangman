@@ -1,11 +1,12 @@
 import React from 'react';
 import { Container, Pagination } from 'react-bootstrap';
+import TranslateI18n from './TranslateI18n';
 
 const PaginationComponent = ({ totalPages, totalElements, pageNumber, handlePagination }) => {
   return (
     <Container style={{paddingTop:'40px'}}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h6>Total elements: {totalElements}</h6>
+        <div><h6><TranslateI18n id={"PaginationTotalElements"}/> {totalElements}</h6></div>
         <Pagination>
           <Pagination.First onClick={() => handlePagination(1)} disabled={pageNumber === 1} />
           <Pagination.Prev onClick={() => handlePagination(pageNumber - 1)} disabled={pageNumber === 1} />

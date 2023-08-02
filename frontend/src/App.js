@@ -9,7 +9,7 @@ import Navbar from './components/general/Navbar';
 import User from './components/users/User';
 import Users from './components/users/Users';
 import NotFound from './components/general/NotFound';
-
+import { useTranslation } from "react-i18next";
 
 function App() {
   return (

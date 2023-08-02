@@ -6,6 +6,8 @@ import Loading from '../general/Loading';
 import ErrorComponent   from '../general/Error';
 import RankingBars from './RankingBars';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import TranslateI18n from '../general/TranslateI18n';
 
 const fetcher = async (url) => {
     const response = await fetch(url);
@@ -20,6 +22,7 @@ const fetcher = async (url) => {
 const Home = () => {
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const { data, error, isLoading } = useSWR('/api/games', fetcher)
     useEffect(() => {
@@ -54,16 +57,16 @@ const Home = () => {
             {data && <div className="text-center ">
                 <div className='d-none d-sm-block'>
                     <Tabs defaultActiveKey="first" className="mb-3 ">
-                        <Tab eventKey="first" title="Top 10 of all time" >
+                        <Tab eventKey="first" title={<TranslateI18n id = {"Top10AllTime"}/>} >                         
                             <RankingBars userNames={data.month.userNames} winCounts={data.month.winCounts} />
                         </Tab>
-                        <Tab eventKey="second" title="Top 10 of the month">
+                        <Tab eventKey="second" title={<TranslateI18n id = {"Top10Monthly"}/>}>
                             <RankingBars userNames={data.allTime.userNames} winCounts={data.allTime.winCounts} />
                         </Tab>
                     </Tabs>
                 </div>
                 <Button variant="primary" className="mt-3" onClick={createGame}>
-                    Start new game
+                    <TranslateI18n id={"StartGameBtn"}/>
                 </Button>
             </div>}
         </Container>
