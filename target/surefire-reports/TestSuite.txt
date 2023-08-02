@@ -1,94 +1,19 @@
 -------------------------------------------------------------------------------
 Test set: TestSuite
 -------------------------------------------------------------------------------
-Tests run: 17, Failures: 9, Errors: 0, Skipped: 1, Time elapsed: 18.019 s <<< FAILURE! - in TestSuite
-looseGameTest(com.game_classes.GameUiTest)  Time elapsed: 11.093 s  <<< FAILURE!
-org.openqa.selenium.NoSuchWindowException: 
-no such window: target window already closed
-from unknown error: web view not found
-  (Session info: chrome=115.0.5790.110)
+Tests run: 18, Failures: 2, Errors: 0, Skipped: 14, Time elapsed: 9.317 s <<< FAILURE! - in TestSuite
+openBrowser(com.game_classes.UsersUITest)  Time elapsed: 7.703 s  <<< FAILURE!
+org.openqa.selenium.SessionNotCreatedException: 
+Could not start a new session. Response code 500. Message: unknown error: Chrome failed to start: exited normally.
+  (chrome not reachable)
+  (The process started from chrome location C:\Program Files\Google\Chrome\Application\chrome.exe is no longer running, so ChromeDriver is assuming that Chrome has crashed.)
 Build info: version: '4.1.4', revision: '535d840ee2'
-System info: host: 'DESKTOP-TUFNRNQ', ip: '192.168.0.101', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '18.0.2.1'
+System info: host: 'PC-1357', ip: '169.254.32.102', os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '18.0.2.1'
 Driver info: org.openqa.selenium.chrome.ChromeDriver
-Command: [fe6ecb6cff16df2e02f79cc47a0ee443, findElement {using=id, value=L}]
-Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 115.0.5790.110, chrome: {chromedriverVersion: 114.0.5735.90 (386bc09e8f4f..., userDataDir: C:\Users\HP\AppData\Local\T...}, goog:chromeOptions: {debuggerAddress: localhost:56310}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: WINDOWS, platformName: WINDOWS, proxy: Proxy(), se:cdp: ws://localhost:56310/devtoo..., se:cdpVersion: 115.0.5790.110, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
-Session ID: fe6ecb6cff16df2e02f79cc47a0ee443
-	at com.game_classes.GameUiTest.looseGameTest(GameUiTest.java:104)
+Command: [null, newSession {capabilities=[Capabilities {browserName: chrome, goog:chromeOptions: {args: [--remote-allow-origins=*], extensions: []}}], desiredCapabilities=Capabilities {browserName: chrome, goog:chromeOptions: {args: [--remote-allow-origins=*], extensions: []}}}]
+	at com.game_classes.UsersUITest.openBrowser(UsersUITest.java:24)
 
-winGameTest(com.game_classes.GameUiTest)  Time elapsed: 0.005 s  <<< FAILURE!
-org.openqa.selenium.NoSuchWindowException: 
-no such window: target window already closed
-from unknown error: web view not found
-  (Session info: chrome=115.0.5790.110)
-Build info: version: '4.1.4', revision: '535d840ee2'
-System info: host: 'DESKTOP-TUFNRNQ', ip: '192.168.0.101', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '18.0.2.1'
-Driver info: org.openqa.selenium.chrome.ChromeDriver
-Command: [fe6ecb6cff16df2e02f79cc47a0ee443, get {url=http://localhost:8080/new}]
-Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 115.0.5790.110, chrome: {chromedriverVersion: 114.0.5735.90 (386bc09e8f4f..., userDataDir: C:\Users\HP\AppData\Local\T...}, goog:chromeOptions: {debuggerAddress: localhost:56310}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: WINDOWS, platformName: WINDOWS, proxy: Proxy(), se:cdp: ws://localhost:56310/devtoo..., se:cdpVersion: 115.0.5790.110, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
-Session ID: fe6ecb6cff16df2e02f79cc47a0ee443
-	at com.game_classes.GameUiTest.winGameTest(GameUiTest.java:32)
-
-createUserTest(com.game_classes.UsersUITest)  Time elapsed: 0.007 s  <<< FAILURE!
-org.openqa.selenium.NoSuchWindowException: 
-no such window: target window already closed
-from unknown error: web view not found
-  (Session info: chrome=115.0.5790.110)
-Build info: version: '4.1.4', revision: '535d840ee2'
-System info: host: 'DESKTOP-TUFNRNQ', ip: '192.168.0.101', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '18.0.2.1'
-Driver info: org.openqa.selenium.chrome.ChromeDriver
-Command: [50b097cf8fcf7659f2b385ddc29f7e3b, get {url=http://localhost:8080/users}]
-Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 115.0.5790.110, chrome: {chromedriverVersion: 114.0.5735.90 (386bc09e8f4f..., userDataDir: C:\Users\HP\AppData\Local\T...}, goog:chromeOptions: {debuggerAddress: localhost:56323}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: WINDOWS, platformName: WINDOWS, proxy: Proxy(), se:cdp: ws://localhost:56323/devtoo..., se:cdpVersion: 115.0.5790.110, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
-Session ID: 50b097cf8fcf7659f2b385ddc29f7e3b
-	at com.game_classes.UsersUITest.createUserTest(UsersUITest.java:29)
-
-deleteUserTest(com.game_classes.UsersUITest)  Time elapsed: 0.005 s  <<< FAILURE!
-org.openqa.selenium.NoSuchWindowException: 
-no such window: target window already closed
-from unknown error: web view not found
-  (Session info: chrome=115.0.5790.110)
-Build info: version: '4.1.4', revision: '535d840ee2'
-System info: host: 'DESKTOP-TUFNRNQ', ip: '192.168.0.101', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '18.0.2.1'
-Driver info: org.openqa.selenium.chrome.ChromeDriver
-Command: [50b097cf8fcf7659f2b385ddc29f7e3b, get {url=http://localhost:8080/users}]
-Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 115.0.5790.110, chrome: {chromedriverVersion: 114.0.5735.90 (386bc09e8f4f..., userDataDir: C:\Users\HP\AppData\Local\T...}, goog:chromeOptions: {debuggerAddress: localhost:56323}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: WINDOWS, platformName: WINDOWS, proxy: Proxy(), se:cdp: ws://localhost:56323/devtoo..., se:cdpVersion: 115.0.5790.110, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
-Session ID: 50b097cf8fcf7659f2b385ddc29f7e3b
-	at com.game_classes.UsersUITest.deleteUserTest(UsersUITest.java:141)
-
-updateUserTest(com.game_classes.UsersUITest)  Time elapsed: 0.006 s  <<< FAILURE!
-org.openqa.selenium.NoSuchWindowException: 
-no such window: target window already closed
-from unknown error: web view not found
-  (Session info: chrome=115.0.5790.110)
-Build info: version: '4.1.4', revision: '535d840ee2'
-System info: host: 'DESKTOP-TUFNRNQ', ip: '192.168.0.101', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '18.0.2.1'
-Driver info: org.openqa.selenium.chrome.ChromeDriver
-Command: [50b097cf8fcf7659f2b385ddc29f7e3b, get {url=http://localhost:8080/users}]
-Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 115.0.5790.110, chrome: {chromedriverVersion: 114.0.5735.90 (386bc09e8f4f..., userDataDir: C:\Users\HP\AppData\Local\T...}, goog:chromeOptions: {debuggerAddress: localhost:56323}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: WINDOWS, platformName: WINDOWS, proxy: Proxy(), se:cdp: ws://localhost:56323/devtoo..., se:cdpVersion: 115.0.5790.110, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
-Session ID: 50b097cf8fcf7659f2b385ddc29f7e3b
-	at com.game_classes.UsersUITest.updateUserTest(UsersUITest.java:83)
-
-getUserTest(com.yasen.rest.UserRestAssuredControllerTest)  Time elapsed: 0.057 s  <<< FAILURE!
-java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" because the return value of "io.restassured.internal.common.path.ObjectConverter.convertObjectTo(Object, java.lang.Class)" is null
-	at com.yasen.rest.UserRestAssuredControllerTest.getUserTest(UserRestAssuredControllerTest.java:59)
-
-deleteUserExistTest(com.yasen.rest.UserRestAssuredControllerTest)  Time elapsed: 0.03 s  <<< FAILURE!
-java.lang.NullPointerException: Cannot invoke "java.lang.Integer.intValue()" because the return value of "io.restassured.internal.common.path.ObjectConverter.convertObjectTo(Object, java.lang.Class)" is null
-	at com.yasen.rest.UserRestAssuredControllerTest.deleteUserExistTest(UserRestAssuredControllerTest.java:165)
-
-closeBrowser(com.game_classes.GameUiTest)  Time elapsed: 0.035 s  <<< FAILURE!
-org.openqa.selenium.WebDriverException: 
-disconnected: not connected to DevTools
-  (failed to check if window was closed: disconnected: not connected to DevTools)
-  (Session info: chrome=115.0.5790.110)
-Build info: version: '4.1.4', revision: '535d840ee2'
-System info: host: 'DESKTOP-TUFNRNQ', ip: '192.168.0.101', os.name: 'Windows 10', os.arch: 'amd64', os.version: '10.0', java.version: '18.0.2.1'
-Driver info: org.openqa.selenium.chrome.ChromeDriver
-Command: [fe6ecb6cff16df2e02f79cc47a0ee443, close {}]
-Capabilities {acceptInsecureCerts: false, browserName: chrome, browserVersion: 115.0.5790.110, chrome: {chromedriverVersion: 114.0.5735.90 (386bc09e8f4f..., userDataDir: C:\Users\HP\AppData\Local\T...}, goog:chromeOptions: {debuggerAddress: localhost:56310}, javascriptEnabled: true, networkConnectionEnabled: false, pageLoadStrategy: normal, platform: WINDOWS, platformName: WINDOWS, proxy: Proxy(), se:cdp: ws://localhost:56310/devtoo..., se:cdpVersion: 115.0.5790.110, setWindowRect: true, strictFileInteractability: false, timeouts: {implicit: 0, pageLoad: 300000, script: 30000}, unhandledPromptBehavior: dismiss and notify, webauthn:extension:credBlob: true, webauthn:extension:largeBlob: true, webauthn:extension:minPinLength: true, webauthn:extension:prf: true, webauthn:virtualAuthenticators: true}
-Session ID: fe6ecb6cff16df2e02f79cc47a0ee443
-	at com.game_classes.GameUiTest.closeBrowser(GameUiTest.java:120)
-
-testListAllUsers on testListAllUsers(com.game_classes.UserServiceTest)(com.game_classes.UserServiceTest)  Time elapsed: 0.008 s  <<< FAILURE!
+testListAllUsers on testListAllUsers(com.game_classes.UserServiceTest)(com.game_classes.UserServiceTest)  Time elapsed: 0.017 s  <<< FAILURE!
 java.lang.AssertionError: Iterables not equal: expected: null and actual: Page 1 of 0 containing UNKNOWN instances
 	at com.game_classes.UserServiceTest.testListAllUsers(UserServiceTest.java:62)
 
