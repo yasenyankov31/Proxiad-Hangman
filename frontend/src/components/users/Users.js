@@ -2,7 +2,7 @@ import { Container, Button, Table, Form } from 'react-bootstrap';
 import Loading from '../general/Loading';
 import ErrorComponent from '../general/Error';
 import useSWR from 'swr'
-import { useState, useEffect } from 'react'
+import { useState, useEffect,useCallback} from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import PaginationComponent from '../general/Pagination';
 import UserModal from './UserModal';
@@ -22,13 +22,19 @@ const fetcher = async (url) => {
 
 const Users = () => {
     const navigate = useNavigate();
-    const { page } = useParams();
-    const { data, error, isLoading } = useSWR('/api/users?pageNum=' + page, fetcher);
+    const { page: initialPage } = useParams();
+    const [pageNumber, setPageNumber] = useState(initialPage);
 
-    const [users, setUsers] = useState([]);
-    const [pageNumber, setPageNumber] = useState(page);
-    const [totalPages, setTotalPages] = useState(0);
-    const [totalElements, setTotalElements] = useState(0);
+    const {
+        data:users,
+        error,
+        mutate: mutateUsers,
+    } = useSWR(`/api/users?pageNum=${pageNumber}`, fetcher, {
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        dedupingInterval: 10000,
+    });
+
     const [showUserModal, setShowUserModal] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const [selectedUserIds, setSelectedUserIds] = useState(new Set());
@@ -37,8 +43,18 @@ const Users = () => {
     const [allCheck, setAllCheck] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
 
-    const [errorFetching, setErrorFetching] = useState(null);
+    const [localUsers, setLocalUsers] = useState(users);
 
+    useEffect(() => {
+        if (users) {
+            setLocalUsers(users);
+          }
+      
+    }, [users]);
+
+    useEffect(() => {
+        setPageNumber(Number(initialPage));
+      }, [initialPage]);
 
 
     function toggleUserSelection(userId, isChecked) {
@@ -64,31 +80,19 @@ const Users = () => {
         });
     }
 
-    const handlePagination = (pageNumber) => {
-        setSelectedUserIds(new Set());
-        setAllCheck(false);
-        fetch("/api/users?pageNum=" + pageNumber, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-            .then(response => response.json())
-            .then(users => {
-                setTotalElements(users.totalElements);
-                setUsers(users.content);
-                setTotalPages(users.totalPages);
-            });
-        setPageNumber(pageNumber);
-    }
+    const handlePagination = useCallback((newPageNumber) => {
+        setPageNumber(newPageNumber);
+    }, []);
 
     const closeModal = () => {
-        setAllCheck(false);
-        setSelectedUserIds(new Set());
-        setIsDeleting(false);
+        mutateUsers();
         setShowUserModal(false);
-        setSelectedUser(null);
-    }
+    };
+
+    const updateUserData = () => {
+        mutateUsers();
+    };
+
     const showModal = () => {
         setShowUserModal(true);
     }
@@ -109,42 +113,16 @@ const Users = () => {
 
     }
 
-    const updateUserData = () => {
-        fetch('/api/users?pageNum=' + pageNumber, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-            .then(response => response.json())
-            .then(users => {
-                setTotalElements(users.totalElements);
-                setUsers(users.content);
-                setTotalPages(users.totalPages);
-            })
-            .catch((error) => {
-                setErrorFetching(error);
-            });
-    }
 
 
 
-    useEffect(() => {
-        if (data) {
-            setTotalElements(data.totalElements);
-            setUsers(data.content);
-            setTotalPages(data.totalPages);
-            setPageNumber(Number(page));
-        }
 
-    }, [data]);
+    
 
 
-    if (error) return <ErrorComponent message={"An error occured fetching the games ranking data."
+    if (error) return <ErrorComponent message={"An error occured fetching the users data."
         + error.message} />
-    if (errorFetching) return <ErrorComponent message={"An error occured fetching the games ranking data."
-        + errorFetching} />
-    if (isLoading) return <Loading />
+    if (!localUsers) return <Loading />
 
 
 
@@ -159,15 +137,15 @@ const Users = () => {
                 isDeleting={isDeleting}
             />
             <div className="p-5">
-                <h1 className="p-5 d-flex flex-column align-items-center justify-content-center"><TranslateI18n id={"UsersTableTitle"}/></h1>
+                <h1 className="p-5 d-flex flex-column align-items-center justify-content-center"><TranslateI18n id={"UsersTableTitle"} /></h1>
                 <div className=" justify-content-start">
-                    <Button className='m-1 btn-primary' onClick={() => { showModal() }}><TranslateI18n id={"UsersAddBtn"}/></Button>
-                    <Button className='m-1 btn-danger' onClick={() => { deleteUser(selectedUserIds) }}><TranslateI18n id={"UsersDeleteBtn"}/></Button>
+                    <Button className='m-1 btn-primary' onClick={() => { showModal() }}><TranslateI18n id={"UsersAddBtn"} /></Button>
+                    <Button className='m-1 btn-danger' onClick={() => { deleteUser(selectedUserIds) }}><TranslateI18n id={"UsersDeleteBtn"} /></Button>
                 </div>
                 <Table className='table-dark' striped bordered >
                     <thead>
                         <tr>
-                            <th className='text-center'><TranslateI18n id={"UsersTableSelectAllColumn"}/>
+                            <th className='text-center'><TranslateI18n id={"UsersTableSelectAllColumn"} />
                                 <Form.Check
                                     type="checkbox"
                                     id="select-all"
@@ -175,16 +153,16 @@ const Users = () => {
                                     onChange={e => toggleSelectAll(e.target.checked)}
                                 />
                             </th>
-                            <th><TranslateI18n id={"UsersTableUsernameColumn"}/></th>
-                            <th><TranslateI18n id={"UsersTablePasswordColumn"}/></th>
-                            <th><TranslateI18n id={"UsersTableAgeColumn"}/></th>
-                            <th><TranslateI18n id={"UsersTableBirthDateColumn"}/></th>
-                            <th><TranslateI18n id={"UsersTableActionsColumn"}/></th>
-                            <th><TranslateI18n id={"UsersTableViewProfileColumn"}/></th>
+                            <th><TranslateI18n id={"UsersTableUsernameColumn"} /></th>
+                            <th><TranslateI18n id={"UsersTablePasswordColumn"} /></th>
+                            <th><TranslateI18n id={"UsersTableAgeColumn"} /></th>
+                            <th><TranslateI18n id={"UsersTableBirthDateColumn"} /></th>
+                            <th><TranslateI18n id={"UsersTableActionsColumn"} /></th>
+                            <th><TranslateI18n id={"UsersTableViewProfileColumn"} /></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map((user, index) => {
+                        {localUsers.content.map((user, index) => {
                             const date = new Date(user.birthDate);
                             return (
                                 <tr key={index}>
@@ -225,9 +203,9 @@ const Users = () => {
                 </Table>
 
                 <PaginationComponent
-                    totalPages={totalPages}
+                    totalPages={localUsers.totalPages}
                     pageNumber={pageNumber}
-                    totalElements={totalElements}
+                    totalElements={localUsers.totalElements}
                     handlePagination={handlePagination} />
             </div>
         </Container >
