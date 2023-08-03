@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Button, Container } from 'react-bootstrap';
+import TranslateI18n from '../general/TranslateI18n';
 
 
 const GameCanvas = ({ wordToGuess, attempts, resetGame }) => {
@@ -144,7 +145,7 @@ const GameCanvas = ({ wordToGuess, attempts, resetGame }) => {
                     resetGame();
                     clearCanvas();
                 }}
-                    id={fadeButton} className='reset-button' disabled={isButtonDisabled} >Reset word
+                    id={fadeButton} className='reset-button' disabled={isButtonDisabled} ><TranslateI18n id={"GameResetBtn"}/>
                 </Button>}
 
                 <canvas ref={canvasRef} width="500" height="500" className='game-canvas' />

@@ -35,6 +35,7 @@
     "UserProfileColumnUsedLetters":"Used letters",
     "WinStreaksChart":"Win streaks",
     "WinsChart":"Wins",
-    "LossesChart":"Losses"
+    "LossesChart":"Losses",
+    "GameResetBtn":"Reset the word"
     
 }

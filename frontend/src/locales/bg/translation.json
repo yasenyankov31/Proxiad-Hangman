@@ -35,6 +35,7 @@
     "UserProfileColumnUsedLetters": "Използвани букви",
     "WinStreaksChart": "Серии от победи",
     "WinsChart": "Победи",
-    "LossesChart": "Загуби"
+    "LossesChart": "Загуби",
+    "GameResetBtn":"Нова дума"
     
 }
