@@ -36,6 +36,13 @@
     "WinStreaksChart": "Серии от победи",
     "WinsChart": "Победи",
     "LossesChart": "Загуби",
-    "GameResetBtn":"Нова дума"
+    "GameResetBtn":"Нова дума",
+    "GameSubmitNameLabel":"Изпрати името си за да завършиш играта",
+    "GameSubmitBtn":"Изпрати",
+    "GameSumbitLoading":"Зарежда...",
+    "GameEndingStat_1":"Играта беше",
+    "GameEndingStat_2":"Думата беше",
+    "GamePlayAgainBtn":"Играй пак",
+    "GameGetPorfileBtn":"Виж профила"
     
 }

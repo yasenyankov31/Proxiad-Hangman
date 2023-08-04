@@ -105,27 +105,27 @@ function UserModal({ show, closeModal, userData, updateUsers, isDeleting, delete
               <Form>
                 <Form.Group className="mb-3">
                   <Form.Label><TranslateI18n id={"UsersTableUsernameColumn"}/></Form.Label>
-                  <Form.Control defaultValue={username} onChange={(e) => { setUsername(e.target.value) }} type="text" placeholder="ProPlayer123" />
+                  <Form.Control id="usernameInput" defaultValue={username} onChange={(e) => { setUsername(e.target.value) }} type="text" placeholder="ProPlayer123" />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
                   <Form.Label><TranslateI18n id={"UsersTablePasswordColumn"}/></Form.Label>
-                  <Form.Control defaultValue={password} onChange={(e) => { setPassword(e.target.value) }} type="text" placeholder="Original password" />
+                  <Form.Control id="ageInput" defaultValue={password} onChange={(e) => { setPassword(e.target.value) }} type="text" placeholder="Original password" />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
                   <Form.Label><TranslateI18n id={"UsersTableAgeColumn"}/></Form.Label>
-                  <Form.Control value={age} onChange={(e) => { setAge(Number(e.target.value)) }} type="number" placeholder="Your age" />
+                  <Form.Control id="passwordInput" value={age} onChange={(e) => { setAge(Number(e.target.value)) }} type="number" placeholder="Your age" />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
                   <Form.Label><TranslateI18n id={"UsersTableBirthDateColumn"}/></Form.Label>
-                  <Form.Control defaultValue={birthDate} onChange={(e) => { setBirthDate(e.target.value) }} type="date" />
+                  <Form.Control id="dateInput" defaultValue={birthDate} onChange={(e) => { setBirthDate(e.target.value) }} type="date" />
                 </Form.Group>
               </Form>
             </Modal.Body>
             <Modal.Footer className="justify-content-start">
-              <Button data-testid="edit" variant="primary" onClick={submitModal}>
+              <Button id="sendButton" data-testid="edit" variant="primary" onClick={submitModal}>
               <TranslateI18n id={"ModalTitle"+action}/>
               </Button>
             </Modal.Footer>
@@ -143,7 +143,7 @@ function UserModal({ show, closeModal, userData, updateUsers, isDeleting, delete
       case "Processed":
         return (
           <div className='d-flex justify-content-center align-items-center' style={{ marginTop: "50px", marginBottom: "50px" }} >
-            <h5 className='text-center text-success'>{executionStatus}</h5>
+            <h5 id="successMessage" className='text-center text-success'>{executionStatus}</h5>
           </div>
         );
       default:

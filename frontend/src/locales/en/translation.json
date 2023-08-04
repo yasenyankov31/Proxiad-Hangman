@@ -36,6 +36,13 @@
     "WinStreaksChart":"Win streaks",
     "WinsChart":"Wins",
     "LossesChart":"Losses",
-    "GameResetBtn":"Reset the word"
+    "GameResetBtn":"Reset the word",
+    "GameSubmitNameLabel":"Submit your name to complete the game",
+    "GameSubmitBtn":"Submit",
+    "GameSumbitLoading":"Loading...",
+    "GameEndingStat_1":"The game was",
+    "GameEndingStat_2":"The word was",
+    "GamePlayAgainBtn":"Play again",
+    "GameGetPorfileBtn":"Gamer profile"
     
 }

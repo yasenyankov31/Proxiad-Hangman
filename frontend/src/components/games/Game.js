@@ -6,6 +6,7 @@ import GameCanvas from './GameCanvas';
 import Loading from '../general/Loading';
 import ErrorComponent from '../general/Error';
 import { useNavigate } from 'react-router-dom';
+import TranslateI18n from '../general/TranslateI18n';
 
 const fetcher = async (url) => {
     const response = await fetch(url);
@@ -205,21 +206,21 @@ const Game = () => {
                         <div className='parent'>
                             <div style={{ zIndex: formZindex }} className='container text-center border border-dark rounded username-form'>
                                 {!loadingEndResult && !gameInfoMessage && !gameCompleted && <div>
-                                    <Form.Label>Submit your name to <p>complete the game</p> </Form.Label>
+                                    <Form.Label><TranslateI18n id={"GameSubmitNameLabel"}/></Form.Label>
                                     <Form.Control id="username" type="text" placeholder="Your username" onChange={e => setUsername(e.target.value)}
                                          />
-                                    <Button className='m-3' onClick={() => { completeGame() }}>Submit</Button>
+                                    <Button className='m-3' onClick={() => { completeGame() }}><TranslateI18n id={"GameSubmitBtn"}/></Button>
                                 </div>}
 
                                 {loadingEndResult && !gameInfoMessage && <div style={{ paddingTop: '100px' }}>
                                     <Spinner animation="border" role="status">
-                                        <span className="visually-hidden">Loading...</span>
+                                        <span className="visually-hidden"><TranslateI18n id={"GameSumbitLoading"}/></span>
                                     </Spinner>
                                 </div>}
                                 {(gameInfoMessage || gameCompleted) && <div >
-                                    <Form.Label className='p-3 status'>You {gameInfoMessage} the game.The word was {originalWord}!</Form.Label>
-                                    <Button onClick={() => { newGame() }} className='m-1' >Play again</Button>
-                                    <Button onClick={() => { viewProfile() }} >Gamer profile</Button>
+                                    <Form.Label className='p-3 status'> <TranslateI18n id={"GameEndingStat_1"}/> {gameInfoMessage}. <TranslateI18n id={"GameEndingStat_2"}/> {originalWord}!</Form.Label>
+                                    <Button onClick={() => { newGame() }} className='m-1' > <TranslateI18n id={"GamePlayAgainBtn"}/></Button>
+                                    <Button onClick={() => { viewProfile() }} ><TranslateI18n id={"GameGetPorfileBtn"}/></Button>
                                 </div>}
 
                             </div>

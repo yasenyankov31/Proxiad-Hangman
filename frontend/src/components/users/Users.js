@@ -73,7 +73,7 @@ const Users = () => {
         setAllCheck(!allCheck);
         setSelectedUserIds((prevSelectedUserIds) => {
             if (isChecked) {
-                return new Set(users.map(user => user.id));
+                return new Set(users.content.map(user => user.id));
             } else {
                 return new Set();
             }
@@ -86,6 +86,7 @@ const Users = () => {
 
     const closeModal = () => {
         mutateUsers();
+        setSelectedUserIdsModal(new Set());
         setShowUserModal(false);
     };
 
@@ -94,6 +95,7 @@ const Users = () => {
     };
 
     const showModal = () => {
+        setSelectedUser(null);
         setShowUserModal(true);
     }
 
@@ -102,8 +104,9 @@ const Users = () => {
     }
 
     const editUser = (user) => {
-        setShowUserModal(true);
         setSelectedUser(user);
+        setShowUserModal(true);
+        
     }
 
     const deleteUser = (ids) => {
@@ -139,7 +142,7 @@ const Users = () => {
             <div className="p-5">
                 <h1 className="p-5 d-flex flex-column align-items-center justify-content-center"><TranslateI18n id={"UsersTableTitle"} /></h1>
                 <div className=" justify-content-start">
-                    <Button className='m-1 btn-primary' onClick={() => { showModal() }}><TranslateI18n id={"UsersAddBtn"} /></Button>
+                    <Button id="AddBtn" className='m-1 btn-primary' onClick={() => { showModal() }}><TranslateI18n id={"UsersAddBtn"} /></Button>
                     <Button className='m-1 btn-danger' onClick={() => { deleteUser(selectedUserIds) }}><TranslateI18n id={"UsersDeleteBtn"} /></Button>
                 </div>
                 <Table className='table-dark' striped bordered >
