@@ -10,15 +10,6 @@ import TranslateI18n from '../general/TranslateI18n';
 
 
 
-const fetcher = async (url) => {
-    const response = await fetch(url);
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message);
-    }
-    return response.json();
-};
-
 
 const Users = () => {
     const navigate = useNavigate();
@@ -29,7 +20,7 @@ const Users = () => {
         data:users,
         error,
         mutate: mutateUsers,
-    } = useSWR(`/api/users?pageNum=${pageNumber}`, fetcher, {
+    } = useSWR(`/api/users?pageNum=${pageNumber}`, {
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
         dedupingInterval: 10000,
@@ -86,6 +77,7 @@ const Users = () => {
 
     const closeModal = () => {
         mutateUsers();
+        setSelectedUser(null);
         setSelectedUserIdsModal(new Set());
         setShowUserModal(false);
     };
@@ -94,8 +86,7 @@ const Users = () => {
         mutateUsers();
     };
 
-    const showModal = () => {
-        setSelectedUser(null);
+    const showModal = () => {  
         setShowUserModal(true);
     }
 
@@ -168,7 +159,7 @@ const Users = () => {
                         {localUsers.content.map((user, index) => {
                             const date = new Date(user.birthDate);
                             return (
-                                <tr key={index}>
+                                <tr id={"table-record-"+index} key={index}>
                                     <td className="text-center">
                                         <Form.Check
                                             type="checkbox"

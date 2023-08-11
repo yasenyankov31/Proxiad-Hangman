@@ -8,35 +8,22 @@ import ErrorComponent from '../general/Error';
 import { useNavigate } from 'react-router-dom';
 import TranslateI18n from '../general/TranslateI18n';
 
-const fetcher = async (url) => {
-    const response = await fetch(url);
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message);
-    }
-    return response.json();
-};
-
-
-
 
 const Game = () => {
     const navigate = useNavigate();
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
     const { id } = useParams();
-    const { data, error, isLoading } = useSWR('/api/games/' + id, fetcher);
+    const { data, error, isLoading } = useSWR('/api/games/' + id);
 
     const [attempts, setAttempts] = useState(8);
     const [guessedWord, setGuessedWord] = useState("");
     const [lettersUsed, setLettersUsed] = useState("");
-    const [username, setUsername] = useState('');
     const [gameInfoMessage, setGameInfoMessage] = useState('');
-    const [gameCompleted, setGameCompleted] = useState(false);
     const [originalWord, setOriginalWord] = useState("");
 
     const [errorGuessing, setErrorGuessing] = useState(false);
     const [errorGuessingMessage, setErrorGuessingMessage] = useState("true");
-    const [loadingEndResult, setLoadingEndResult] = useState(false);
+    const [loadingEndResult, setLoadingEndResult] = useState(true);
 
     const [keyboardId, setKeyboardId] = useState("");
     const [formZindex, setFormZindex] = useState("-1");
@@ -71,35 +58,6 @@ const Game = () => {
             });
     }
 
-    const completeGame = () => {
-
-        if (username.length < 11) {
-            setLoadingEndResult(true);
-            fetch('/api/games/' + id + "/ending-result?username=" + username, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            })
-                .then(response => response.json())
-                .then(game => {
-                    setGameCompleted(game.completedGame);
-                    setGameInfoMessage(game.gameStatus);
-                    setLoadingEndResult(false);
-                    setOriginalWord(game.originalWord);
-                })
-                .catch((error) => {
-                    setErrorGuessing(true);
-                    setErrorGuessingMessage(error);
-                });
-        }
-        else {
-            setErrorGuessing(true);
-            setErrorGuessingMessage("Username must be at between 2 and 10 symbols!");
-        }
-
-    }
-
     const newGame = () => {
         fetch('/api/games', {
             method: 'POST',
@@ -113,7 +71,6 @@ const Game = () => {
                 setFormZindex("-1");
                 setAttempts(game.attemptsLeft);
                 setGameInfoMessage("");
-                setGameCompleted(game.completedGame);
                 setGuessedWord(game.guessedWord);
                 setLettersUsed(game.lettersUsed.toUpperCase() + game.guessedWord.toUpperCase());
                 navigate('/game/' + game.id);
@@ -136,14 +93,15 @@ const Game = () => {
         })
             .then(response => response.json())
             .then(game => {
+                console.log(game)
                 setAttempts(game.attemptsLeft);
                 setGuessedWord(game.guessedWord);
                 setLettersUsed((game.lettersUsed + game.guessedWord).toUpperCase());
-                if (game.gameStatus !== "OnGoing") {
+                if (game.gameStatus!=="OnGoing") {
                     gameOver();
-                }
-                if (game.completedGame) {
                     setGameInfoMessage(game.gameStatus);
+                    setLoadingEndResult(false);
+                    setOriginalWord(game.originalWord);
                 }
             })
             .catch((error) => {
@@ -153,17 +111,17 @@ const Game = () => {
     }
 
     const viewProfile = () => {
-        navigate('/user/' + username + "/1");
+        navigate('/user/' + localStorage.getItem("username") + "/1");
     }
 
     useEffect(() => {
         if (data) {
             setAttempts(data.attemptsLeft);
-            setGameCompleted(data.completedGame);
             setGuessedWord(data.guessedWord);
             setLettersUsed(data.lettersUsed.toUpperCase() + data.guessedWord.toUpperCase());
             if (data.gameStatus !== "OnGoing") {
                 gameOver();
+                setLoadingEndResult(false);
             }
             if (data.completedGame) {
                 setGameInfoMessage(data.gameStatus);
@@ -188,7 +146,7 @@ const Game = () => {
 
 
     return (
-        <Container className=" d-flex justify-content-around align-items-center "style={{marginTop:'200px'}} >
+        <Container className=" d-flex justify-content-around align-items-center " style={{ marginTop: '200px' }} >
             <Modal show={errorGuessing} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Alert</Modal.Title>
@@ -205,28 +163,21 @@ const Game = () => {
                     <div>
                         <div className='parent'>
                             <div style={{ zIndex: formZindex }} className='container text-center border border-dark rounded username-form'>
-                                {!loadingEndResult && !gameInfoMessage && !gameCompleted && <div>
-                                    <Form.Label><TranslateI18n id={"GameSubmitNameLabel"}/></Form.Label>
-                                    <Form.Control id="username" type="text" placeholder="Your username" onChange={e => setUsername(e.target.value)}
-                                         />
-                                    <Button className='m-3' onClick={() => { completeGame() }}><TranslateI18n id={"GameSubmitBtn"}/></Button>
-                                </div>}
-
-                                {loadingEndResult && !gameInfoMessage && <div style={{ paddingTop: '100px' }}>
+                                {loadingEndResult && <div style={{ paddingTop: '100px' }}>
                                     <Spinner animation="border" role="status">
-                                        <span className="visually-hidden"><TranslateI18n id={"GameSumbitLoading"}/></span>
+                                        <span className="visually-hidden"><TranslateI18n id={"GameSumbitLoading"} /></span>
                                     </Spinner>
                                 </div>}
-                                {(gameInfoMessage || gameCompleted) && <div >
-                                    <Form.Label className='p-3 status'> <TranslateI18n id={"GameEndingStat_1"}/> {gameInfoMessage}. <TranslateI18n id={"GameEndingStat_2"}/> {originalWord}!</Form.Label>
-                                    <Button onClick={() => { newGame() }} className='m-1' > <TranslateI18n id={"GamePlayAgainBtn"}/></Button>
-                                    <Button onClick={() => { viewProfile() }} ><TranslateI18n id={"GameGetPorfileBtn"}/></Button>
+                                {!loadingEndResult && <div >
+                                    <Form.Label className='p-3 status'> <TranslateI18n id={"GameEndingStat_1"} /> {gameInfoMessage}. <TranslateI18n id={"GameEndingStat_2"} /> {originalWord}!</Form.Label>
+                                    <Button onClick={() => { newGame() }} className='m-1' > <TranslateI18n id={"GamePlayAgainBtn"} /></Button>
+                                    <Button onClick={() => { viewProfile() }} ><TranslateI18n id={"GameGetPorfileBtn"} /></Button>
                                 </div>}
 
                             </div>
                             <div id={keyboardId} className="keyboard">
                                 {letters.map(letter => (
-                                    <Button
+                                    <Button 
                                         id={letter}
                                         onClick={(e) => { guessLetter(e) }}
                                         key={letter}

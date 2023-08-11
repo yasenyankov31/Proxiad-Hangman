@@ -110,12 +110,12 @@ function UserModal({ show, closeModal, userData, updateUsers, isDeleting, delete
 
                 <Form.Group className="mb-3">
                   <Form.Label><TranslateI18n id={"UsersTablePasswordColumn"}/></Form.Label>
-                  <Form.Control id="ageInput" defaultValue={password} onChange={(e) => { setPassword(e.target.value) }} type="text" placeholder="Original password" />
+                  <Form.Control id="passwordInput" defaultValue={password} onChange={(e) => { setPassword(e.target.value) }} type="text" placeholder="Original password" />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
                   <Form.Label><TranslateI18n id={"UsersTableAgeColumn"}/></Form.Label>
-                  <Form.Control id="passwordInput" value={age} onChange={(e) => { setAge(Number(e.target.value)) }} type="number" placeholder="Your age" />
+                  <Form.Control id="ageInput" value={age} onChange={(e) => { setAge(Number(e.target.value)) }} type="number" placeholder="Your age" />
                 </Form.Group>
 
                 <Form.Group className="mb-3">

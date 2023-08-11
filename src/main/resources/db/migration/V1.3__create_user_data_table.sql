@@ -4,6 +4,7 @@ CREATE TABLE user_data (
     birth_date DATE,
     password VARCHAR(255),
     username VARCHAR(255),
+    role VARCHAR(255),
     PRIMARY KEY (id)
 ) ENGINE=MyISAM;
 

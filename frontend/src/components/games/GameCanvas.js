@@ -141,7 +141,8 @@ const GameCanvas = ({ wordToGuess, attempts, resetGame }) => {
     return (
         <Container className="d-flex align-items-center justify-content-center">
             <div className='guessed-word-container'>
-                {characters.includes('*') && attempts !== 0 && <Button onClick={() => {
+                {characters.includes('*') && attempts !== 0 && 
+                <Button onClick={() => {
                     resetGame();
                     clearCanvas();
                 }}

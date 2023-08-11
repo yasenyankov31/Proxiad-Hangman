@@ -5,61 +5,69 @@ import java.time.LocalDate;
 import com.game_classes.models.UserData;
 
 public class UserDto {
-	private long id;
-	private String username;
-	private String password;
-	private LocalDate birthDate;
-	private Integer age;
+  private long id;
+  private String username;
+  private String password;
+  private LocalDate birthDate;
+  private Integer age;
+  private String role;
 
-	public UserDto() {
-	}
+  public UserDto() {}
 
-	public UserDto(UserData userData) {
-		this.id = userData.getId();
-		this.username = userData.getUsername();
-		this.password = userData.getPassword();
-		this.birthDate = userData.getBirthDate();
-		this.age = userData.getAge();
-	}
+  public UserDto(UserData userData) {
+    this.id = userData.getId();
+    this.username = userData.getUsername();
+    this.password = userData.getPassword();
+    this.birthDate = userData.getBirthDate();
+    this.age = userData.getAge();
+  }
 
-	public long getId() {
-		return id;
-	}
+  public long getId() {
+    return id;
+  }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  public void setId(long id) {
+    this.id = id;
+  }
 
-	public String getUsername() {
-		return username;
-	}
+  public String getUsername() {
+    return username;
+  }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-	public String getPassword() {
-		return password;
-	}
+  public String getPassword() {
+    return password;
+  }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-	public LocalDate getBirthDate() {
-		return birthDate;
-	}
+  public LocalDate getBirthDate() {
+    return birthDate;
+  }
 
-	public void setBirthDate(LocalDate birthDate) {
-		this.birthDate = birthDate;
-	}
+  public void setBirthDate(LocalDate birthDate) {
+    this.birthDate = birthDate;
+  }
 
-	public Integer getAge() {
-		return age;
-	}
+  public Integer getAge() {
+    return age;
+  }
 
-	public void setAge(Integer age) {
-		this.age = age;
-	}
+  public void setAge(Integer age) {
+    this.age = age;
+  }
+
+  public String getRole() {
+    return role;
+  }
+
+  public void setRole(String role) {
+    this.role = role;
+  }
 
 }

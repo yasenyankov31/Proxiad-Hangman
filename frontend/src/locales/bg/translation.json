@@ -24,6 +24,7 @@
     "ModalTitleAdd":"Добави потребител",
     "ModalTitleEdit":"Редактирай потребител",
     "ModalTitleDelete":"Изтрий потребител",
+    "ModalTitleProcessed":"Операцията е успешна",
     "ModalDeleteWarning":"Сигурени ли сте, че искате да изтриете?",
     "ModalDeleteException":"Няма избрани потребители!",
     "UserProfileTitle": "Статистики за играча ",
@@ -43,6 +44,10 @@
     "GameEndingStat_1":"Играта беше",
     "GameEndingStat_2":"Думата беше",
     "GamePlayAgainBtn":"Играй пак",
-    "GameGetPorfileBtn":"Виж профила"
+    "GameGetPorfileBtn":"Виж профила",
+    "LogOutBtn":"Излез",
+    "RegisterBtn":"Регистрирай",
+    "DoYouHaveAccount":"Вече имате акаунт?",
+    "LogInHere":"Логни се тук"
     
 }

@@ -1,30 +1,21 @@
 
 import useSWR from 'swr'
 import { useState, useEffect } from 'react'
-import { Container, Row, Col, Button, Tab, Tabs } from 'react-bootstrap';
+import { Container, Button, Tab, Tabs, Navbar } from 'react-bootstrap';
 import Loading from '../general/Loading';
 import ErrorComponent   from '../general/Error';
 import RankingBars from './RankingBars';
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import TranslateI18n from '../general/TranslateI18n';
 
-const fetcher = async (url) => {
-    const response = await fetch(url);
-    if (!response.ok) {
-      const errorData = await response.json(); 
-      throw new Error(errorData.message); 
-    }
-    return response.json();
-  };
+
 
 
 const Home = () => {
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
-    const { t } = useTranslation();
 
-    const { data, error, isLoading } = useSWR('/api/games', fetcher)
+    const { data, error, isLoading } = useSWR('/api/games')
     useEffect(() => {
         setLoading(isLoading);
     }, [isLoading]);
@@ -53,6 +44,7 @@ const Home = () => {
     if (loading) return <Loading />
 
     return (<div >
+        <Navbar></Navbar>
         <Container className="d-flex align-items-center justify-content-center vh-100">
             {data && <div className="text-center ">
                 <div className='d-none d-sm-block'>

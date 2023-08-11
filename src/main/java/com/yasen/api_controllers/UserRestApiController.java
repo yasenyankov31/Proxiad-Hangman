@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
-
+import org.apache.shiro.authz.UnauthorizedException;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -38,135 +39,157 @@ import io.swagger.v3.oas.annotations.Operation;
 @RestController
 @RequestMapping("/api/users")
 public class UserRestApiController {
-	@Autowired
-	private UserService userService;
+  @Autowired
+  private UserService userService;
 
-	@Autowired
-	private RankingService rankingService;
+  @Autowired
+  private RankingService rankingService;
 
-	@Autowired
-	private UserFactory userFactory;
+  @Autowired
+  private UserFactory userFactory;
 
-	@GetMapping
-	@Operation(summary = "Show all users", description = "Returns a list of user data.")
-	public ResponseEntity<Page<UserDto>> getUsersData(@RequestParam(required = false) Integer pageNum) {
-		if (pageNum == null) {
-			pageNum = 0;
-		} else {
-			pageNum -= 1;
-		}
-		Page<UserData> users = userService.listAllUsers(pageNum);
-		if (pageNum > users.getTotalPages()) {
-			throw new IllegalArgumentException("Page doesn't exist!");
-		}
 
-		return ResponseEntity.ok().body(userFactory.fromEntities(users));
-	}
+  @GetMapping
+  @RequiresRoles("admin")
+  @Operation(summary = "Show all users", description = "Returns a list of user data.")
+  public ResponseEntity<Page<UserDto>> getUsersData(@RequestParam(required = false) Integer pageNum)
+      throws UnauthorizedException {
+    if (pageNum == null) {
+      pageNum = 0;
+    } else {
+      pageNum -= 1;
+    }
+    Page<UserData> users = userService.listAllUsers(pageNum);
+    if (pageNum > users.getTotalPages()) {
+      throw new IllegalArgumentException("Page doesn't exist!");
+    }
 
-	@GetMapping("/played-games")
-	@Operation(summary = "Get user played games", description = "Returns  page of user played games.")
-	public ResponseEntity<Page<UserRankData>> userPlayedGames(@RequestParam(required = true) String username,
-			@RequestParam(required = false) Integer pageNum) {
-		if (!userService.checkIfUserExist(username)) {
-			throw new IllegalArgumentException("Username doesn't exist!");
-		}
-		pageNum = pageNum != null ? pageNum - 1 : 0;
-		Page<UserRankData> userRankDatas = rankingService.getUserInfo(username, pageNum);
+    return ResponseEntity.ok().body(userFactory.fromEntities(users));
+  }
 
-		return ResponseEntity.ok(userRankDatas);
-	}
+  @GetMapping("/played-games")
+  @Operation(summary = "Get user played games", description = "Returns  page of user played games.")
+  public ResponseEntity<Page<UserRankData>> userPlayedGames(
+      @RequestParam(required = true) String username,
+      @RequestParam(required = false) Integer pageNum) {
+    if (userService.checkIfUserExist(username)) {
+      throw new IllegalArgumentException("Username doesn't exist!");
+    }
+    pageNum = pageNum != null ? pageNum - 1 : 0;
+    Page<UserRankData> userRankDatas = rankingService.getUserInfo(username, pageNum);
 
-	@GetMapping("/user-profile")
-	@Operation(summary = "Get user game statistics and played games", description = "Returns  statistic of a user profile.")
-	public ResponseEntity<UserProfileDto> userProfile(@RequestParam(required = true) String username) {
-		if (!userService.checkIfUserExist(username)) {
-			throw new IllegalArgumentException("Username doesn't exist!");
-		}
+    return ResponseEntity.ok(userRankDatas);
+  }
 
-		int winCount = 0;
-		int lossCount = 0;
-		int prevWinCount = 0;
-		List<Integer> statusValues = new ArrayList<>();
+  @GetMapping("/user-profile")
+  @Operation(summary = "Get user game statistics and played games",
+      description = "Returns  statistic of a user profile.")
+  public ResponseEntity<UserProfileDto> userProfile(
+      @RequestParam(required = true) String username) {
+    if (userService.checkIfUserExist(username)) {
+      throw new IllegalArgumentException("Username doesn't exist!");
+    }
 
-		Page<UserRankData> userRankProgressAllTime = rankingService.getUserInfo(username, null);
+    int winCount = 0;
+    int lossCount = 0;
+    int prevWinCount = 0;
+    List<Integer> statusValues = new ArrayList<>();
 
-		for (UserRankData rankData : userRankProgressAllTime) {
-			if (rankData.getGameStatus().equals("Won")) {
-				winCount++;
-				statusValues.add(++prevWinCount);
-			} else {
-				lossCount++;
-				statusValues.add(0);
-				prevWinCount = 0;
-			}
-		}
+    Page<UserRankData> userRankProgressAllTime = rankingService.getUserInfo(username, null);
 
-		UserProfileDto userProfileDto = new UserProfileDto(statusValues, winCount, lossCount);
+    for (UserRankData rankData : userRankProgressAllTime) {
+      if (rankData.getGameStatus().equals("Won")) {
+        winCount++;
+        statusValues.add(++prevWinCount);
+      } else {
+        lossCount++;
+        statusValues.add(0);
+        prevWinCount = 0;
+      }
+    }
 
-		return ResponseEntity.ok(userProfileDto);
-	}
+    UserProfileDto userProfileDto = new UserProfileDto(statusValues, winCount, lossCount);
 
-	@PostMapping
-	@Operation(summary = "Creates new user", description = "Returns a list of updated user data.")
-	public ResponseEntity<SuccessResponse> createUser(@Valid @RequestBody UserData userData, BindingResult result) {
-		if (result.hasErrors()) {
-			throw new IllegalArgumentException("User formdata is invalid!");
-		}
+    return ResponseEntity.ok(userProfileDto);
+  }
 
-		userService.createUser(userData);
-		SuccessResponse response = new SuccessResponse("createUser", "User created successfully!");
+  @PostMapping
+  @RequiresRoles("admin")
+  @Operation(summary = "Creates new user", description = "Returns a list of updated user data.")
+  public ResponseEntity<SuccessResponse> createUser(@Valid @RequestBody UserData userData,
+      BindingResult result) throws UnauthorizedException {
+    if (result.hasErrors()) {
+      throw new IllegalArgumentException("User formdata is invalid!");
+    }
 
-		return ResponseEntity.ok().body(response);
-	}
+    userService.createUser(userData);
+    SuccessResponse response = new SuccessResponse("createUser", "User created successfully!");
 
-	@PutMapping
-	@Operation(summary = "Updates user information", description = "Returns a list of updated user data.")
-	public ResponseEntity<SuccessResponse> updateUser(@Valid @RequestBody UserData userData, BindingResult result) {
-		if (result.hasErrors()) {
-			throw new IllegalArgumentException("User formdata is invalid!");
-		}
+    return ResponseEntity.ok().body(response);
+  }
 
-		userService.updateUser(userData);
+  @PutMapping
+  @RequiresRoles("admin")
+  @Operation(summary = "Updates user information",
+      description = "Returns a list of updated user data.")
+  public ResponseEntity<SuccessResponse> updateUser(@Valid @RequestBody UserData userData,
+      BindingResult result) throws UnauthorizedException {
+    if (result.hasErrors()) {
+      throw new IllegalArgumentException("User formdata is invalid!");
+    }
 
-		SuccessResponse response = new SuccessResponse("updateUser", "User updated successfully!");
+    userService.updateUser(userData);
 
-		return ResponseEntity.ok().body(response);
-	}
+    SuccessResponse response = new SuccessResponse("updateUser", "User updated successfully!");
 
-	@DeleteMapping("/{userId}")
-	@Operation(summary = "Deletes single user", description = "Returns a list of updated user data.")
-	public ResponseEntity<SuccessResponse> deleteUser(@PathVariable(required = true) Long userId) {
+    return ResponseEntity.ok().body(response);
+  }
 
-		if (!userService.checkIfUserExist(userId)) {
-			throw new IllegalArgumentException("User doesn't exist!");
-		}
-		userService.deleteUser(userId);
-		SuccessResponse response = new SuccessResponse("deleteUser", "User deleted successfully!");
+  @DeleteMapping("/{userId}")
+  @RequiresRoles("admin")
+  @Operation(summary = "Deletes single user", description = "Returns a list of updated user data.")
+  public ResponseEntity<SuccessResponse> deleteUser(@PathVariable(required = true) Long userId)
+      throws UnauthorizedException {
 
-		return ResponseEntity.ok().body(response);
-	}
+    if (!userService.checkIfUserExist(userId)) {
+      throw new IllegalArgumentException("User doesn't exist!");
+    }
+    userService.deleteUser(userId);
+    SuccessResponse response = new SuccessResponse("deleteUser", "User deleted successfully!");
 
-	@DeleteMapping
-	@Operation(summary = "Deletes list of users", description = "Returns a list of updated user data.")
-	public ResponseEntity<SuccessResponse> deleteUsers(@RequestParam List<Long> ids) {
-		if (ids.isEmpty()) {
-			throw new IllegalArgumentException("Empty list of ids!");
-		}
-		for (Long userId : ids) {
-			if (!userService.checkIfUserExist(userId)) {
-				throw new IllegalArgumentException("User doesn't exist!");
-			}
-		}
+    return ResponseEntity.ok().body(response);
+  }
 
-		userService.deleteUsers(ids);
-		SuccessResponse response = new SuccessResponse("deleteUsers", "Users deleted successfully!");
+  @DeleteMapping
+  @RequiresRoles("admin")
+  @Operation(summary = "Deletes list of users",
+      description = "Returns a list of updated user data.")
+  public ResponseEntity<SuccessResponse> deleteUsers(@RequestParam List<Long> ids)
+      throws UnauthorizedException {
+    if (ids.isEmpty()) {
+      throw new IllegalArgumentException("Empty list of ids!");
+    }
+    for (Long userId : ids) {
+      if (!userService.checkIfUserExist(userId)) {
+        throw new IllegalArgumentException("User doesn't exist!");
+      }
+    }
 
-		return ResponseEntity.ok().body(response);
-	}
+    userService.deleteUsers(ids);
+    SuccessResponse response = new SuccessResponse("deleteUsers", "Users deleted successfully!");
 
-	@ExceptionHandler(IllegalArgumentException.class)
-	public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
-		ErrorResponse errorResponse = new ErrorResponse("Bad request", ex.getMessage());
-		return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-	}
+    return ResponseEntity.ok().body(response);
+  }
+
+  @ExceptionHandler(IllegalArgumentException.class)
+  public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+    ErrorResponse errorResponse = new ErrorResponse("Bad request", ex.getMessage());
+    return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(UnauthorizedException.class)
+  public ResponseEntity<ErrorResponse> handleAuthException(UnauthorizedException ex) {
+    ErrorResponse errorResponse = new ErrorResponse("Unauthorized request", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+  }
 }

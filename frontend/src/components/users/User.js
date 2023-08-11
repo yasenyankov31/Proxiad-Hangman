@@ -10,14 +10,6 @@ import Chart from 'chart.js/auto';
 import TranslateI18n from '../general/TranslateI18n';
 import { useTranslation } from 'react-i18next';
 
-const fetcher = async (url) => {
-    const response = await fetch(url);
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message);
-    }
-    return response.json();
-};
 
 
 const User = () => {
@@ -32,8 +24,8 @@ const User = () => {
     
 
 
-    const userPorfileResponse = useSWR('/api/users/user-profile?username=' + username, fetcher)
-    const userGamesResponse = useSWR('/api/users/played-games?username=' + username + "&pageNum=" + page, fetcher)
+    const userPorfileResponse = useSWR('/api/users/user-profile?username=' + username)
+    const userGamesResponse = useSWR('/api/users/played-games?username=' + username + "&pageNum=" + page)
     const [games, setGames] = useState([]);
     const [pageNumber, setPageNumber] = useState(page);
     const [totalPages, setTotalPages] = useState(0);

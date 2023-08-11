@@ -1,5 +1,5 @@
 package com.game_classes.models;
 
 public enum GameStatus {
-	OnGoing, Win, Lost
+  OnGoing, Won, Lost
 }

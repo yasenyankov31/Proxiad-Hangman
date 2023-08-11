@@ -8,15 +8,6 @@ import PaginationComponent from '../general/Pagination';
 import TranslateI18n from '../general/TranslateI18n';
 
 
-const fetcher = async (url) => {
-  const response = await fetch(url);
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message);
-  }
-  return response.json();
-};
-
 
 const Games = () => {
   const navigate = useNavigate();
@@ -24,11 +15,11 @@ const Games = () => {
   const [pageNumber, setPageNumber] = useState(initialPage);
   const [games, setGames] = useState(null); // Initialize state to hold fetched data
 
-  const { data, error } = useSWR(`/api/games/not-completed-games?pageNum=${pageNumber}`, fetcher,
+  const { data, error } = useSWR(`/api/games/not-completed-games?pageNum=${pageNumber}`,
     {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
-      dedupingInterval: 10000,
+      dedupingInterval: 1000,
     });
 
   const handlePagination = useCallback((newPageNumber) => {

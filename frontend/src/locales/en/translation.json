@@ -24,6 +24,7 @@
     "ModalTitleAdd":"Add user",
     "ModalTitleEdit":"Edit user",
     "ModalTitleDelete":"Delete user",
+    "ModalTitleProcessed":"Success",
     "ModalDeleteWarning":"Are you sure you want to delete?",
     "ModalDeleteException":"No users selected!",
     "UserProfileTitle":"Player statistics for ",
@@ -36,13 +37,17 @@
     "WinStreaksChart":"Win streaks",
     "WinsChart":"Wins",
     "LossesChart":"Losses",
-    "GameResetBtn":"Reset the word",
+    "GameResetBtn":"Reset",
     "GameSubmitNameLabel":"Submit your name to complete the game",
     "GameSubmitBtn":"Submit",
     "GameSumbitLoading":"Loading...",
     "GameEndingStat_1":"The game was",
     "GameEndingStat_2":"The word was",
     "GamePlayAgainBtn":"Play again",
-    "GameGetPorfileBtn":"Gamer profile"
+    "GameGetPorfileBtn":"Gamer profile",
+    "LogOutBtn":"Log out",
+    "RegisterBtn":"Register",
+    "DoYouHaveAccount":"Already have an account?",
+    "LogInHere":"Login here"
     
 }

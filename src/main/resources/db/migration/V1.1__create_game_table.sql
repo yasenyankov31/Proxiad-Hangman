@@ -6,5 +6,6 @@ CREATE TABLE game (
     letters_used VARCHAR(255),
     word VARCHAR(255),
     word_num INTEGER NOT NULL,
+    user_game_id BIGINT,
     PRIMARY KEY (id)
 ) ENGINE=MyISAM;
